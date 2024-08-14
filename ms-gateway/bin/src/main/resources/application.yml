@@ -1,0 +1,12 @@
+server:
+  port: 9001    # for gabe
+
+spring:
+  application:
+    name: ms-gateway
+  cloud:
+    gateway:
+      routes:
+          # can put routes here
+          # documentation is here: https://docs.spring.io/spring-cloud-gateway/reference/index.html
+
