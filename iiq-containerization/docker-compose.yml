@@ -1,0 +1,12 @@
+version: "3"
+services:
+  tomcat:
+    build: ./tomcat
+    working_dir: /usr/local/tomcat
+    env_file:
+      - .env
+    ports:
+      - "${TOMCAT_APPLICATION_PORT}:8080"
+      - "${TOMCAT_APPLICATION_DEBUG_PORT}:8000"
+    volumes:
+      - "./tomcat/webapps/identityiq:/usr/local/tomcat/webapps/identityiq"
