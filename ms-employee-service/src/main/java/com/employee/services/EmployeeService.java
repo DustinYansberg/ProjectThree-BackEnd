@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.employee.models.EmployeeRequest;
 import com.employee.models.EmployeeResponse;
 import com.employee.models.SCIMResponseObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +22,8 @@ public class EmployeeService {
 	@Value("${spring.datasource.url}/Users") private String baseUrl;
 	@Value("${spring.datasource.username}") private String username;
 	@Value("${spring.datasource.password}") private String password;
+	
+	ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 	
 	/**
 	 * generateAuthHeaders()
@@ -66,22 +70,41 @@ public class EmployeeService {
 	public ResponseEntity<? extends Object> getAllEmployees() {
 		try {
 			ResponseEntity<Object> resp = sendRestTemplateExchange(null, baseUrl, HttpMethod.GET);
-			
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 			SCIMResponseObject empl = mapper.readValue(mapper.writeValueAsString(resp.getBody()), SCIMResponseObject.class);
 
 			return ResponseEntity.status(200).body(empl.getResources());
 		} catch(Exception e) {return processError(e);}
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public ResponseEntity<? extends Object> getEmployeeById(String id) {
 		try {
 			ResponseEntity<Object> resp = sendRestTemplateExchange(null, baseUrl + "/" + id, HttpMethod.GET);
-			
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 			return ResponseEntity.status(200).body(mapper.readValue(mapper.writeValueAsString(resp.getBody()), EmployeeResponse.class));
+		} catch(Exception e) {return processError(e);}
+	}
+	
+	/**
+	 * 
+	 * @param newEmployee
+	 * @return
+	 */
+	public ResponseEntity<? extends Object> createEmployee(EmployeeRequest newEmployee) {
+		try {
+			ResponseEntity<Object> resp = sendRestTemplateExchange(newEmployee.toJsonString(), baseUrl, HttpMethod.POST);
+			return ResponseEntity.status(201).body(mapper.readValue(mapper.writeValueAsString(resp.getBody()), EmployeeResponse.class));
+		} catch(Exception e) {return processError(e);}
+	}
+	
+	public ResponseEntity<? extends Object> deleteEmployeeById(String id) {
+		try {
+			ResponseEntity<? extends Object> resp = getEmployeeById(id);
+			sendRestTemplateExchange(null, baseUrl + "/" + id, HttpMethod.DELETE);
+			return resp;
 		} catch(Exception e) {return processError(e);}
 	}
 }
