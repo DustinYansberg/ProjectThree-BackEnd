@@ -75,7 +75,6 @@ public class EmployeeService {
 		} catch(Exception e) {return processError(e);}
 	}
 	
-	boolean debugToggle = false;
 	public ResponseEntity<? extends Object> getEmployeeById(String id) {
 		try {
 			ResponseEntity<Object> resp = sendRestTemplateExchange(null, baseUrl + "/" + id, HttpMethod.GET);
