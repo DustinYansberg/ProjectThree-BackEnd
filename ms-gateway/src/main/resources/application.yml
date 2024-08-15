@@ -1,0 +1,60 @@
+
+server:
+  port: 9001    # for gabe
+
+# can put routes here
+# documentation is here: https://docs.spring.io/spring-cloud-gateway/reference/index.html
+
+ 
+spring:
+  application:
+    name: ms-gateway
+# putting in "test" here instead of actual values for now.
+## TODO: Update once we have endpoints
+  cloud:
+    gateway:
+      routes:
+        - id: ms-test-route
+          uri: lb://ms-test-route
+          predicates:
+          - Path=/test-endpoint/**
+          filters:
+          - name: CircuitBreaker
+            args:
+              name: testFallbackController
+              fallbackUri: forward:/fallback/test
+
+
+# This section is for what will display one our health checks
+# localhost:9001/actuator is the endpoint
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - metrics
+          - beans
+  endpoint:
+    health:
+      group:
+        system:
+          show-details: always
+      
+# health.show-details allows us to hit the /actuator/health endpoint and get info, otherwise it just shows "UP"  
+# since "UP" is likely all Eureka needs, we'll just keep it untouched for now, but we can implement it if needed      
+#      show-details: always  
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      productFallbackController:
+        wait-duration-in-open-state: 15000
+        
+
+# for eureka connection
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka # Default value for eureka
