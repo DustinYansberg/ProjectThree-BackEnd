@@ -41,6 +41,10 @@ management:
       group:
         system:
           show-details: always
+      
+# health.show-details allows us to hit the /actuator/health endpoint and get info, otherwise it just shows "UP"  
+# since "UP" is likely all Eureka needs, we'll just keep it untouched for now, but we can implement it if needed      
+#      show-details: always  
 
 resilience4j:
   circuitbreaker:
