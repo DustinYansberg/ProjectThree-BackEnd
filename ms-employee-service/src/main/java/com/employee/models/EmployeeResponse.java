@@ -1,5 +1,6 @@
 package com.employee.models;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,5 +40,73 @@ public class EmployeeResponse {
 	@JsonProperty("urn:ietf:params:scim:schemas:extension:enterprise:2.0:User")
 	private void setManagerFromJson(Map<String, Object> json) {
 		this.manager = (Map<String, Object>) json.get("manager");
+	}
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public Map<String, Object> getName() {
+		return name;
+	}
+	public void setName(Map<String, Object> name) {
+		this.name = name;
+	}
+	public String getDisplayName() {
+		return displayName;
+	}
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public Map<String, Object>[] getEmails() {
+		return emails;
+	}
+	public void setEmails(Map<String, Object>[] emails) {
+		this.emails = emails;
+	}
+	public Map<String, Object> getEmployeeDetails() {
+		return employeeDetails;
+	}
+	public void setEmployeeDetails(Map<String, Object> employeeDetails) {
+		this.employeeDetails = employeeDetails;
+	}
+	public Map<String, Object> getManager() {
+		return manager;
+	}
+	public void setManager(Map<String, Object> manager) {
+		this.manager = manager;
+	}
+
+	@Override
+	public String toString() {
+		return "EmployeeResponse [id=" + id + ", userName=" + userName + ", name=" + name + ", displayName="
+				+ displayName + ", userType=" + userType + ", active=" + active + ", password=" + password + ", emails="
+				+ Arrays.toString(emails) + ", employeeDetails=" + employeeDetails + ", manager=" + manager + "]";
 	}
 }

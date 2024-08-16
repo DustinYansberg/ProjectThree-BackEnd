@@ -32,17 +32,20 @@ public class EmployeeController {
 		return service.getEmployeeById(id);
 	}
 	
+	@GetMapping("/manager")
+	public ResponseEntity<? extends Object> getEmployeesByManagerId(@RequestBody String managerId) {
+		return service.getEmployeesByManagerId(managerId);	
+	}
+	
 	@PostMapping()
 	public ResponseEntity<? extends Object> createEmployee(@RequestBody EmployeeRequest newEmployee) {
 		return service.createEmployee(newEmployee);
 	}
 	
-	//	TODO There was an issue in our project where trying to update an employee through SCIM API
-	//		would result in unspecified values set to null.
 	@PutMapping("/{id}")
 	public ResponseEntity<? extends Object> updateEmployeeById(@PathVariable String id,
-															@RequestBody EmployeeRequest newDetails) {
-		return null;
+															@RequestBody EmployeeRequest newFields) {
+		return service.updateEmployee(id, newFields);
 	}
 	
 	@DeleteMapping("/{id}")

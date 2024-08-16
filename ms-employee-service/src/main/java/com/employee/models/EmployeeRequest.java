@@ -12,7 +12,7 @@ public class EmployeeRequest {
 	@Value("${spring.datasource.url}/Users") private static String baseUrl;
 	
 	//	Variables for details of SailPoint identities.
-	String userName;		//	Required for POST and PUT, but cannot be changed by PUT.
+	String userName;		//	Immutable, but required.
 	String password;
 	String firstName;
 	String lastName;
@@ -42,6 +42,43 @@ public class EmployeeRequest {
 		this.active = active;
 		this.userType = userType;
 		this.department = department; 
+	}
+	
+	//	Converter constructor function for EmployeeRequest given an EmployeeResponse input object.
+	//	Does not include softwareVersion or administratorId.
+	public EmployeeRequest(EmployeeResponse resp) {
+		super();
+		this.userName = resp.userName;
+		this.password = resp.password;
+		this.firstName = resp.name.get("givenName").toString();
+		this.lastName = resp.name.get("familyName").toString();
+		this.email = resp.emails[0].get("value").toString();
+		this.managerId = resp.manager.get("value") == null ? null : resp.manager.get("value").toString();
+		this.displayName = resp.displayName;
+		this.active = resp.active;
+		this.userType = resp.userType;
+		this.department = resp.employeeDetails.get("Department") == null ? null : resp.employeeDetails.get("Department").toString();
+	}
+	
+	/**
+	 * updateFields()
+	 * A function that prepares this EmployeeRequest for a PUT call to SCIM API
+	 * by updating its fields with new values from an EmployeeRequest.
+	 * Does not update values that are null in newFields.
+	 * @param newFields
+	 */
+	public void updateFields(EmployeeRequest newFields) {
+		this.password = newFields.password == null ? this.password : newFields.password;
+		this.firstName = newFields.firstName == null ? this.firstName : newFields.firstName;
+		this.lastName = newFields.lastName == null ? this.lastName : newFields.lastName;
+		this.email = newFields.email == null ? this.email : newFields.email;
+		this.managerId = newFields.managerId == null ? this.managerId : newFields.managerId;
+		this.softwareVersion = newFields.softwareVersion == null ? this.softwareVersion : newFields.softwareVersion;
+		this.administratorId = newFields.administratorId == null ? this.administratorId : newFields.administratorId;
+		this.displayName = newFields.displayName == null ? this.displayName : newFields.displayName;
+		this.active = newFields.active;
+		this.userType = newFields.userType == null ? this.userType : newFields.userType;
+		this.department = newFields.department == null ? this.department : newFields.department;
 	}
 	
 	/**
@@ -85,8 +122,7 @@ public class EmployeeRequest {
 			asJson = asJson
 				+ "  \"urn:ietf:params:scim:schemas:extension:enterprise:2.0:User\": {\r\n"
 				+ "    \"manager\": {\r\n"
-				+ "      \"value\": \"" + managerId + "\",\r\n"
-				+ "      \"$ref\": \"" + baseUrl + "/" + managerId + "\"\r\n" 
+				+ "      \"value\": \"" + managerId + "\"\r\n"
 				+ "    }\r\n"
 				+ "  },\r\n";
 		asJson = asJson

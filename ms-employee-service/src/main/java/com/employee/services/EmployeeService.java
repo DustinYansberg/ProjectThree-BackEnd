@@ -1,12 +1,12 @@
 package com.employee.services;
 
+import java.util.ArrayList;
 import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -89,6 +89,27 @@ public class EmployeeService {
 	}
 	
 	/**
+	 * TODO Replace with SCIM filtering.
+	 * @param managerId - ID of manager.
+	 * @return
+	 */
+	public ResponseEntity<? extends Object> getEmployeesByManagerId(String managerId) {
+		try {
+			EmployeeResponse[] allEmployees = (EmployeeResponse[]) getAllEmployees().getBody();
+			
+			ArrayList<EmployeeResponse> employees = new ArrayList<>();
+			for(EmployeeResponse e : allEmployees) {
+				if(e.getManager().containsKey("value")) {
+					if(e.getManager().get("value").equals(managerId)) {
+						employees.add(e);
+					}
+				}
+			}
+			return ResponseEntity.status(200).body(employees.toArray());
+		} catch(Exception e) {return processError(e);}
+	}
+	
+	/**
 	 * 
 	 * @param newEmployee
 	 * @return
@@ -100,6 +121,27 @@ public class EmployeeService {
 		} catch(Exception e) {return processError(e);}
 	}
 	
+	//	TODO
+	public ResponseEntity<? extends Object> updateEmployee(String id, EmployeeRequest newFields) {
+		try {
+			//	Get data of existing object
+			ResponseEntity<Object> getResp = sendRestTemplateExchange(null, baseUrl + "/" + id, HttpMethod.GET);
+			EmployeeRequest employee = new EmployeeRequest(mapper.readValue(mapper.writeValueAsString(getResp.getBody()), EmployeeResponse.class));
+			
+			//	Aggregate the data into the Update request made
+			employee.updateFields(newFields);
+			//	Send the update request that now includes existing fields
+			System.out.println(employee.toJsonString());
+			ResponseEntity<Object> resp = sendRestTemplateExchange(employee.toJsonString(), baseUrl + "/" + id, HttpMethod.PUT);
+			return ResponseEntity.status(201).body(mapper.readValue(mapper.writeValueAsString(resp.getBody()), EmployeeResponse.class));
+		} catch(Exception e) {return processError(e);}
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public ResponseEntity<? extends Object> deleteEmployeeById(String id) {
 		try {
 			ResponseEntity<? extends Object> resp = getEmployeeById(id);
