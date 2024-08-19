@@ -10,9 +10,9 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
 
   datasource:
-    url: http://localhost:8080/identityiq/scim/v2
-    username: username
-    password: password
+    url: http://135.237.83.37:8080/identityiq/scim/v2
+    username: spadmin
+    password: admin
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 eureka:
@@ -21,6 +21,8 @@ eureka:
       defaultZone: http://20.242.136.134:8761/eureka/
     registerWithEureka: true
     fetchRegistry: true
+  instance:
+    hostname: 20.242.136.134
 
 server:
   port: 8081

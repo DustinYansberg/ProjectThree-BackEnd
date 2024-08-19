@@ -14,15 +14,15 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: ms-test-route
-          uri: lb://ms-test-route
+        - id: ms-employee-service-route
+          uri: lb://ms-employee-service
           predicates:
-          - Path=/test-endpoint/**
-          filters:
-          - name: CircuitBreaker
-            args:
-              name: testFallbackController
-              fallbackUri: forward:/fallback/test
+          - Path=/employee/**
+#          filters:
+#          - name: CircuitBreaker
+#            args:
+#              name: employeeFallbackController
+#              fallbackUri: forward:/fallback/employee
 
 
 # This section is for what will display one our health checks
@@ -57,4 +57,6 @@ resilience4j:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka # Default value for eureka
+      defaultZone: http://20.242.136.134:8761/eureka # Default value for eureka
+  instance:
+    hostname: 20.242.136.134
