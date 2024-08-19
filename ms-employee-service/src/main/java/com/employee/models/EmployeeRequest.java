@@ -25,6 +25,8 @@ public class EmployeeRequest {
 	String userType;		//	Required for POST and PUT.
 	String department;
 	
+	public EmployeeRequest() {}
+	
 	//	Constructor function for EmployeeRequest.
 	public EmployeeRequest(String userName, String password, String firstName, String lastName, String email,
 			/*String manager,*/ String managerId, String softwareVersion, /*String administrator,*/ String administratorId,
@@ -134,4 +136,110 @@ public class EmployeeRequest {
 				+ "}";
 		return asJson;
 	}
+
+	
+	public static String getBaseUrl() {
+		return baseUrl;
+	}
+
+	public static void setBaseUrl(String baseUrl) {
+		EmployeeRequest.baseUrl = baseUrl;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getManagerId() {
+		return managerId;
+	}
+
+	public void setManagerId(String managerId) {
+		this.managerId = managerId;
+	}
+
+	public String getSoftwareVersion() {
+		return softwareVersion;
+	}
+
+	public void setSoftwareVersion(String softwareVersion) {
+		this.softwareVersion = softwareVersion;
+	}
+
+	public String getAdministratorId() {
+		return administratorId;
+	}
+
+	public void setAdministratorId(String administratorId) {
+		this.administratorId = administratorId;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
 }

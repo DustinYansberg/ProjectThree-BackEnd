@@ -9,8 +9,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import com.employee.models.EmployeePasswordUpdateRequest;
 import com.employee.models.EmployeeRequest;
 import com.employee.models.EmployeeResponse;
 import com.employee.models.SCIMResponseObject;
@@ -56,11 +58,18 @@ public class EmployeeService {
 	 * @param e - The exception to process.
 	 * @return A ResponseEntity containing details about the exception.
 	 */
+	private ResponseEntity<String> processError(HttpStatusCodeException e) {
+		e.printStackTrace();
+		//	TODO There is probably a way to formally extract error code from exception message
+		return ResponseEntity.status(e.getStatusCode()).header("Error", "Http Error")
+				.body(e.toString());
+	}
+	
 	private ResponseEntity<String> processError(Exception e) {
 		e.printStackTrace();
 		//	TODO There is probably a way to formally extract error code from exception message
-		return ResponseEntity.status(500).header("Error", "SCIM Error")
-				.body("An error occurred when sending the request to SCIM:\n" + e);
+		return ResponseEntity.status(500).header("Error", "Internal Error")
+				.body("An internal error occurred:\n" + e);
 	}
 	
 	/**
@@ -73,6 +82,8 @@ public class EmployeeService {
 			SCIMResponseObject empl = mapper.readValue(mapper.writeValueAsString(resp.getBody()), SCIMResponseObject.class);
 
 			return ResponseEntity.status(200).body(empl.getResources());
+		} catch(HttpStatusCodeException e) {
+			return processError(e);
 		} catch(Exception e) {return processError(e);}
 	}
 	
@@ -85,6 +96,8 @@ public class EmployeeService {
 		try {
 			ResponseEntity<Object> resp = sendRestTemplateExchange(null, baseUrl + "/" + id, HttpMethod.GET);
 			return ResponseEntity.status(200).body(mapper.readValue(mapper.writeValueAsString(resp.getBody()), EmployeeResponse.class));
+		} catch(HttpStatusCodeException e) {
+			return processError(e);
 		} catch(Exception e) {return processError(e);}
 	}
 	
@@ -106,6 +119,8 @@ public class EmployeeService {
 				}
 			}
 			return ResponseEntity.status(200).body(employees.toArray());
+		} catch(HttpStatusCodeException e) {
+			return processError(e);
 		} catch(Exception e) {return processError(e);}
 	}
 	
@@ -118,22 +133,30 @@ public class EmployeeService {
 		try {
 			ResponseEntity<Object> resp = sendRestTemplateExchange(newEmployee.toJsonString(), baseUrl, HttpMethod.POST);
 			return ResponseEntity.status(201).body(mapper.readValue(mapper.writeValueAsString(resp.getBody()), EmployeeResponse.class));
+		} catch(HttpStatusCodeException e) {
+			return processError(e);
 		} catch(Exception e) {return processError(e);}
 	}
 	
-	//	TODO
+	/**
+	 * 
+	 * @param id
+	 * @param newFields
+	 * @return
+	 */
 	public ResponseEntity<? extends Object> updateEmployee(String id, EmployeeRequest newFields) {
 		try {
-			//	Get data of existing object
+			//	Get data of existing object as EmployeeRequest
 			ResponseEntity<Object> getResp = sendRestTemplateExchange(null, baseUrl + "/" + id, HttpMethod.GET);
 			EmployeeRequest employee = new EmployeeRequest(mapper.readValue(mapper.writeValueAsString(getResp.getBody()), EmployeeResponse.class));
 			
 			//	Aggregate the data into the Update request made
 			employee.updateFields(newFields);
 			//	Send the update request that now includes existing fields
-			System.out.println(employee.toJsonString());
 			ResponseEntity<Object> resp = sendRestTemplateExchange(employee.toJsonString(), baseUrl + "/" + id, HttpMethod.PUT);
 			return ResponseEntity.status(201).body(mapper.readValue(mapper.writeValueAsString(resp.getBody()), EmployeeResponse.class));
+		} catch(HttpStatusCodeException e) {
+			return processError(e);
 		} catch(Exception e) {return processError(e);}
 	}
 	
@@ -147,6 +170,17 @@ public class EmployeeService {
 			ResponseEntity<? extends Object> resp = getEmployeeById(id);
 			sendRestTemplateExchange(null, baseUrl + "/" + id, HttpMethod.DELETE);
 			return resp;
+		} catch(HttpStatusCodeException e) {
+			return processError(e);
+		} catch(Exception e) {return processError(e);}
+	}
+	
+	//	TODO Cannot change password with basic PUT request to SCIM API.
+	public ResponseEntity<? extends Object> updatePassword(EmployeePasswordUpdateRequest request) {
+		try {
+			return null;
+		} catch(HttpStatusCodeException e) {
+			return processError(e);
 		} catch(Exception e) {return processError(e);}
 	}
 }

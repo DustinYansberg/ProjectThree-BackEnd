@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.employee.models.EmployeePasswordUpdateRequest;
 import com.employee.models.EmployeeRequest;
 import com.employee.services.EmployeeService;
 
@@ -51,5 +52,10 @@ public class EmployeeController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<? extends Object> deleteEmployeeById(@PathVariable String id) {
 		return service.deleteEmployeeById(id);
+	}
+	
+	@PutMapping("/updatePassword")
+	public ResponseEntity<? extends Object> updatePassword(@RequestBody EmployeePasswordUpdateRequest request) {
+		return service.updatePassword(request);
 	}
 }
