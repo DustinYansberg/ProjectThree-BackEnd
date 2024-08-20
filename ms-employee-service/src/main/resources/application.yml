@@ -15,6 +15,14 @@ spring:
     password: admin
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka/
+#    registerWithEureka: true
+#    fetchRegistry: true
+#  instance:
+#    hostname: localhost
 eureka:
   client:
     serviceUrl:
@@ -22,7 +30,7 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
   instance:
-    hostname: 20.242.136.134
+    hostname: ms-employee-service.default.svc.cluster.local
 
 server:
   port: 8081
