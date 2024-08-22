@@ -102,6 +102,20 @@ public class EmployeeService {
 	}
     }
 
+    public ResponseEntity<? extends Object> getEmployeeByEmail(String email) {
+	try {
+	    ResponseEntity<Object> resp = sendRestTemplateExchange(null,
+		    baseUrl + "?filter=emails eq \"" + email + "\"", HttpMethod.GET);
+
+	    SCIMResponseObject empl = mapper.readValue(mapper.writeValueAsString(resp.getBody()),
+		    SCIMResponseObject.class);
+
+	    return ResponseEntity.status(200).body(empl.getResources()[0]);
+	} catch (Exception e) {
+	    return processError(e);
+	}
+    }
+
     /**
      * TODO Replace with SCIM filtering.
      *
@@ -177,4 +191,5 @@ public class EmployeeService {
 	    return processError(e);
 	}
     }
+
 }

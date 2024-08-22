@@ -34,6 +34,11 @@ public class EmployeeController {
 	return service.getEmployeeById(id);
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<? extends Object> getEmployeeByEmail(@PathVariable String email) {
+	return service.getEmployeeByEmail(email);
+    }
+
     @GetMapping("/manager")
     public ResponseEntity<? extends Object> getEmployeesByManagerId(@RequestBody String managerId) {
 	return service.getEmployeesByManagerId(managerId);
