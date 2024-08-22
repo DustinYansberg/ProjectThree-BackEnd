@@ -19,21 +19,22 @@ public class DocumentController {
     private final DocumentService documentService;
 
     public DocumentController(DocumentService documentService) {
-        this.documentService = documentService;
+	this.documentService = documentService;
     }
 
     @GetMapping("/getdocs/{id}")
     public ResponseEntity<String> getDocuments(@PathVariable String id) {
-        return documentService.getDocumentsByIdentity(id);
+	System.out.println("I am hitting the getdocs route form the API Gateway");
+	return documentService.getDocumentsByIdentity(id);
     }
-    
+
     @PostMapping("/createdoc")
     public ResponseEntity<String> createDoc(@RequestBody Document document) {
-    	return documentService.createDoc(document);
+	return documentService.createDoc(document);
     }
-    
+
     @PutMapping("/complete/{id}")
     public ResponseEntity<String> completeDocument(@PathVariable int id) {
-    	return documentService.completeDoc(id);
+	return documentService.completeDoc(id);
     }
 }

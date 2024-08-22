@@ -30,7 +30,7 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
   instance:
-    hostname: ms-employee-service.default.svc.cluster.local
+    hostname: plugin-bridge-service.default.svc.cluster.local
 
 server:
-  port: 8081
+  port: 8085
