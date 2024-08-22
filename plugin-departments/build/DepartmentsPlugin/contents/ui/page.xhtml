@@ -6,8 +6,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
       
 	<head>
-	
-		<link rel="stylesheet" href="css/departments-plugin.css"></link>
+
+		<!-- <link rel="stylesheet" href="css/departments-plugin.css"></link> -->
         
 	</head>
 	
@@ -15,26 +15,30 @@
 	
 		<ui:composition>
 		
-			<h1 class="red">DEPARTMENTS MANAGEMENT</h1>
+			<h1 class="red">Departments Management Page</h1>
 			
-			<p id="test" class="textToChange">Here's my plugin...and I am *so* proud of it.</p>
+			<!-- <p id="test" class="textToChange">This is the departments plugin.</p>
 			<p class="textToChange">Remember to add actual department functionality.</p>
 			
-            <button onclick="changeText()">CHANGE TEXT</button>
+            <button onclick="changeText()">CHANGE TEXT</button> -->
 
             <h2>Current Departments</h2>
-            <table>
+            <table id="departmentsList">
                 <tr><th>ID</th><th>Name</th></tr>
             </table>
 
+            <hr />
+
             <h2>Create New Department</h2>
-            <div class="form">
-                <form>
-                    <label for="dept_name">Name</label>
-                    <input type="text" name="dept_name" id="dept_name" />
-                    <button type="submit" onclick="createDepartment()">CREATE DEPARTMENT</button>
-                </form>
-            </div>
+            <form>
+                <label for="dept_name">Name</label>
+                <input type="text" name="dept_name" id="dept_name" />
+                <br />
+                <label for="dept_desc">Name</label>
+                <input type="text" name="dept_desc" id="dept_desc" />
+                <br />
+                <button type="button" onclick="createDepartment()">CREATE DEPARTMENT</button>
+            </form>
 
             <!-- JS scripts that change the page's visuals of any kind must be called inside ui:composition and have this format -->
             <script src="#{plugins.requestContextPath}/plugin/DepartmentsPlugin/ui/js/departments-plugin.js" />

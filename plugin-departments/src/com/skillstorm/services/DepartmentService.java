@@ -39,6 +39,15 @@ public class DepartmentService {
 		return stmt.executeQuery();
 	}
 	
+	/**
+	 * executeUpdate()
+	 * Modularization of update execution.
+	 * @Column conn
+	 * @param stmt
+	 * @param query
+	 * @throws GeneralException
+	 * @throws SQLException
+	 */
 	private void executeUpdate(Connection conn, PreparedStatement stmt, String query) throws GeneralException, SQLException {
 		conn = context.getConnection();
 		stmt = PluginBaseHelper.prepareStatement(conn, query);
@@ -68,11 +77,6 @@ public class DepartmentService {
 			IOUtil.closeQuietly(stmt);
 			IOUtil.closeQuietly(conn);
 		}
-	}
-	
-	//	Test function.
-	public String test2() {
-		return "The problem does not lie with the service() function.";
 	}
 	
 	/**

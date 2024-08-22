@@ -27,37 +27,11 @@ public class DepartmentResource extends BasePluginResource {
 	
 	private DepartmentService service() {return new DepartmentService(this);}
 	
-	//	Testing methods.
-	@GET
-	@Path("test1")
-	@AllowAll
-	@Produces(MediaType.APPLICATION_JSON)
-	public String test1() throws GeneralException {
-		return "The problem does not lie with the DepartmentResource.";
-	}
-	
-	@GET
-	@Path("test2")
-	@AllowAll
-	@Produces(MediaType.APPLICATION_JSON)
-	public String test2() throws GeneralException {
-		return service().test2();
-	}
-	
-	@GET
-	@Path("test3")
-	@AllowAll
-	@Produces(MediaType.APPLICATION_JSON)
-	public String test3() throws GeneralException {
-		return service().getAllDepartments().toString();
-	}
-	
 	/**
 	 * getAllDepartments()
 	 * @return
 	 * @throws GeneralException
 	 */
-	//	FIXME Currently returns null. I do not know why.
 	@GET
 	@Path("getAll")
 	@AllowAll
@@ -72,7 +46,6 @@ public class DepartmentResource extends BasePluginResource {
 	 * @return
 	 * @throws GeneralException
 	 */
-	//	FIXME Currently returns null. I do not know why.
 	@GET
 	@Path("getBy/{col}/{value}")
 	@AllowAll
