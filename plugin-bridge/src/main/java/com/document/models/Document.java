@@ -7,11 +7,11 @@ public class Document {
 	 private int id;
 	    private String identityId;
 	    private String name;
-	    private byte[] fileData;  
+	    private String fileData;  
 	    private boolean isCompleted;
 	    private Date assignedDateTime;  
 
-	    public Document(String identityId, String name, byte[] fileData, boolean isCompleted, Date assignedDateTime) {
+	    public Document(String identityId, String name, String fileData, boolean isCompleted, Date assignedDateTime) {
 	        this.setIdentityId(identityId);
 	    	this.name = name;
 	        this.fileData = fileData;
@@ -35,11 +35,11 @@ public class Document {
 	        this.name = name;
 	    }
 
-	    public byte[] getFileData() {
+	    public String getFileData() {
 	        return fileData;
 	    }
 
-	    public void setFileData(byte[] fileData) {
+	    public void setFileData(String fileData) {
 	        this.fileData = fileData;
 	    }
 
