@@ -18,7 +18,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the packaged JAR file from the build stage
-COPY --from=build /app/target/ms-employee-0.0.1-SNAPSHOT.jar plugin-bridge.jar
+COPY --from=build /app/target/plugin-bridge-0.0.1-SNAPSHOT.jar plugin-bridge.jar
 
 # Expose port 9001 to the outside world
 EXPOSE 9001
