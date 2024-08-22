@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE Plugin PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Plugin certificationLevel="None" displayName="Departments Management" minSystemVersion="8.3" name="DepartmentsPlugin" version="1.0">
+  <Attributes>
+    <Map>
+      <entry key="minUpgradableVersion" value="0.1" />
+      <entry key="fullPage">
+        <value>
+          <FullPage title="DepartmentsPlugin_Title" />
+        </value>
+      </entry>
+      
+      <entry key="restResources">
+		<value>
+			<List>
+				<String>com.skillstorm.rest.DepartmentResource</String>
+			</List>
+		</value>
+	  </entry>
+      
+      <entry key="settings">
+        <value>
+          <List>
+          	<Setting dataType="string" helpText="HelpText" label="label" name="name" defaultValue="defaultValue"/>
+          </List>
+        </value>
+      </entry>
+    </Map>
+  </Attributes>
+</Plugin>
