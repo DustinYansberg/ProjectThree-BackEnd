@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>plugin-bridge</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ms-employee</name>
+	<name>plugin-bridge</name>
 	<description>Plugin Bridge For IdentityIQ</description>
 	<url/>
 	<licenses>
