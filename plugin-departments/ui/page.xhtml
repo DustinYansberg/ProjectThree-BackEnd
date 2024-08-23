@@ -24,21 +24,25 @@
 
             <h2>Current Departments</h2>
             <table id="departmentsList">
-                <tr><th>ID</th><th>Name</th></tr>
+                <tr><th>ID</th><th>Name</th><th>Description</th></tr>
             </table>
 
             <hr />
 
-            <h2>Create New Department</h2>
+            <h2 id="currentOperationLbl">Create New Department</h2>
             <form>
                 <label for="dept_name">Name</label>
                 <input type="text" name="dept_name" id="dept_name" />
                 <br />
-                <label for="dept_desc">Name</label>
-                <input type="text" name="dept_desc" id="dept_desc" />
+                <label for="dept_desc">Description</label>
+                <!-- <input type="text" name="dept_desc" id="dept_desc" /> -->
+                <textarea name="dept_desc" id="dept_desc" />
                 <br />
-                <button type="button" onclick="createDepartment()">CREATE DEPARTMENT</button>
+                <button type="button" id="createButton" onclick="createDepartment()">CREATE DEPARTMENT</button>
+                <button type="button" id="updateButton" onclick="updateDepartment()">UPDATE DEPARTMENT</button>
+                <button type="button" id="updateButtonCancel" onclick='toggleUpdate(false, "", "")'>Cancel Update</button>
             </form>
+            <p id="idToUpdate" style="visibility: hidden;">-1</p>
 
             <!-- JS scripts that change the page's visuals of any kind must be called inside ui:composition and have this format -->
             <script src="#{plugins.requestContextPath}/plugin/DepartmentsPlugin/ui/js/departments-plugin.js" />

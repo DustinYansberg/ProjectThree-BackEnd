@@ -7,6 +7,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -71,9 +72,21 @@ public class DepartmentResource extends BasePluginResource {
 			throw new GeneralException("Missing parameters. Please include name and description.");
 		}
 		else {
-			String name = body.get("name");
-			String description = body.get("description");
-			return service().createDepartment(name, description);
+			return service().createDepartment(body.get("name"), body.get("description"));
+		}
+	}
+	
+	@PUT
+	@Path("updateBy/{col}/{value}")
+	@AllowAll
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Department updateDepartmentByColumn(Map<String, String> body, @PathParam("col") String col, @PathParam("value") String value) throws GeneralException {
+		if(body.get("name") == null && body.get("description") == null) {
+			throw new GeneralException("Missing parameters. Please include name and/or description.");
+		}
+		else {
+			return service().updateDepartmentByColumn(col, value, body.get("name"), body.get("description")); 
 		}
 	}
 	

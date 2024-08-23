@@ -126,7 +126,38 @@ public class DepartmentService {
 			//	Return newly created Department
 			return getDepartmentByColumn("name", name);
 		} catch(Exception e) {
-			throw new GeneralException(e + "INSERT INTO " + dbName + " (name, description) VALUES (\"" + name + "\", \"" + description + "\")");
+			throw new GeneralException(e);
+		} finally {
+			IOUtil.closeQuietly(stmt);
+			IOUtil.closeQuietly(conn);
+		}
+	}
+	
+	/**
+	 * updateDepartmentByColumn()
+	 * @param col
+	 * @param value
+	 * @param name
+	 * @param description
+	 * @return
+	 * @throws GeneralException
+	 */
+	public Department updateDepartmentByColumn(String col, String value, String name, String description) throws GeneralException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String changes = "";
+		try {
+			//	Dynamic statement depending on if name or description is null
+			changes = name == null ? "" : "name = \"" + name + "\"";
+			changes = changes + (description == null ? "" : (changes.length() > 0 ? ", " : "") + "description = \"" + description + "\"");
+			
+			//	Update existing department
+			executeUpdate(conn, stmt, "UPDATE " + dbName + " SET " + changes + " WHERE " + col + " = \"" + value + "\"");
+
+			//	Return newly updated Department
+			return getDepartmentByColumn("name", name);
+		} catch(Exception e) {
+			throw new GeneralException("UPDATE " + dbName + " SET " + changes + " WHERE " + col + " = \"" + value + "\" \n \n " + e);
 		} finally {
 			IOUtil.closeQuietly(stmt);
 			IOUtil.closeQuietly(conn);
@@ -154,7 +185,7 @@ public class DepartmentService {
 				return deleted;
 			}
 		} catch(Exception e) {
-			throw new GeneralException(e + "\nDELETE FROM " + dbName + " WHERE " + col + " = " + value);
+			throw new GeneralException(e);
 		} finally {
 			IOUtil.closeQuietly(stmt);
 			IOUtil.closeQuietly(conn);
