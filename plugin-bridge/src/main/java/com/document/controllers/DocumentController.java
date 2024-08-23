@@ -1,6 +1,7 @@
 package com.document.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import com.document.services.DocumentService;
 
 @RestController
 @RequestMapping("/document")
+@CrossOrigin(origins = "*")
 public class DocumentController {
 
     private final DocumentService documentService;
