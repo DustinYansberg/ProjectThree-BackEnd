@@ -4,17 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SCIMResponseObject {
-	@JsonIgnore int totalResults;
+	@JsonProperty("totalResults") int totalResults;
 	@JsonIgnore int startIndex;
+	@JsonIgnore int itemsPerPage;
 	@JsonIgnore String[] schemas;
 	@JsonProperty("Resources") EmployeeResponse[] Resources;
 	
 	public SCIMResponseObject() {}
 	
-	public SCIMResponseObject(int totalResults, int startIndex, String[] schemas, EmployeeResponse[] resources) {
+	public SCIMResponseObject(int totalResults, int startIndex, int itemsPerPage, String[] schemas, EmployeeResponse[] resources) {
 		super();
 		this.totalResults = totalResults;
 		this.startIndex = startIndex;
+		this.itemsPerPage = itemsPerPage;
 		this.schemas = schemas;
 		Resources = resources;
 	}
@@ -41,6 +43,14 @@ public class SCIMResponseObject {
 	}
 	public void setResources(EmployeeResponse[] resources) {
 		Resources = resources;
+	}
+
+	public int getItemsPerPage() {
+		return itemsPerPage;
+	}
+
+	public void setItemsPerPage(int itemsPerPage) {
+		this.itemsPerPage = itemsPerPage;
 	}
 	
 	
