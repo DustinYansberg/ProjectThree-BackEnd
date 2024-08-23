@@ -16,6 +16,10 @@ spring:
           uri: lb://ms-employee-service
           predicates:
             - Path=/employee/**
+        - id: plugin-bridge-route
+          uri: lb://plugin-bridge
+          predicates:
+            - Path=/document/**
 #          filters:
 #          - name: CircuitBreaker
 #            args:

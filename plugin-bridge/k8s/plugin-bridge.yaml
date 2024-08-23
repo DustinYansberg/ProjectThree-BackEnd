@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plugin-bridge
+  labels:
+    app: plugin-bridge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plugin-bridge
+  template:
+    metadata:
+      labels:
+        app: plugin-bridge
+
+    spec:
+      containers:
+        - name: plugin-bridge
+
+          image: dustinyansberg/plugin-bridge:latest
+
+          ports:
+            - containerPort: 8085
