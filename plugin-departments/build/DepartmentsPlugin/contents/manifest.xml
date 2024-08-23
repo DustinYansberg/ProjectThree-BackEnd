@@ -11,20 +11,13 @@
       </entry>
       
       <entry key="restResources">
-		<value>
-			<List>
-				<String>com.skillstorm.rest.DepartmentResource</String>
-			</List>
-		</value>
-	  </entry>
-      
-      <entry key="settings">
         <value>
           <List>
-          	<Setting dataType="string" helpText="HelpText" label="label" name="name" defaultValue="defaultValue"/>
+            <String>com.skillstorm.rest.DepartmentResource</String>
           </List>
         </value>
       </entry>
+      
     </Map>
   </Attributes>
 </Plugin>
