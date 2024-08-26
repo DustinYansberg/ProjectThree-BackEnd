@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+>
+  <head>
+    <link
+      rel="stylesheet"
+      href="./css/email-plugin.css"
+    />
+  </head>
+
+  <body>
+    <ui:composition>
+      <div class="content">
+        <h1 class="red">Email Templates</h1>
+
+        <div class="tabs">
+          <button
+            class="tab"
+            onclick="openTemplateTab()"
+          >
+            View Existing Templates
+          </button>
+          <button
+            class="tab"
+            onclick="openCreateTab()"
+          >
+            Create A Template
+          </button>
+          <button
+            class="tab"
+            onclick="openLogsTab()"
+          >
+            Show Logs
+          </button>
+        </div>
+        <!-- what happens in #comp here is the main body. The buttons above allows us to swap between different bodies -->
+        <div id="comp"></div>
+      </div>
+
+      <!-- to use .js scripts that manipulate the visuals, call the script here and use this prefix -->
+      <script
+        src="#{plugins.requestContextPath}/plugin/EmailPlugin/ui/js/email-plugin.js"
+      ></script>
+    </ui:composition>
+  </body>
+</html>

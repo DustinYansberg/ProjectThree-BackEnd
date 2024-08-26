@@ -1,0 +1,56 @@
+CREATE TABLE IF NOT EXISTS `identityiqplugin`.`email_templates` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `name` VARCHAR(128) NOT NULL,
+  `subject` VARCHAR(255) NULL,
+  `body` LONGTEXT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)ENGINE=InnoDB;
+  
+  CREATE TABLE IF NOT EXISTS `identityiqplugin`.`email_logs` (
+  `log_id` INT NOT NULL AUTO_INCREMENT,
+  `receiver_id` VARCHAR(45) NOT NULL,
+  `email_id` INT NOT NULL,
+  `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`log_id`),
+  INDEX `email_id_idx` (`email_id` ASC) VISIBLE,
+  CONSTRAINT `email_id`
+    FOREIGN KEY (`email_id`)
+    REFERENCES `identityiqplugin`.`email_templates` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)ENGINE=InnoDB;
+
+INSERT INTO email_templates (name, subject, body)
+  VALUES ("Meeting Request", "Request for Meeting to Discuss Project Milestones", "Dear [Recipient's Name],\n\nI hope this message finds you well. I would like to schedule a meeting to discuss the upcoming milestones for our current project. Please let me know your availability next week so we can coordinate a suitable time.\n\nThank you,\n[Your Name]"),
+		 ("Follow-Up on Proposal", "Follow-Up on Recent Proposal Submission", "Dear [Recipient's Name],\n\nI hope you are doing well. I am writing to follow up on the proposal I submitted last week regarding [specific project or service]. I would appreciate any feedback or updates on the status of the proposal at your earliest convenience.\n\nBest regards,\n[Your Name]"),
+		 ("Client Feedback Request", "Request for Feedback on Recent Service", "Dear [Client's Name],\n\nThank you for choosing our services. We would greatly appreciate your feedback on your recent experience with us. Your input is valuable in helping us improve and provide the best possible service. Please take a few moments to share your thoughts.\n\nSincerely,\n[Your Name]"),
+ 		 ("Introduction", "Introduction and Opportunity to Collaborate", "Dear [Recipient's Name],\n\nMy name is [Your Name], and I am reaching out to introduce myself and explore potential collaboration opportunities. I believe there is a significant opportunity for us to work together on [specific project or area]. I would be delighted to discuss this further at your convenience.\n\nBest regards,\n[Your Name]"),
+		 ("Project Update", "Update on [Project Name] Progress", "Dear [Recipient's Name],\n\nI am writing to provide you with an update on the progress of [Project Name]. We have made significant advancements in the following areas: [brief summary of progress]. Please find the detailed report attached. Should you have any questions or need further information, feel free to reach out.\n\nKind regards,\n[Your Name]");
+
+
+
+
+  
+  
+-- CREATE TABLE IF NOT EXISTS `identityiqplugin`.`email_templates` (
+--   `id` INT NOT NULL AUTO_INCREMENT,
+--   `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+--   `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+--   `name` VARCHAR(128) NOT NULL,
+--   `subject` VARCHAR(255) NULL,
+--   `body` LONGTEXT NULL,
+--   `owner_id` VARCHAR(45) NOT NULL,
+--   PRIMARY KEY (`id`),
+--   UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)ENGINE=InnoDB;
+ 
+
+
+
+
+--  INSERT INTO email_templates (name, subject, body, owner_id)
+--   VALUES ("Meeting Request", "Request for Meeting to Discuss Project Milestones", "Dear [Recipient's Name],\n\nI hope this message finds you well. I would like to schedule a meeting to discuss the upcoming milestones for our current project. Please let me know your availability next week so we can coordinate a suitable time.\n\nThank you,\n[Your Name]","c0a8562a9093154b8190939617fe00ea"),
+-- 		 ("Follow-Up on Proposal", "Follow-Up on Recent Proposal Submission", "Dear [Recipient's Name],\n\nI hope you are doing well. I am writing to follow up on the proposal I submitted last week regarding [specific project or service]. I would appreciate any feedback or updates on the status of the proposal at your earliest convenience.\n\nBest regards,\n[Your Name]","c0a8562a9093154b8190939617fe00ea"),
+-- 		 ("Client Feedback Request", "Request for Feedback on Recent Service", "Dear [Client's Name],\n\nThank you for choosing our services. We would greatly appreciate your feedback on your recent experience with us. Your input is valuable in helping us improve and provide the best possible service. Please take a few moments to share your thoughts.\n\nSincerely,\n[Your Name]","c0a8562a9093154b8190939617fe00ea"),
+--  		 ("Introduction", "Introduction and Opportunity to Collaborate", "Dear [Recipient's Name],\n\nMy name is [Your Name], and I am reaching out to introduce myself and explore potential collaboration opportunities. I believe there is a significant opportunity for us to work together on [specific project or area]. I would be delighted to discuss this further at your convenience.\n\nBest regards,\n[Your Name]","c0a8562a9093154b8190939617fe00ea"),
+-- 		 ("Project Update", "Update on [Project Name] Progress", "Dear [Recipient's Name],\n\nI am writing to provide you with an update on the progress of [Project Name]. We have made significant advancements in the following areas: [brief summary of progress]. Please find the detailed report attached. Should you have any questions or need further information, feel free to reach out.\n\nKind regards,\n[Your Name]","c0a8562a9093154b8190939617fe00ea"); 
