@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE sailpoint PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+
+<sailpoint>
+	<Policy name="Late Appointment Policy" type="Office" certificationActions="Mitigated,Delegated" configPage="genericpolicy.xhtml" executor="com.skillstorm.policies.LateAppointmentPolicyExecutor" state="Active" violationOwnerType="Manager">
+		<Attributes>
+			<Map>
+				<entry key="pluginName" value="AppointmentsPlugin"/>
+				<entry key="sysDescriptions">
+					<value>
+						<Map>
+							<entry key="en_US" value="This policy checks if any identity was late for an appointment"/>
+						</Map>
+					</value>
+				</entry>
+			</Map>
+		</Attributes>
+		<Owner>
+			<Reference class="sailpoint.object.Identity" name="spadmin"/>
+		</Owner>
+		<ViolationOwner>
+			<Reference class="sailpoint.object.Identity" name="spadmin"/>
+		</ViolationOwner>
+	</Policy>
+
+
+</sailpoint>

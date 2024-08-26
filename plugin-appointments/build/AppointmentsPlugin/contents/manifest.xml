@@ -18,6 +18,23 @@
         </value>
       </entry>
       
+      <entry key="policyExecutors">
+      	<value>
+      		<List>
+      			<String>com.skillstorm.policies.LateAppointmentPolicyExecutor</String>
+      		</List>
+      	</value>
+      </entry>
+      
+      <entry key="settings">
+       <value>
+         <List>
+           <Setting dataType="int" helpText="Allowed time in minutes after scheduled time before a violation is raised" label="Allowed Late Time" name="lateTime" defaultValue="5"/>
+           <Setting dataType="int" helpText="Automatically remove appointment record after set number of minutes" label="Auto-Delete" name="deleteTime" defaultValue="60"/>
+         </List>
+       </value>
+     </entry>
+      
     </Map>
   </Attributes>
 </Plugin>

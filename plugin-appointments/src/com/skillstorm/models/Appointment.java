@@ -6,8 +6,9 @@ public class Appointment {
 	private String title;
 	private String description;
 	private String datetime;
-	private String ownerId;
+	private String organizerId;
 	private String attendeeId;
+	private boolean checkedIn;
 	
 	public Appointment() {
 		
@@ -15,27 +16,53 @@ public class Appointment {
 	
 	
 
-	public Appointment(int id, String title, String description, String datetime, String ownerId, String attendeeId) {
+	public Appointment(int id, String title, String description, String datetime, String organizerId, String attendeeId, boolean checkedIn) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.datetime = datetime;
-		this.ownerId = ownerId;
+		this.organizerId = organizerId;
 		this.attendeeId = attendeeId;
+		this.checkedIn = checkedIn;
 	}
 
 
 	
+	
 
-	public String getOwnerId() {
-		return ownerId;
+	public String getDatetime() {
+		return datetime;
 	}
 
 
 
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
+	public void setDatetime(String datetime) {
+		this.datetime = datetime;
+	}
+
+
+
+	public boolean isCheckedIn() {
+		return checkedIn;
+	}
+
+
+
+	public void setCheckedIn(boolean checkedIn) {
+		this.checkedIn = checkedIn;
+	}
+
+
+
+	public String getOrganizerId() {
+		return organizerId;
+	}
+
+
+
+	public void setOrganizerId(String organizerId) {
+		this.organizerId = organizerId;
 	}
 
 
@@ -78,15 +105,5 @@ public class Appointment {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-
-
-	public String getTime() {
-		return datetime;
-	}
-
-	public void setTime(String datetime) {
-		this.datetime = datetime;
 	}
 }

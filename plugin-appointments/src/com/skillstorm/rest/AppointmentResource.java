@@ -1,7 +1,6 @@
 package com.skillstorm.rest;
 
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -44,18 +43,35 @@ public class AppointmentResource extends BasePluginResource {
 	}
 	
 	/**
-	 * getDepartmentByColumn()
+	 * getDepartmentById()
 	 * @param deptName
 	 * @return
 	 * @throws GeneralException
 	 */
 	@GET
-	@Path("getBy/{col}/{value}")
+	@Path("getBy/{id}")
 	@AllowAll
 	@Produces(MediaType.APPLICATION_JSON)
-	public Appointment getAppointmentByColumn(@PathParam("col") String col, @PathParam("value") String value) throws GeneralException {
-		return service().getAppointmentByColumn(col, value);
+	public Appointment getAppointmentByColumn(@PathParam("id") String id) throws GeneralException {
+		return service().getAppointmentById(id);
 	}
+	
+	@GET
+	@Path("getByOrganizer/{organizerId}")
+	@AllowAll
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Appointment> getAppointmentByOrganizer(@PathParam("organizerId") String organizerId) throws GeneralException {
+		return service().getAppointmentsByOrganizer(organizerId);
+	}
+	
+	@GET
+	@Path("getByAttendee/{attendeeId}")
+	@AllowAll
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Appointment> getAppointmentByAttendee(@PathParam("attendeeId") String attendeeId) throws GeneralException {
+		return service().getAppointmentsByOrganizer(attendeeId);
+	}
+	
 	
 	/**
 	 * createDepartment()
@@ -70,11 +86,11 @@ public class AppointmentResource extends BasePluginResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Appointment createAppointment(Map<String, String> body) throws GeneralException {
-		if(body.get("title") == null || body.get("description") == null || body.get("datetime") == null || body.get("ownerId") == null || body.get("attendeeId") == null) {
+		if(body.get("title") == null || body.get("description") == null || body.get("datetime") == null || body.get("organizerId") == null || body.get("attendeeId") == null) {
 			throw new GeneralException("Missing parameters");
 		}
 		else {
-			return service().createAppointment(body.get("title"), body.get("description"), body.get("datetime"), body.get("ownerId"), body.get("attendeeId"));
+			return service().createAppointment(body.get("title"), body.get("description"), body.get("datetime"), body.get("organizerId"), body.get("attendeeId"));
 		}
 	}
 	
@@ -84,11 +100,25 @@ public class AppointmentResource extends BasePluginResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Appointment updateAppointmentById(Map<String, String> body, @PathParam("id") String id) throws GeneralException {
-		if(body.get("id") == null || id == null) {
+		if(id == null) {
 			throw new GeneralException("Invalid ID");
 		}
 		else {
-			return service().updateAppointmentById(body.get("id"), body.get("title"), body.get("description"), body.get("datetime"), body.get("ownerId"), body.get("attendeeId")); 
+			return service().updateAppointmentById(id, body.get("title"), body.get("description"), body.get("datetime"), body.get("organizerId"), body.get("attendeeId")); 
+		}
+	}
+	
+	@PUT
+	@Path("checkIn/{id}")
+	@AllowAll
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Appointment appointmentCheckIn(@PathParam("id") String id) throws GeneralException {
+		if(id == null) {
+			throw new GeneralException("Invalid ID");
+		}
+		else {
+			return service().appointmentCheckIn(id);
 		}
 	}
 	
