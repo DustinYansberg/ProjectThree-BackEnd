@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE sailpoint PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+
+<sailpoint>
+	<TaskDefinition name="Delete Old Logs" executor="com.skillstorm.tasks.DeleteOldLogEntriesExecutor" resultAction="Delete" subType="task_item_type_generic" type="Generic">
+		<Description>
+			Remove all log entries except for the most recent three.
+		</Description>
+		<Attributes>
+			<Map>
+				<entry key="pluginName" value="EmailPlugin"/>
+			</Map>
+		</Attributes>
+		<Signature>
+			<Returns>
+				<Argument name="numberOfLogsDeleted" type="int">
+					<Prompt>Number of Logs Deleted</Prompt>
+				</Argument>
+			</Returns>
+		</Signature>
+	</TaskDefinition>
+</sailpoint>

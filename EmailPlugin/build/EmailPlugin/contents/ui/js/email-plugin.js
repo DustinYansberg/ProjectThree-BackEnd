@@ -100,8 +100,6 @@ async function saveTemplate() {
   document.getElementById("email-name").value = "";
   document.getElementById("email-subject").value = "";
   document.getElementById("email-template-textarea").value = "";
-
-  console.log("Template saved successfully");
 }
 
 async function getAllEmailTemplates() {
@@ -164,8 +162,6 @@ async function sendEmail() {
     .catch((err) => console.log(err));
 
   document.getElementById("email-template-textarea").value = "";
-
-  console.log("Email Sent Successfully");
 }
 
 //! Logs
@@ -210,7 +206,6 @@ async function getAllLogs() {
 
 async function createLogEntry() {
   const time = new Date().toLocaleString();
-  console.log(time);
 }
 
 //! Tab Functions

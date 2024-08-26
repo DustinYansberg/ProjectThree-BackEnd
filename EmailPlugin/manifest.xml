@@ -1,28 +1,34 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE Plugin PUBLIC "sailpoint.dtd" "sailpoint.dtd">
-<Plugin certificationLevel="None" displayName="Email Plugin" minSystemVersion="8.3" name="EmailPlugin" version="1.0">
-  <Attributes>
-    <Map>
-      <entry key="minUpgradableVersion" value="0.1" />
-      <entry key="fullPage">
-        <value>
-          <FullPage title="Email Plugin" />
-        </value>
-      </entry>
-      <entry key="restResources">
-      	<!--! here we add REST resources to the plugin. The path to the resource in the app is "src.com.skillstorm.rest.<NameResource>"-->
-        
-        <value>
-      		<List>
-      			<String>com.skillstorm.rest.EmailTemplateResource</String>
-      			<String>com.skillstorm.rest.LogEntryResource</String>
-      			<String>com.skillstorm.rest.EmailResource</String>
-      			<String>com.skillstorm.rest.IdentityResource</String>
-      		</List>
-      	</value> 
-       
-      </entry>
-<!--!      <entry key="serviceExecutors">
+<Plugin certificationLevel="None" displayName="Email Plugin"
+	minSystemVersion="8.3" name="EmailPlugin" version="1.0">
+	<Attributes>
+		<Map>
+			<entry key="minUpgradableVersion" value="0.1" />
+			<entry key="fullPage">
+				<value>
+					<FullPage title="Email Plugin" />
+				</value>
+			</entry>
+			<entry key="restResources">
+				<value>
+					<List>
+						<String>com.skillstorm.rest.EmailTemplateResource</String>
+						<String>com.skillstorm.rest.LogEntryResource</String>
+						<String>com.skillstorm.rest.EmailResource</String>
+						<String>com.skillstorm.rest.IdentityResource</String>
+					</List>
+				</value>
+
+			</entry>
+			<entry key="taskExecutors">
+				<value>
+					<List>
+						<String>com.skillstorm.tasks.DeleteOldLogEntriesExecutor</String>
+					</List>
+				</value>
+			</entry>
+			<!--!      <entry key="serviceExecutors">
  Here we place the service executors 
       	<value>
       		<List>
@@ -30,15 +36,7 @@
       		</List>
       	</value> 
       </entry> -->
-<!--!      <entry key="taskExecutors">
-        here we place the task executors, if we have any.
-      	<value>
-      		<List>
-      			<String>com.skillstorm.tasks.ClearExtraOfficesExecutor</String>
-      		</List>
-      	</value>
-      </entry> -->
-<!--!      <entry key="policyExecutors">
+			<!--!      <entry key="policyExecutors">
          here we place the policy executors, if we have any.
       	<value>
       		<List>
@@ -46,16 +44,21 @@
       		</List>
       	</value>
       </entry> -->
-<!--      <entry key="settings">
+			<!--      <entry key="settings">
          This is what shows up in the config of the plugin from the main plugins page
         <value> 
           <List>
-          	<Setting dataType="boolean" helpText="If checked, this will automatically add Offices to our database." label="Auto-Add" name="autoAdd" defaultValue="false" />
-			<Setting dataType="int" helpText="How many Offices to add each time the service cycles." label="# To Add" name="numberToAdd" defaultValue="0" />
-			<Setting dataType="string" helpText="Prefix for the department field in created Offices" label="Department Prefix" name="departmentPrefix" defaultValue="Department"/>
+          	<Setting dataType="boolean" helpText="If checked, this will automatically add
+			Offices to our database." label="Auto-Add" name="autoAdd"
+			defaultValue="false" />
+			<Setting dataType="int" helpText="How many Offices to add each time the service
+			cycles." label="# To Add" name="numberToAdd" defaultValue="0" />
+			<Setting dataType="string" helpText="Prefix for the department field in created
+			Offices" label="Department Prefix" name="departmentPrefix"
+			defaultValue="Department"/>
           </List>
         </value>
       </entry> -->
-    </Map>
-  </Attributes>
+		</Map>
+	</Attributes>
 </Plugin>
