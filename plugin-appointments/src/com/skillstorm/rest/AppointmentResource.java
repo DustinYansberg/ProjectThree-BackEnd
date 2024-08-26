@@ -74,21 +74,21 @@ public class AppointmentResource extends BasePluginResource {
 			throw new GeneralException("Missing parameters");
 		}
 		else {
-			return service().createAppointment(body.get("title"), body.get("description"), Timestamp.valueOf(body.get("datetime")), body.get("ownerId"), body.get("attendeeId"));
+			return service().createAppointment(body.get("title"), body.get("description"), body.get("datetime"), body.get("ownerId"), body.get("attendeeId"));
 		}
 	}
 	
 	@PUT
-	@Path("updateBy/{col}/{value}")
+	@Path("updateBy/{id}")
 	@AllowAll
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Appointment updateAppointmentByColumn(Map<String, String> body, @PathParam("col") String col, @PathParam("value") String value) throws GeneralException {
-		if(body.get("id") == null) {
+	public Appointment updateAppointmentById(Map<String, String> body, @PathParam("id") String id) throws GeneralException {
+		if(body.get("id") == null || id == null) {
 			throw new GeneralException("Invalid ID");
 		}
 		else {
-			return service().updateAppointmentByColumn(col, value, body.get("id")); 
+			return service().updateAppointmentById(body.get("id"), body.get("title"), body.get("description"), body.get("datetime"), body.get("ownerId"), body.get("attendeeId")); 
 		}
 	}
 	

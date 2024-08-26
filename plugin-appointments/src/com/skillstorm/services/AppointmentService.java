@@ -70,7 +70,7 @@ public class AppointmentService {
 				appointments.add(new Appointment(result.getInt("id"),
 						result.getString("title"),
 						result.getString("description"),
-						result.getTimestamp("datetime"),
+						result.getString("datetime"),
 						result.getString("ownerId"),
 						result.getString("attendeeId")));
 			}
@@ -100,7 +100,7 @@ public class AppointmentService {
 				Appointment resultDept = new Appointment(result.getInt("id"),
 						result.getString("title"),
 						result.getString("description"),
-						result.getTimestamp("datetime"),
+						result.getString("datetime"),
 						result.getString("ownerId"),
 						result.getString("attendeeId"));
 				return resultDept;
@@ -123,7 +123,7 @@ public class AppointmentService {
 	 * @return
 	 * @throws GeneralException
 	 */
-	public Appointment createAppointment(String title, String description, Timestamp datetime, String ownerId, String attendeeId) throws GeneralException {
+	public Appointment createAppointment(String title, String description, String datetime, String ownerId, String attendeeId) throws GeneralException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {

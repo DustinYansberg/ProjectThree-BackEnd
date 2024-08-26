@@ -13,7 +13,7 @@
       <entry key="restResources">
         <value>
           <List>
-            <String>com.skillstorm.rest.ApointmentResource</String>
+            <String>com.skillstorm.rest.AppointmentResource</String>
           </List>
         </value>
       </entry>

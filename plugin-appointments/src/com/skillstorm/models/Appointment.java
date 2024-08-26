@@ -1,13 +1,11 @@
 package com.skillstorm.models;
 
-import java.sql.Timestamp;
-
 public class Appointment {
 
 	private int id;
 	private String title;
 	private String description;
-	private Timestamp time;
+	private String datetime;
 	private String ownerId;
 	private String attendeeId;
 	
@@ -17,12 +15,12 @@ public class Appointment {
 	
 	
 
-	public Appointment(int id, String title, String description, Timestamp time, String ownerId, String attendeeId) {
+	public Appointment(int id, String title, String description, String datetime, String ownerId, String attendeeId) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.description = description;
-		this.time = time;
+		this.datetime = datetime;
 		this.ownerId = ownerId;
 		this.attendeeId = attendeeId;
 	}
@@ -84,11 +82,11 @@ public class Appointment {
 
 
 
-	public Timestamp getTime() {
-		return time;
+	public String getTime() {
+		return datetime;
 	}
 
-	public void setTime(Timestamp time) {
-		this.time = time;
+	public void setTime(String datetime) {
+		this.datetime = datetime;
 	}
 }

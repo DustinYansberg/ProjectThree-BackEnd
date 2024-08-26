@@ -1,19 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE Plugin PUBLIC "sailpoint.dtd" "sailpoint.dtd">
-<Plugin certificationLevel="None" displayName="Departments Management" minSystemVersion="8.3" name="DepartmentsPlugin" version="1.0">
+<Plugin certificationLevel="None" displayName="Appointment Management" minSystemVersion="8.3" name="AppointmentsPlugin" version="1.0">
   <Attributes>
     <Map>
       <entry key="minUpgradableVersion" value="0.1" />
       <entry key="fullPage">
         <value>
-          <FullPage title="DepartmentsPlugin_Title" />
+          <FullPage title="AppointmentsPlugin_Title" />
         </value>
       </entry>
       
       <entry key="restResources">
         <value>
           <List>
-            <String>com.skillstorm.rest.DepartmentResource</String>
+            <String>com.skillstorm.rest.AppointmentResource</String>
           </List>
         </value>
       </entry>
