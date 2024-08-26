@@ -11,6 +11,20 @@ spring:
   ## TODO: Update once we have endpoints
   cloud:
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+#              - "http://localhost:4200"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+#              - GET
+#              - POST
+#              - PUT
+#              - DELETE
+#              - OPTIONS
       routes:
         - id: ms-employee-service-route
           uri: lb://ms-employee-service
