@@ -13,20 +13,68 @@
       xmlns:sp="http://sailpoint.com/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 <body>
-    <ui:composition>
-        <f:view>
-            <div id="appianConnectorTable">
-                <table class="spTable" style="border:0px" cellspacing="0">
-                    <tr>
-                        <td class="titleColumn certScheduleTitleCol" valign="center">
-                            <h:outputText style="padding:5px" value="Host URL"/>
-                            <h:outputText />
-
-                        </td>
-                    </tr>
-                </table>
-
-            </div>
-        </f:view>
-    </ui:composition>
+	<ui:composition>
+		<f:view>
+			<div id="exampleConnectorTable"> 
+			 <table class="spTable" style="border:0px" cellspacing="0">
+		      <tr>
+		        <td class='titleColumn certScheduleTitleCol' valign="center">
+		          <h:outputText style='padding:5px' value="Host URL"/>
+		          <h:outputText styleClass="requiredText" value="*"/>
+		        </td>
+		
+		        <td class="certScheduleHelpCol" valign="middle">
+		          <h:graphicImage id="imgHlpHostURL" styleClass="helpIcon" url="/images/icons/dashboard_help_16.png" 
+		                          alt="Fill in the host URL for our custom connector."/>
+		        </td>
+		        <td valign="center">
+		        	<h:inputText id="hostURL"
+		              value="#{applicationObject.attributes['host']}"
+		              size="80"
+		              disabled="#{!sp:hasRight(facesContext, 'ManageApplication')}"
+		              readonly="#{!sp:hasRight(facesContext, 'ManageApplication')}" />
+		         </td>
+		      </tr>
+		      <tr>
+		        <td class='titleColumn certScheduleTitleCol' valign="center">
+		          <h:outputText style='padding:5px' value="Host Username"/>
+		          <h:outputText styleClass="requiredText" value="*"/>
+		        </td>
+		
+		        <td class="certScheduleHelpCol" valign="middle">
+		          <h:graphicImage id="imgHlpHostUsername" styleClass="helpIcon" url="/images/icons/dashboard_help_16.png" 
+		                          alt="Fill in the Spring Security Basic Auth username for the connected app."/>
+		        </td>
+		        <td valign="center">
+		        	<h:inputText id="hostUsername"
+		              value="#{applicationObject.attributes['exampleHostUsername']}"
+		              size="80"
+		              disabled="#{!sp:hasRight(facesContext, 'ManageApplication')}"
+		              readonly="#{!sp:hasRight(facesContext, 'ManageApplication')}" />
+		         </td>
+		      </tr>
+		      <tr>
+		        <td class='titleColumn certScheduleTitleCol' valign="center">
+		          <h:outputText style='padding:5px' value="Host Password"/>
+		          <h:outputText styleClass="requiredText" value="*"/>
+		        </td>
+		
+		        <td class="certScheduleHelpCol" valign="middle">
+		          <h:graphicImage id="imgHlpHostPassword" styleClass="helpIcon" url="/images/icons/dashboard_help_16.png" 
+		                          alt="Fill in the Spring Security Basic Auth password for the connected app."/>
+		        </td>
+		        <td valign="center">
+		        	<sp:inputSecret id="hostPassword"
+		              value="#{applicationObject.attributes['exampleHostPassword']}"
+		              redisplay="true"
+		              size="80"
+		              disabled="#{!sp:hasRight(facesContext, 'ManageApplication')}"
+		              readonly="#{!sp:hasRight(facesContext, 'ManageApplication')}" />
+		         </td>
+		      </tr>
+		      </table>
+			 </div>
+		</f:view>
+	</ui:composition>
 </body>
+</html>

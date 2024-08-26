@@ -69,12 +69,36 @@ public class AppianConnector extends AbstractConnector
 			//We'll just make a method that makes the post request to the oauth2 endpoint provided in the appian document, then save the result to our authString
 	}
 
-
-
 			//for making the auth token - is it a post request?
 			// URL authUrl = new URL(tokenUrl);
 			// HttpURLConnection authConnection = (HttpURLConnection) authUrl.openConnection();
-	
+			URL authUrl = new URL(tokenUrl);
+			HttpURLConnection authConnection = (HttpURLConnection) authUrl.openConnection();
+			authConnection.setRequestMethod("POST");
+			authConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			authConnection.setDoOutput(true);
+		
+			String input = "grant_type=client_credentials&client_id=" + clientId + "&client_secret=" + clientSecret;
+			authConnection.getOutputStream().write(input.getBytes());
+			
+			int responseCode = authConnection.getResponseCode();
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+				BufferedReader in = new BufferedReader(new InputStreamReader(authConnection.getInputStream()));
+				StringBuffer response = new StringBuffer();
+				String line;
+				while ((line = in.readLine()) != null) {
+					response.append(line);
+				}
+				in.close();
+		
+				// Parse JSON response to get the access token
+				ObjectMapper mapper = new ObjectMapper();
+				Map<String, Object> responseMap = mapper.readValue(response.toString(), new TypeReference<Map<String, Object>>(){});
+				authString = "Bearer " + responseMap.get("access_token").toString();
+			} else {
+				throw new IOException("Failed to obtain access token: " + authConnection.getResponseMessage());
+			}
+		}
 	
 
 	/**
@@ -142,48 +166,35 @@ public class AppianConnector extends AbstractConnector
 	{
 		try
 		{	
-			configure();	//will set auth string
-			
-			//this section gets the accounts (appian users)
-			URL url = new URL(host + "/get-all-users");
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("GET");
-			connection.setRequestProperty("Authorization", authString);
+			configure(); // Ensure authString is set
+        
+        URL url = new URL(host + "/suite/webapi/get-all-users");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Authorization", authString);
+        
+        if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+            throw new IOException("Failed to get users: " + connection.getResponseMessage());
+        }
 
-			if(connection.getResponseCode() != 200)
-				throw new IOException("Response code was not 200!");
-			else
-			{
-				//reader defined, taking input via inputstream which it gets from our connection
-				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));	
-				//using stringbuffer for mutability
-				StringBuffer sb = new StringBuffer();
-				//to be taken in from our reader and then appended to our string buffer
-				String currentLine;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        StringBuffer sb = new StringBuffer();
+        String currentLine;
+        
+        while ((currentLine = reader.readLine()) != null) {
+            sb.append(currentLine);
+        }
+        reader.close();
 
-				//reading line by line...
-				while((currentLine = reader.readLine()) != null)
-				{
-					//and appending to our string buffer
-					sb.append(currentLine);
-				}
-
-				//print to tomcat's console
-				String response = sb.toString();
-				System.out.println(response);
-
-				//ObjectMapper is used to pull out the JSON objects from the response string
-				ObjectMapper mapper = new ObjectMapper();
-
-pick up here		//
-			}
-		}
-		catch (IOException e)
-		{
-			throw new ConnectorException(e.getMessage());
-		}
-		return null;
-	}
+        ObjectMapper mapper = new ObjectMapper();
+        List<Map<String, Object>> users = mapper.readValue(sb.toString(), new TypeReference<List<Map<String, Object>>>(){});
+        
+        return users.iterator();
+        
+    } catch (IOException e) {
+        throw new ConnectorException("Error retrieving users: " + e.getMessage());
+    }
+}
 
 
 	/**
@@ -207,5 +218,119 @@ pick up here		//
 	{
 		return null;
 	}
+
+	public Iterator<Map<String, Object>> getAllGroups() throws ConnectorException {
+		try {
+			configure(); // Ensure authString is set
+			
+			URL url = new URL(host + "/suite/webapi/get-groups");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("GET");
+			connection.setRequestProperty("Authorization", authString);
+			
+			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+				throw new IOException("Failed to get groups: " + connection.getResponseMessage());
+			}
+	
+			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			StringBuffer sb = new StringBuffer();
+			String currentLine;
+			
+			while ((currentLine = reader.readLine()) != null) {
+				sb.append(currentLine);
+			}
+			reader.close();
+	
+			ObjectMapper mapper = new ObjectMapper();
+			List<Map<String, Object>> groups = mapper.readValue(sb.toString(), new TypeReference<List<Map<String, Object>>>(){});
+			
+			return groups.iterator();
+			
+		} catch (IOException e) {
+			throw new ConnectorException("Error retrieving groups: " + e.getMessage());
+		}
+	}
+	
+
+
+	public void addUsersToGroup(List<String> usernames, String groupName) throws ConnectorException {
+		try {
+			configure(); // Ensure authString is set
+			
+			URL url = new URL(host + "/suite/webapi/add-users-to-group");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Authorization", authString);
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setDoOutput(true);
+	
+			// Prepare the request body
+			Map<String, Object> requestBody = new HashMap<>();
+			requestBody.post("usernames", usernames);
+			requestBody.post("group", groupName);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			String jsonString = mapper.writeValueAsString(requestBody);
+			connection.getOutputStream().write(jsonString.getBytes());
+	
+			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+				throw new IOException("Failed to add users to group: " + connection.getResponseMessage());
+			}
+	
+			// handle the response if needed
+			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			StringBuffer sb = new StringBuffer();
+			String currentLine;
+			while ((currentLine = reader.readLine()) != null) {
+				sb.append(currentLine);
+			}
+			reader.close();
+			System.out.println("Response from add users to group: " + sb.toString());
+			
+		} catch (IOException e) {
+			throw new ConnectorException("Error adding users to group: " + e.getMessage());
+		}
+	}
+	
+	public void removeUsersFromGroup(List<String> usernames, String groupName) throws ConnectorException {
+		try {
+			configure(); // Ensure authString is set
+			
+			URL url = new URL(host + "/suite/webapi/remove-users-from-group");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Authorization", authString);
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setDoOutput(true);
+	
+			// Prepare the request body
+			Map<String, Object> requestBody = new HashMap<>();
+			requestBody.post("usernames", usernames);
+			requestBody.post("group", groupName);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			String jsonString = mapper.writeValueAsString(requestBody);
+			connection.getOutputStream().write(jsonString.getBytes());
+	
+			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+				throw new IOException("Failed to remove users from group: " + connection.getResponseMessage());
+			}
+	
+			// handle the response if needed
+			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			StringBuffer sb = new StringBuffer();
+			String currentLine;
+			while ((currentLine = reader.readLine()) != null) {
+				sb.append(currentLine);
+			}
+			reader.close();
+			System.out.println("Response from remove users from group: " + sb.toString());
+			
+		} catch (IOException e) {
+			throw new ConnectorException("Error removing users from group: " + e.getMessage());
+		}
+	}
+	
+	
 	
 }
