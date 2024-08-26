@@ -1,8 +1,9 @@
-CREATE TABLE dept_plugin(
-	id int NOT NULL AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    description VARCHAR(1000) NOT NULL,
-    PRIMARY KEY(id)
-)ENGINE=InnoDB;
-
-INSERT INTO dept_plugin (name, description) VALUES ("General", "General description"), ("Surgery", "Surgical department"), ("Anesthetics", "Anesthesiology-related department"), ("ICU", "Intensive Care Unit department");
+CREATE TABLE `appointment_plugin` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(1000) NOT NULL,
+  `datetime` TIMESTAMP NOT NULL,
+  `ownerId` VARCHAR(45) NOT NULL,
+  `attendeeId` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)ENGINE=InnoDB;

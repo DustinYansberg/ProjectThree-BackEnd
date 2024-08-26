@@ -1,9 +1,9 @@
-CREATE TABLE appointment_plugin(
-	id int NOT NULL AUTO_INCREMENT,
-    title VARCHAR(100) NOT NULL,
-    description VARCHAR(1000) NOT NULL,
-    datetime DATETIME NOT NULL, 
-    ownerId VARCHAR(100) NOT NULL,
-    attendeeId VARCHAT(100) NOT NULL,
-    PRIMARY KEY(id)
-)ENGINE=InnoDB;
+CREATE TABLE `appointment_plugin` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(1000) NOT NULL,
+  `datetime` TIMESTAMP NOT NULL,
+  `ownerId` VARCHAR(45) NOT NULL,
+  `attendeeId` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)ENGINE=InnoDB;
