@@ -6,9 +6,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import openconnector.AbstractConnector;
@@ -59,7 +63,7 @@ public class AppianConnector extends AbstractConnector
 		This method is called at initialization
 		it sets all values for use in advance
 	 */
-	public void configure() throws MalformedURLException
+	public void configure() throws MalformedURLException, ConnectorException
 	{
 		host = config.getConfig().get("host").toString();					//from a value called "host" in our xhtml
 		tokenUrl = config.getConfig().get("tokenUrl").toString();			//from a value called "tokenUrl" in our xhtml
@@ -67,24 +71,31 @@ public class AppianConnector extends AbstractConnector
 		clientSecret = config.getConfig().get("clientSecret").toString();	//from a value "clientSecret" in our xhtml
 			//Could have the token refresh called here
 			//We'll just make a method that makes the post request to the oauth2 endpoint provided in the appian document, then save the result to our authString
-	}
+	
 
 			//for making the auth token - is it a post request?
 			// URL authUrl = new URL(tokenUrl);
 			// HttpURLConnection authConnection = (HttpURLConnection) authUrl.openConnection();
-			URL authUrl = new URL(tokenUrl);
+	//THIS IS FOR GETTING THE TOKEN [ IN PROGRESS PLEASE REFACTOR AND UPDATE ]	
+
+		try 
+		{
+			String tokenAuth = "Basic " +  Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
+			URL authUrl = new URL(tokenUrl + "?grant_type=client_credentials");
 			HttpURLConnection authConnection = (HttpURLConnection) authUrl.openConnection();
 			authConnection.setRequestMethod("POST");
 			authConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			authConnection.setDoOutput(true);
+			authConnection.setRequestProperty("Authorization", tokenAuth);	//this does not overwrite the prior one
+			// authConnection.setDoOutput(true); //unknown - for streaming actual body content
 		
-			String input = "grant_type=client_credentials&client_id=" + clientId + "&client_secret=" + clientSecret;
-			authConnection.getOutputStream().write(input.getBytes());
 			
+			// String input = "grant_type=client_credentials&client_id=" + clientId + "&client_secret=" + clientSecret;
+			// authConnection.getOutputStream().write(input.getBytes());
+			StringBuffer response;
 			int responseCode = authConnection.getResponseCode();
 			if (responseCode == HttpURLConnection.HTTP_OK) {
 				BufferedReader in = new BufferedReader(new InputStreamReader(authConnection.getInputStream()));
-				StringBuffer response = new StringBuffer();
+				response = new StringBuffer();
 				String line;
 				while ((line = in.readLine()) != null) {
 					response.append(line);
@@ -95,10 +106,20 @@ public class AppianConnector extends AbstractConnector
 				ObjectMapper mapper = new ObjectMapper();
 				Map<String, Object> responseMap = mapper.readValue(response.toString(), new TypeReference<Map<String, Object>>(){});
 				authString = "Bearer " + responseMap.get("access_token").toString();
-			} else {
+
+
+			} 
+			else 
+			{
 				throw new IOException("Failed to obtain access token: " + authConnection.getResponseMessage());
 			}
 		}
+		catch(IOException e)
+		{
+			throw new ConnectorException(e.getMessage());
+		}
+	}
+
 	
 
 	/**
@@ -163,38 +184,49 @@ public class AppianConnector extends AbstractConnector
 	 */
 	@Override
 	public Iterator<Map<String, Object>> iterate(Filter filter) throws ConnectorException, UnsupportedOperationException
-	{
+	{	
+		/**
+		 * Workflow is as follows:
+		 * 1. Get all users - store
+		 * 2. Get all groups - store
+		 * 3. Get all users by each individual group 
+		 * 		- Iterate through the groups array, then pull users by group for each iteration
+		 * 		- Since all users are unique, overwrite any user instances with an object { "id":"name", "group":"group-name" }
+		 * 4. Structure remaining data as needed (add a blank group if SailPoint requires that)
+		 */
 		try
 		{	
 			configure(); // Ensure authString is set
         
-        URL url = new URL(host + "/suite/webapi/get-all-users");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Authorization", authString);
+			URL url = new URL(host + "/suite/webapi/get-all-users");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("GET");
+			connection.setRequestProperty("Authorization", authString);
         
-        if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-            throw new IOException("Failed to get users: " + connection.getResponseMessage());
-        }
+			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) 
+			{
+				throw new IOException("Failed to get users: " + connection.getResponseMessage());
+			}
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        StringBuffer sb = new StringBuffer();
-        String currentLine;
-        
-        while ((currentLine = reader.readLine()) != null) {
-            sb.append(currentLine);
-        }
-        reader.close();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			StringBuffer sb = new StringBuffer();
+			String currentLine;
+			
+			while ((currentLine = reader.readLine()) != null) 
+			{
+				sb.append(currentLine);
+			}
+			reader.close();
 
-        ObjectMapper mapper = new ObjectMapper();
-        List<Map<String, Object>> users = mapper.readValue(sb.toString(), new TypeReference<List<Map<String, Object>>>(){});
-        
-        return users.iterator();
-        
-    } catch (IOException e) {
-        throw new ConnectorException("Error retrieving users: " + e.getMessage());
-    }
-}
+			ObjectMapper mapper = new ObjectMapper();
+			List<Map<String, Object>> users = mapper.readValue(sb.toString(), new TypeReference<List<Map<String, Object>>>(){});
+			
+			return users.iterator();
+			
+		} catch (IOException e) {
+			throw new ConnectorException("Error retrieving users: " + e.getMessage());
+		}
+	}
 
 
 	/**
@@ -251,7 +283,18 @@ public class AppianConnector extends AbstractConnector
 		}
 	}
 	
-
+	/**
+	 * make method "update()"
+	 * 
+	 * get sailpoint object
+	 * get groups
+	 * compare to groups
+	 * for any groups it does have, add that group
+	 * any groups it does not have, remove that group
+	 * 
+	 * return sailpoint object
+	 */
+	
 
 	public void addUsersToGroup(List<String> usernames, String groupName) throws ConnectorException {
 		try {
@@ -266,8 +309,8 @@ public class AppianConnector extends AbstractConnector
 	
 			// Prepare the request body
 			Map<String, Object> requestBody = new HashMap<>();
-			requestBody.post("usernames", usernames);
-			requestBody.post("group", groupName);
+			requestBody.put("usernames", usernames);
+			requestBody.put("group", groupName);
 			
 			ObjectMapper mapper = new ObjectMapper();
 			String jsonString = mapper.writeValueAsString(requestBody);
@@ -305,8 +348,8 @@ public class AppianConnector extends AbstractConnector
 	
 			// Prepare the request body
 			Map<String, Object> requestBody = new HashMap<>();
-			requestBody.post("usernames", usernames);
-			requestBody.post("group", groupName);
+			requestBody.put("usernames", usernames);
+			requestBody.put("group", groupName);
 			
 			ObjectMapper mapper = new ObjectMapper();
 			String jsonString = mapper.writeValueAsString(requestBody);
