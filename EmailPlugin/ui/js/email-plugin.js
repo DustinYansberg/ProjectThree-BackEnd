@@ -170,8 +170,6 @@ async function getAllLogs() {
   document.getElementById(
     "table"
   ).innerHTML += `<tbody id="table-body"></tbody>`;
-
-  const time = new Date().toLocaleString(); // need to actually do time. :-(
   const url = PluginHelper.getPluginRestUrl("ep/logs/getAll");
 
   const newHeaders = new Headers();
@@ -187,8 +185,11 @@ async function getAllLogs() {
     let tableBody = document.getElementById("table-body");
 
     for (const logEntry of data) {
+      console.log(logEntry);
       let receiver;
       let email;
+      let date = new Date(logEntry.createdAtDate).toLocaleDateString();
+      let time = logEntry.createdAtTime;
       getIdentityById(logEntry.receiverId).then((data) => {
         receiver = data;
         getEmailById(logEntry.emailId).then((data) => {
@@ -196,16 +197,12 @@ async function getAllLogs() {
           tableBody.innerHTML += `
 									<td>${receiver.displayName}</td>
 									<td>${email.name}</td>
-									<td>${time}</td>
+									<td>${date}, ${time}</td>
 								`;
         });
       });
     }
   });
-}
-
-async function createLogEntry() {
-  const time = new Date().toLocaleString();
 }
 
 //! Tab Functions

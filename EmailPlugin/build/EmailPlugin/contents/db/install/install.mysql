@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `identityiqplugin`.`email_templates` (
   `log_id` INT NOT NULL AUTO_INCREMENT,
   `receiver_id` VARCHAR(45) NOT NULL,
   `email_id` INT NOT NULL,
+  `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`log_id`),
   INDEX `email_id_idx` (`email_id` ASC) VISIBLE,
   CONSTRAINT `email_id`

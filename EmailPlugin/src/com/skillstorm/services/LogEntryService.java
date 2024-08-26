@@ -33,7 +33,8 @@ public class LogEntryService {
 	    List<LogEntry> logEntries = new ArrayList<>();
 
 	    while (result.next()) {
-		logEntries.add(new LogEntry(result.getString("receiver_id"), result.getInt("email_id")));
+		logEntries.add(new LogEntry(result.getString("receiver_id"), result.getInt("email_id"),
+			result.getDate("created_at"), result.getTime("created_at")));
 	    }
 
 	    return logEntries;

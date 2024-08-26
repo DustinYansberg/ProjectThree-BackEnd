@@ -82,7 +82,6 @@ public class EmailService {
 		    "INSERT INTO email_templates (name, subject, body) " + "VALUES (?, ?, ?)", name, subject,
 		    emailBody);
 
-	    // the line to execute the statement is different for any non-GET request
 	    return statement.executeUpdate();
 
 	} catch (SQLException e) {

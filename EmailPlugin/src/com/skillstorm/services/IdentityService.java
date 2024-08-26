@@ -77,7 +77,6 @@ public class IdentityService {
 	    identity.put("id", id);
 	    identity.put("displayName", result.getString("display_name"));
 	    identity.put("email", result.getString("email"));
-	    System.out.println(identity);
 	    return identity;
 
 	} catch (SQLException e) {
