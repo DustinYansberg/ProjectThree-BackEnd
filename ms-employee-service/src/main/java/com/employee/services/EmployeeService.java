@@ -169,7 +169,7 @@ public class EmployeeService {
 		    SCIMResponseObject empl = mapper.readValue(mapper.writeValueAsString(resp.getBody()),
 			    SCIMResponseObject.class);
 
-		    return ResponseEntity.status(200).body(empl.getResources()[0]);
+		    return ResponseEntity.status(200).body(empl);
 	} catch (Exception e) {
 	    return processError(e);
 	}
