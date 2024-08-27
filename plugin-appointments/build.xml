@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Todo Plugin" default="package">
+<project name="Appointments Plugin" default="package">
 	<!-- allow overriding of build properties -->
 	<property file="user.build.properties"/>
 	<property file="build.properties"/>
