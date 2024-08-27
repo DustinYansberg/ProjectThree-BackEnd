@@ -1,0 +1,13 @@
+CREATE TABLE `appointment_plugin` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(1000) NOT NULL,
+  `datetime` DATETIME NOT NULL,
+  `organizerId` VARCHAR(45) NOT NULL,
+  `attendeeId` VARCHAR(45) NOT NULL,
+  `checkedIn` BOOL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)ENGINE=InnoDB;
+  
+  INSERT INTO appointment_plugin (title, description, datetime, organizerId, attendeeId) VALUES
+  ("Test", "Test Description", "1970-01-01 00:00:01.000000", "c0a80011918c1ba181918c5bc31500ea", "c0a80011918c10cd81918d1b240b0125");
