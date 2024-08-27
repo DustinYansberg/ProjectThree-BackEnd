@@ -111,7 +111,7 @@ public class AccountController {
 		}
 	}
 	
-	@PutMapping("/perm/{id}")
+	@PutMapping("/permission/{id}")
 	public ResponseEntity<Object> updatePermission(@PathVariable String id, @RequestBody String permission) throws JsonProcessingException{
 
 		try {
