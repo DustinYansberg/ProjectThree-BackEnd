@@ -1,6 +1,10 @@
 package com.employee.controllers;
 
+import java.util.Collections;
+import java.util.stream.Collectors;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.employee.models.EmployeeRequest;
 import com.employee.services.EmployeeService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/employee")
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 public class EmployeeController {
     private final EmployeeService service;
 
@@ -29,7 +35,11 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<? extends Object> getEmployeeById(@PathVariable String id) {
+    public ResponseEntity<? extends Object> getEmployeeById(@PathVariable String id, HttpServletRequest request) {
+	System.out.println("Request Method: " + request.getMethod());
+	System.out.println("Request URL: " + request.getRequestURL());
+	System.out.println("Request Headers: " + Collections.list(request.getHeaderNames()).stream()
+		.collect(Collectors.toMap(h -> h, request::getHeader)));
 	return service.getEmployeeById(id);
     }
 
