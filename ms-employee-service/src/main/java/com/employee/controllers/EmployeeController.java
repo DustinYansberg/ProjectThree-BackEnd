@@ -24,9 +24,9 @@ public class EmployeeController {
 	this.service = service;
     }
 
-    @GetMapping
-    public ResponseEntity<? extends Object> getAllEmployees() {
-	return service.getAllEmployees();
+    @GetMapping("/page/{index}/{row}")
+    public ResponseEntity<? extends Object> getAllEmployees(@PathVariable int index, @PathVariable int row) {
+	return service.getAllEmployeesWithPagination(index, row);
     }
 
     @GetMapping("/{id}")
