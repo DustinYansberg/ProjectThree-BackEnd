@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE Plugin PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Plugin certificationLevel="None" displayName="Identity Refresher Plugin" minSystemVersion="8.3" name="IdentityRefresherPlugin" version="1.0">
+  <Attributes>
+    <Map>
+
+      <entry key="minUpgradableVersion" value="0.1" />
+    
+      <!--<entry key="fullPage">
+        <value>
+          <FullPage title="Example Plugin" />
+        </value>
+      </entry>-->
+      
+      <entry key="serviceExecutors">
+      	<value>
+      		<List>
+      			<String>com.skillstorm.server.RefreshAutomatedService</String>
+      		</List>
+      	</value>
+      </entry>
+
+    </Map>
+  </Attributes>
+</Plugin>
