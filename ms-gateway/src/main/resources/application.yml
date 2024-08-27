@@ -16,7 +16,7 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "*"
+            allowedOrigins: "*" #update to reflect the specific IP addresses
 #              - "http://localhost:4200"
             allowedMethods: "*"
             allowedHeaders: "*"
@@ -30,6 +30,8 @@ spring:
           uri: lb://ms-employee-service
           predicates:
             - Path=/employee/**
+#          filters: # Leaving this here in case it is needed in the future.
+#            - SetRequestHeader=Authorization, ${request.headers.Authorization}
         - id: plugin-bridge-route
           uri: lb://plugin-bridge
           predicates:
