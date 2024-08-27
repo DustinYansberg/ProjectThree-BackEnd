@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE Plugin PUBLIC "sailpoint.dtd" "sailpoint.dtd">
-<Plugin certificationLevel="None" displayName="Appointment Management" minSystemVersion="8.3" name="AppointmentsPlugin" version="1.0">
+<Plugin certificationLevel="None" displayName="Appointment Management" minSystemVersion="8.3" name="AppointmentsPlugin" version="1.2">
   <Attributes>
     <Map>
       <entry key="minUpgradableVersion" value="0.1" />
