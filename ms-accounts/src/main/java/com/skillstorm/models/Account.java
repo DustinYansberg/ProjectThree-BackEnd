@@ -3,6 +3,7 @@ package com.skillstorm.models;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skillstorm.models.Meta;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -144,13 +145,45 @@ public class Account {
 		
 		
 	}
-	public String toJsonStringWithPermissions(Map<String, Object> info, String[] permissionSet) {
-		String permissions = "[";
+	public String toJsonStringWithPermissions(Map<String, Object> info, String permission) {
+	        ObjectMapper mapper = new ObjectMapper();
+	        
+	        // Retrieve the PermissionSet from the map
+	        System.out.println(info.get("PermissionSet").getClass());
+	        String permissionSet1 = (String) info.get("PermissionSet");
+	        System.out.println(permissionSet1);
+	        permissionSet1 = permissionSet1.substring(1, permissionSet1.length()-1);
+	        String[] permissionSet = permissionSet1.split(", ");
+	       
+		boolean contains = false;
+		String permissions ="";
+		for(String item : permissionSet) {
+			System.out.println(item+ " ="+ permission.substring(1, permission.length()-1));
+			if (item.equals(permission.substring(1, permission.length()-1))) {
+				System.out.println("contains");
+				contains = true;
+			}
+		}
+		if (contains) {
+			permissions = "[";
 
 		for(String item : permissionSet) {
+			if (!item.equals(permission.substring(1, permission.length()-1))) {
 			permissions += item+", ";
+			}
 		}
 		permissions = permissions.substring(0, permissions.length()-2);
+		}else {
+			System.out.println("else");
+			permissions = "[";
+
+			for(String item : permissionSet) {
+				permissions += item+", ";
+			}
+			permissions += permission;
+			//permissions = permissions.substring(0, permissions.length()-2);
+		}
+		System.out.println(permissions);
 		String asJson = "{\r\n"
 			+ "  \"identity\": {\r\n"
 			+ "    \"value\": \"" + info.get("identityId") + "\"\r\n"

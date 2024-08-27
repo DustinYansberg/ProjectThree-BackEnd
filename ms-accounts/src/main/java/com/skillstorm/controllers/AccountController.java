@@ -112,18 +112,17 @@ public class AccountController {
 	}
 	
 	@PutMapping("/perm/{id}")
-	public ResponseEntity<Object> updatePermission(@PathVariable String id, @RequestBody String[] permissions) throws JsonProcessingException{
+	public ResponseEntity<Object> updatePermission(@PathVariable String id, @RequestBody String permission) throws JsonProcessingException{
 
 		try {
 			Map<String, Object> info =  (Map<String, Object>) sendRestTemplateExchange(null, pluginUrl + "/getUpdate/" + id, HttpMethod.GET).getBody();
 			Map<String, Object> map = (Map<String, Object>) sendRestTemplateExchange(null, pluginUrl + "/get/" + id, HttpMethod.GET).getBody();
-			System.out.println(map);
 			ObjectMapper mapper = new ObjectMapper();
 			Account account = mapper.convertValue(map, Account.class);
-
-			System.out.println(account.toJsonStringWithPermissions(info, permissions));
+			System.out.println(permission);
+			System.out.println(account.toJsonStringWithPermissions(info, permission));
 			return sendRestTemplateExchange(
-					account.toJsonStringWithPermissions(info, permissions), 
+					account.toJsonStringWithPermissions(info, permission), 
 					scimUrl + id, 
 					HttpMethod.PUT);
 		} catch(Exception e) {
