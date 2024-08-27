@@ -151,17 +151,25 @@ public class EmployeeService {
      */
     public ResponseEntity<? extends Object> getEmployeesByManagerId(String managerId) {
 	try {
-	    EmployeeResponse[] allEmployees = (EmployeeResponse[]) getAllEmployees().getBody();
+//	    EmployeeResponse[] allEmployees = (EmployeeResponse[]) getAllEmployees().getBody();
+//
+//	    ArrayList<EmployeeResponse> employees = new ArrayList<>();
+//	    for (EmployeeResponse e : allEmployees) {
+//		if (e.getManager().containsKey("value")) {
+//		    if (e.getManager().get("value").equals(managerId)) {
+//			employees.add(e);
+//		    }
+//		}
+//	    }
+//	    return ResponseEntity.status(200).body(employees.toArray());
+		
+		ResponseEntity<Object> resp = sendRestTemplateExchange(null,
+			    baseUrl + "?filter=urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:manager.value eq \"" + managerId + "\"", HttpMethod.GET);
 
-	    ArrayList<EmployeeResponse> employees = new ArrayList<>();
-	    for (EmployeeResponse e : allEmployees) {
-		if (e.getManager().containsKey("value")) {
-		    if (e.getManager().get("value").equals(managerId)) {
-			employees.add(e);
-		    }
-		}
-	    }
-	    return ResponseEntity.status(200).body(employees.toArray());
+		    SCIMResponseObject empl = mapper.readValue(mapper.writeValueAsString(resp.getBody()),
+			    SCIMResponseObject.class);
+
+		    return ResponseEntity.status(200).body(empl.getResources()[0]);
 	} catch (Exception e) {
 	    return processError(e);
 	}

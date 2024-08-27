@@ -39,7 +39,7 @@ public class EmployeeController {
 	return service.getEmployeeByEmail(email);
     }
 
-    @GetMapping("/manager")
+    @GetMapping("/manager/{managerId}")
     public ResponseEntity<? extends Object> getEmployeesByManagerId(@PathVariable String managerId) {
 	return service.getEmployeesByManagerId(managerId);
     }
