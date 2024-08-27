@@ -26,7 +26,7 @@ public class EmployeeController {
 
     @GetMapping("/page/{index}/{row}")
     public ResponseEntity<? extends Object> getAllEmployees(@PathVariable int index, @PathVariable int row) {
-	return service.getAllEmployees(index, row);
+	return service.getAllEmployeesWithPagination(index, row);
     }
 
     @GetMapping("/{id}")
@@ -34,9 +34,9 @@ public class EmployeeController {
 	return service.getEmployeeById(id);
     }
 
-    @GetMapping("/manager/{index}/{row}")
-    public ResponseEntity<? extends Object> getEmployeesByManagerId(@RequestBody String managerId, @PathVariable int index, @PathVariable int row) {
-	return service.getEmployeesByManagerId(managerId, index, row);
+    @GetMapping("/manager")
+    public ResponseEntity<? extends Object> getEmployeesByManagerId(@RequestBody String managerId) {
+	return service.getEmployeesByManagerId(managerId);
     }
 
     @PostMapping()

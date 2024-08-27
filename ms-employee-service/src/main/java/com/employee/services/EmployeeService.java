@@ -90,9 +90,9 @@ public class EmployeeService {
      *
      * @return
      */
-    public ResponseEntity<? extends Object> getAllEmployees(int index, int row) {
+    public ResponseEntity<? extends Object> getAllEmployees() {
 	try {
-	    ResponseEntity<Object> resp = sendRestTemplateExchangeWithPagination(null, baseUrl, HttpMethod.GET, index, row);
+	    ResponseEntity<Object> resp = sendRestTemplateExchange(null, baseUrl, HttpMethod.GET);
 	    SCIMResponseObject empl = mapper.readValue(mapper.writeValueAsString(resp.getBody()),
 		    SCIMResponseObject.class);
 
@@ -101,6 +101,18 @@ public class EmployeeService {
 	    return processError(e);
 	}
     }
+    
+    public ResponseEntity<? extends Object> getAllEmployeesWithPagination(int index, int row) {
+    	try {
+    	    ResponseEntity<Object> resp = sendRestTemplateExchangeWithPagination(null, baseUrl, HttpMethod.GET, index, row);
+    	    SCIMResponseObject empl = mapper.readValue(mapper.writeValueAsString(resp.getBody()),
+    		    SCIMResponseObject.class);
+
+    	    return ResponseEntity.status(200).body(empl);
+    	} catch (Exception e) {
+    	    return processError(e);
+    	}
+        }
 
     /**
      *
@@ -123,9 +135,9 @@ public class EmployeeService {
      * @param managerId - ID of manager.
      * @return
      */
-    public ResponseEntity<? extends Object> getEmployeesByManagerId(String managerId, int index, int row) {
+    public ResponseEntity<? extends Object> getEmployeesByManagerId(String managerId) {
 	try {
-	    EmployeeResponse[] allEmployees = (EmployeeResponse[]) getAllEmployees(index, row).getBody();
+	    EmployeeResponse[] allEmployees = (EmployeeResponse[]) getAllEmployees().getBody();
 
 	    ArrayList<EmployeeResponse> employees = new ArrayList<>();
 	    for (EmployeeResponse e : allEmployees) {
