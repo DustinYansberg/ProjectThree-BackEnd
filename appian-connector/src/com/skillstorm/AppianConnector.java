@@ -227,8 +227,8 @@ public class AppianConnector extends AbstractConnector
 		}
 	
 		List<String> entitlements = getAllEntitlements();
-		System.out.println("Got entitlements");
-		System.out.println(entitlements.toString());
+		
+		
 		
 		for(String entitlement : entitlements)
 		// for(int i = 0 ; i < entitlements.size(); i++)
@@ -260,9 +260,6 @@ public class AppianConnector extends AbstractConnector
 						
 					}
 					
-					
-
-
 				}
 				
 			}
@@ -270,7 +267,6 @@ public class AppianConnector extends AbstractConnector
 		}
 		
 		return users.iterator();
-
 
 	}
 
@@ -286,24 +282,88 @@ public class AppianConnector extends AbstractConnector
 	 * 
 	 * return sailpoint object
 	 * @throws ConnectorException 
+	 * @param username = the user's name (id of the account in Appian)
+	 * @param items = a list of maps containing a k/v pair
+	 * 		in our case, it's always going to be "entitlement" for key,
+	 * 		and a list of entitlement names as Strings
 	 */
-/* 
+
+
 	@Override
-	public Result update(String id, List<Item> items) throws ConnectorException
+	public Result update(String username, List<Item> items) throws ConnectorException
 	{
 		try 
 		{
 			configure();
-		
-			//create object to hold payload
-			Map<String, Object> payload = new HashMap<>();
-
+			
 			for(Item item : items)
 			{
-				payload.put(item.getName(), item.getValue());
+				System.out.println("Item: " + item.toString());	//TEST
+				System.out.println("Scope: " + item.getScope());
+				System.out.println("Name: " + item.getName());
+				System.out.println("Operation: " + item.getOperation().toString());
+				System.out.println("Value: " + item.getValue().toString());
+
 			}
-			payload.put("usernames", "[" + id + "]");
-			System.out.println(payload.toString());
+
+			//create object to hold payload
+			Map<String, Object> payload = new HashMap<>();	//temp to hold item but broken down into a <String, Object>
+
+			List<String> entitlementsAdd = new LinkedList<>();	//list of our entitlements take from the payload for ADD operation
+			List<String> entitlementsRemove = new LinkedList<>(); //list of our entitlements to take from payload for REMOVE operation
+			List<String> users = new LinkedList<>(); // needs to be a list for Appian
+			users.add(username);
+			for(Item item : items)
+			{
+				//getname gets a String "entitlement", getValue returns a List<String> 
+				//we should compare to "Get all groups" method, then update accordingly
+				payload.put(item.getName(), item.getValue());
+				String operation = item.getOperation().toString();
+				/*
+				Within the Operation object inside of item, there is a value
+				When we toString() it, it can be "Add" or "Remove"
+				This is how SailPoint communicates what it's trying to do with the item
+				So, below we're adding these values to one of two separate lists
+				One list is to remove, the other is to add the entitlement
+				 */
+				if(operation.equals("Add"))
+				{
+					entitlementsAdd.add(payload.get("entitlement").toString());
+				System.out.println("Added " + payload.get("entitlement").toString() + " to list of entitlements to add");		//TEST
+				}
+
+				if(operation.equals("Remove"))
+				{
+					entitlementsRemove.add(payload.get("entitlement").toString());
+				System.out.println("Added " + payload.get("entitlement").toString() + " to list of entitlements to remove");	//TEST
+				}
+				
+				
+			}
+
+			//check to see if we add
+			if(entitlementsAdd.size() > 0)
+			{	
+				for(String entitlement : entitlementsAdd)
+				{
+					System.out.println("Entitlement: " + entitlement);
+					addUsersToEntitlement(users, entitlement);
+					System.out.println("Successfully added " + entitlement);
+				}
+			}
+
+			//check to see if we remove
+			if(entitlementsRemove.size() > 0)
+			{
+				for(String entitlement : entitlementsRemove)
+				{
+					System.out.println("Removing user " + username + " from " + entitlement);
+					removeUsersFromEntitlement(users, entitlement);
+					System.out.println("Successfully removed " + username + " from " + entitlement);	
+				}
+			}
+
+			
 		}
 		catch(IOException e)
 		{
@@ -311,7 +371,7 @@ public class AppianConnector extends AbstractConnector
 		}
 		return null;
 	}
-*/
+
 	 
 	/**
 	 * Read method 
@@ -412,6 +472,8 @@ public class AppianConnector extends AbstractConnector
 			ObjectMapper mapper = new ObjectMapper();
 			List<String> groups = mapper.readValue(response, new TypeReference<List<String>>(){});
 			
+			System.out.println("Got entitlements: " + groups.toString());
+
 			return groups;
 			
 		} 
@@ -464,7 +526,7 @@ public class AppianConnector extends AbstractConnector
 
 
 	//HELPER method to add users to a group
-	public void addUsersToGroup(List<String> usernames, String groupName) throws ConnectorException 
+	public void addUsersToEntitlement(List<String> usernames, String groupName) throws ConnectorException 
 	{
 		try 
 		{
@@ -510,11 +572,11 @@ public class AppianConnector extends AbstractConnector
 	}
 	
 	//HELPER method to remove users from group
-	public void removeUsersFromGroup(List<String> usernames, String groupName) throws ConnectorException 
+	public void removeUsersFromEntitlement(List<String> usernames, String groupName) throws ConnectorException 
 	{
 		try 
 		{
-			configure(); // Ensure authString is set
+			configure(); 
 			
 			URL url = new URL(host + "/suite/webapi/remove-users-from-group");
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
