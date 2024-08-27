@@ -1,5 +1,7 @@
 package com.employee.services;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Base64;
 
@@ -16,6 +18,10 @@ import com.employee.models.EmployeeResponse;
 import com.employee.models.SCIMResponseObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
+import sailpoint.plugin.PluginBaseHelper;
+import sailpoint.server.Environment;
+import sailpoint.tools.IOUtil;
 
 @Service
 public class EmployeeService {
@@ -35,10 +41,10 @@ public class EmployeeService {
      * @return An HttpHeaders object with encoded Basic Auth headers.
      */
     private HttpHeaders generateAuthHeaders() {
-	HttpHeaders headers = new HttpHeaders();
-	headers.add("Authorization",
-		"Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes()));
-	return headers;
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization",
+			"Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes()));
+		return headers;
     }
 
     /**
@@ -51,9 +57,9 @@ public class EmployeeService {
      * @return A ResponseEntity containing the results of the exchange.
      */
     private ResponseEntity<Object> sendRestTemplateExchange(Object body, String url, HttpMethod method) {
-	RestTemplate temp = new RestTemplate();
-	HttpEntity<Object> entity = new HttpEntity<>(body, generateAuthHeaders());
-	return temp.exchange(url, method, entity, Object.class);
+		RestTemplate temp = new RestTemplate();
+		HttpEntity<Object> entity = new HttpEntity<>(body, generateAuthHeaders());
+		return temp.exchange(url, method, entity, Object.class);
     }
     
     /**
@@ -66,9 +72,9 @@ public class EmployeeService {
      * @return A ResponseEntity containing the results of the exchange.
      */
     private ResponseEntity<Object> sendRestTemplateExchangeWithPagination(Object body, String url, HttpMethod method, int index, int row) {
-	RestTemplate temp = new RestTemplate();
-	HttpEntity<Object> entity = new HttpEntity<>(body, generateAuthHeaders());
-	return temp.exchange(url + "?startIndex=" + index + "&count=" + row, method, entity, Object.class);
+		RestTemplate temp = new RestTemplate();
+		HttpEntity<Object> entity = new HttpEntity<>(body, generateAuthHeaders());
+		return temp.exchange(url + "?startIndex=" + index + "&count=" + row, method, entity, Object.class);
     }
 
     /**
@@ -79,11 +85,11 @@ public class EmployeeService {
      * @return A ResponseEntity containing details about the exception.
      */
     private ResponseEntity<String> processError(Exception e) {
-	e.printStackTrace();
-	// TODO There is probably a way to formally extract error code from exception
-	// message
-	return ResponseEntity.status(500).header("Error", "SCIM Error")
-		.body("An error occurred when sending the request to SCIM:\n" + e);
+		e.printStackTrace();
+		// TODO There is probably a way to formally extract error code from exception
+		// message
+		return ResponseEntity.status(500).header("Error", "SCIM Error")
+			.body("An error occurred when sending the request to SCIM:\n" + e);
     }
 
     /**
@@ -91,15 +97,15 @@ public class EmployeeService {
      * @return
      */
     public ResponseEntity<? extends Object> getAllEmployees() {
-	try {
-	    ResponseEntity<Object> resp = sendRestTemplateExchange(null, baseUrl, HttpMethod.GET);
-	    SCIMResponseObject empl = mapper.readValue(mapper.writeValueAsString(resp.getBody()),
-		    SCIMResponseObject.class);
-
-	    return ResponseEntity.status(200).body(empl);
-	} catch (Exception e) {
-	    return processError(e);
-	}
+		try {
+		    ResponseEntity<Object> resp = sendRestTemplateExchange(null, baseUrl, HttpMethod.GET);
+		    SCIMResponseObject empl = mapper.readValue(mapper.writeValueAsString(resp.getBody()),
+			    SCIMResponseObject.class);
+	
+		    return ResponseEntity.status(200).body(empl);
+		} catch (Exception e) {
+		    return processError(e);
+		}
     }
     
     public ResponseEntity<? extends Object> getAllEmployeesWithPagination(int index, int row) {
@@ -112,7 +118,7 @@ public class EmployeeService {
     	} catch (Exception e) {
     	    return processError(e);
     	}
-        }
+    }
 
     /**
      *
@@ -120,27 +126,27 @@ public class EmployeeService {
      * @return
      */
     public ResponseEntity<? extends Object> getEmployeeById(String id) {
-	try {
-	    ResponseEntity<Object> resp = sendRestTemplateExchange(null, baseUrl + "/" + id, HttpMethod.GET);
-	    return ResponseEntity.status(200)
-		    .body(mapper.readValue(mapper.writeValueAsString(resp.getBody()), EmployeeResponse.class));
-	} catch (Exception e) {
-	    return processError(e);
-	}
+		try {
+		    ResponseEntity<Object> resp = sendRestTemplateExchange(null, baseUrl + "/" + id, HttpMethod.GET);
+		    return ResponseEntity.status(200)
+			    .body(mapper.readValue(mapper.writeValueAsString(resp.getBody()), EmployeeResponse.class));
+		} catch (Exception e) {
+		    return processError(e);
+		}
     }
 
     public ResponseEntity<? extends Object> getEmployeeByEmail(String email) {
-	try {
-	    ResponseEntity<Object> resp = sendRestTemplateExchange(null,
-		    baseUrl + "?filter=emails eq \"" + email + "\"", HttpMethod.GET);
-
-	    SCIMResponseObject empl = mapper.readValue(mapper.writeValueAsString(resp.getBody()),
-		    SCIMResponseObject.class);
-
-	    return ResponseEntity.status(200).body(empl.getResources()[0]);
-	} catch (Exception e) {
-	    return processError(e);
-	}
+		try {
+		    ResponseEntity<Object> resp = sendRestTemplateExchange(null,
+			    baseUrl + "?filter=emails eq \"" + email + "\"", HttpMethod.GET);
+	
+		    SCIMResponseObject empl = mapper.readValue(mapper.writeValueAsString(resp.getBody()),
+			    SCIMResponseObject.class);
+	
+		    return ResponseEntity.status(200).body(empl.getResources()[0]);
+		} catch (Exception e) {
+		    return processError(e);
+		}
     }
 
     /**
@@ -150,21 +156,21 @@ public class EmployeeService {
      * @return
      */
     public ResponseEntity<? extends Object> getEmployeesByManagerId(String managerId) {
-	try {
-	    EmployeeResponse[] allEmployees = (EmployeeResponse[]) getAllEmployees().getBody();
-
-	    ArrayList<EmployeeResponse> employees = new ArrayList<>();
-	    for (EmployeeResponse e : allEmployees) {
-		if (e.getManager().containsKey("value")) {
-		    if (e.getManager().get("value").equals(managerId)) {
-			employees.add(e);
+		try {
+		    EmployeeResponse[] allEmployees = (EmployeeResponse[]) getAllEmployees().getBody();
+	
+		    ArrayList<EmployeeResponse> employees = new ArrayList<>();
+		    for (EmployeeResponse e : allEmployees) {
+			if (e.getManager().containsKey("value")) {
+			    if (e.getManager().get("value").equals(managerId)) {
+				employees.add(e);
+			    }
+			}
 		    }
+		    return ResponseEntity.status(200).body(employees.toArray());
+		} catch (Exception e) {
+		    return processError(e);
 		}
-	    }
-	    return ResponseEntity.status(200).body(employees.toArray());
-	} catch (Exception e) {
-	    return processError(e);
-	}
     }
 
     /**
@@ -173,35 +179,35 @@ public class EmployeeService {
      * @return
      */
     public ResponseEntity<? extends Object> createEmployee(EmployeeRequest newEmployee) {
-	try {
-	    ResponseEntity<Object> resp = sendRestTemplateExchange(newEmployee.toJsonString(), baseUrl,
-		    HttpMethod.POST);
-	    return ResponseEntity.status(201)
-		    .body(mapper.readValue(mapper.writeValueAsString(resp.getBody()), EmployeeResponse.class));
-	} catch (Exception e) {
-	    return processError(e);
-	}
+		try {
+		    ResponseEntity<Object> resp = sendRestTemplateExchange(newEmployee.toJsonString(), baseUrl,
+			    HttpMethod.POST);
+		    return ResponseEntity.status(201)
+			    .body(mapper.readValue(mapper.writeValueAsString(resp.getBody()), EmployeeResponse.class));
+		} catch (Exception e) {
+		    return processError(e);
+		}
     }
 
     // TODO
     public ResponseEntity<? extends Object> updateEmployee(String id, EmployeeRequest newFields) {
-	try {
-	    // Get data of existing object
-	    ResponseEntity<Object> getResp = sendRestTemplateExchange(null, baseUrl + "/" + id, HttpMethod.GET);
-	    EmployeeRequest employee = new EmployeeRequest(
-		    mapper.readValue(mapper.writeValueAsString(getResp.getBody()), EmployeeResponse.class));
-
-	    // Aggregate the data into the Update request made
-	    employee.updateFields(newFields);
-	    // Send the update request that now includes existing fields
-	    System.out.println(employee.toJsonString());
-	    ResponseEntity<Object> resp = sendRestTemplateExchange(employee.toJsonString(), baseUrl + "/" + id,
-		    HttpMethod.PUT);
-	    return ResponseEntity.status(201)
-		    .body(mapper.readValue(mapper.writeValueAsString(resp.getBody()), EmployeeResponse.class));
-	} catch (Exception e) {
-	    return processError(e);
-	}
+		try {
+		    // Get data of existing object
+		    ResponseEntity<Object> getResp = sendRestTemplateExchange(null, baseUrl + "/" + id, HttpMethod.GET);
+		    EmployeeRequest employee = new EmployeeRequest(
+			    mapper.readValue(mapper.writeValueAsString(getResp.getBody()), EmployeeResponse.class));
+	
+		    // Aggregate the data into the Update request made
+		    employee.updateFields(newFields);
+		    // Send the update request that now includes existing fields
+		    System.out.println(employee.toJsonString());
+		    ResponseEntity<Object> resp = sendRestTemplateExchange(employee.toJsonString(), baseUrl + "/" + id,
+			    HttpMethod.PUT);
+		    return ResponseEntity.status(201)
+			    .body(mapper.readValue(mapper.writeValueAsString(resp.getBody()), EmployeeResponse.class));
+		} catch (Exception e) {
+		    return processError(e);
+		}
     }
 
     /**
@@ -210,13 +216,42 @@ public class EmployeeService {
      * @return
      */
     public ResponseEntity<? extends Object> deleteEmployeeById(String id) {
-	try {
-	    ResponseEntity<? extends Object> resp = getEmployeeById(id);
-	    sendRestTemplateExchange(null, baseUrl + "/" + id, HttpMethod.DELETE);
-	    return resp;
-	} catch (Exception e) {
-	    return processError(e);
-	}
+		try {
+		    ResponseEntity<? extends Object> resp = getEmployeeById(id);
+		    sendRestTemplateExchange(null, baseUrl + "/" + id, HttpMethod.DELETE);
+		    return resp;
+		} catch (Exception e) {
+		    return processError(e);
+		}
+    }
+    
+    private static final boolean checkForOldPassword = false;
+    public ResponseEntity<? extends Object> updatePasswordDirectly(String id, String oldPassword, String newPassword) {
+    	Connection conn = null;
+    	PreparedStatement stmt = null;
+    	try {
+    		//	Step 1: Check if old password is correct if we decide to
+    		if(checkForOldPassword) {
+	    		conn = Environment.getEnvironment().getSpringDataSource().getConnection();
+	    		stmt = PluginBaseHelper.prepareStatement(conn, "SELECT * FROM spt_identity WHERE id = ?", id);
+	    		String oldPwdResult = stmt.executeQuery().getString("password");
+	    		
+	    		if(!oldPassword.equals(oldPwdResult) || !(oldPassword == null && oldPwdResult == null)) {
+	    			throw new IllegalArgumentException("Password is incorrect.");
+	    		}
+
+    		}
+    		// Step 2: Update password
+    		stmt = PluginBaseHelper.prepareStatement(conn, "UPDATE spt_identity SET password = ? WHERE id = ?", newPassword, id);
+    		stmt.executeUpdate();
+    		
+    		return ResponseEntity.status(201).body("Successfully updated password.");
+    	} catch(Exception e) {
+    		return processError(e);
+    	} finally {
+    		IOUtil.closeQuietly(conn);
+    		IOUtil.closeQuietly(stmt);
+    	}
     }
 
 }

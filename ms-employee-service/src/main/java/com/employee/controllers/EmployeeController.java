@@ -59,4 +59,9 @@ public class EmployeeController {
     public ResponseEntity<? extends Object> deleteEmployeeById(@PathVariable String id) {
 	return service.deleteEmployeeById(id);
     }
+    
+    @PutMapping("/pwdUpdate/{id}")
+    public ResponseEntity<? extends Object> updatePasswordDirectly(@PathVariable String id, @RequestBody String oldPwd, @RequestBody String newPwd) {
+    	return service.updatePasswordDirectly(id, oldPwd, newPwd);
+    }
 }
