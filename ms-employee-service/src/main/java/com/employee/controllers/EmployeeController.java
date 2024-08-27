@@ -40,7 +40,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/manager")
-    public ResponseEntity<? extends Object> getEmployeesByManagerId(@RequestBody String managerId) {
+    public ResponseEntity<? extends Object> getEmployeesByManagerId(@PathVariable String managerId) {
 	return service.getEmployeesByManagerId(managerId);
     }
 
