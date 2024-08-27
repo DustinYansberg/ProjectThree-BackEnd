@@ -55,6 +55,21 @@ public class EmployeeService {
 	HttpEntity<Object> entity = new HttpEntity<>(body, generateAuthHeaders());
 	return temp.exchange(url, method, entity, Object.class);
     }
+    
+    /**
+     * sendRestTemplateExchange() A function to pass various types of RestTemplate
+     * exchanges without having to retype code.
+     *
+     * @param body   - The object to send. For GET and DELETE, is null.
+     * @param url    - The url to send to.
+     * @param method - The CRUD operation to perform, as an HttpMethod.
+     * @return A ResponseEntity containing the results of the exchange.
+     */
+    private ResponseEntity<Object> sendRestTemplateExchangeWithPagination(Object body, String url, HttpMethod method, int index, int row) {
+	RestTemplate temp = new RestTemplate();
+	HttpEntity<Object> entity = new HttpEntity<>(body, generateAuthHeaders());
+	return temp.exchange(url + "?startIndex=" + index + "&count=" + row, method, entity, Object.class);
+    }
 
     /**
      * processError() A function to process and display SCIM-related errors with
@@ -81,11 +96,23 @@ public class EmployeeService {
 	    SCIMResponseObject empl = mapper.readValue(mapper.writeValueAsString(resp.getBody()),
 		    SCIMResponseObject.class);
 
-	    return ResponseEntity.status(200).body(empl.getResources());
+	    return ResponseEntity.status(200).body(empl);
 	} catch (Exception e) {
 	    return processError(e);
 	}
     }
+    
+    public ResponseEntity<? extends Object> getAllEmployeesWithPagination(int index, int row) {
+    	try {
+    	    ResponseEntity<Object> resp = sendRestTemplateExchangeWithPagination(null, baseUrl, HttpMethod.GET, index, row);
+    	    SCIMResponseObject empl = mapper.readValue(mapper.writeValueAsString(resp.getBody()),
+    		    SCIMResponseObject.class);
+
+    	    return ResponseEntity.status(200).body(empl);
+    	} catch (Exception e) {
+    	    return processError(e);
+    	}
+        }
 
     /**
      *
