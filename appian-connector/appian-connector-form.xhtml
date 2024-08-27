@@ -15,7 +15,7 @@
 <body>
 	<ui:composition>
 		<f:view>
-			<div id="exampleConnectorTable"> 
+			<div id="AppianConnectorTable"> 
 			 <table class="spTable" style="border:0px" cellspacing="0">
 		      <tr>
 		        <td class='titleColumn certScheduleTitleCol' valign="center">
@@ -24,8 +24,8 @@
 		        </td>
 		
 		        <td class="certScheduleHelpCol" valign="middle">
-		          <h:graphicImage id="imgHlpHostURL" styleClass="helpIcon" url="/images/icons/dashboard_help_16.png" 
-		                          alt="Fill in the host URL for our custom connector."/>
+		          <h:graphicImage id="appian-host-url" styleClass="helpIcon" url="/images/icons/dashboard_help_16.png" 
+		                          alt="Fill in the host URL for our Appian connector."/>
 		        </td>
 		        <td valign="center">
 		        	<h:inputText id="hostURL"
@@ -37,35 +37,55 @@
 		      </tr>
 		      <tr>
 		        <td class='titleColumn certScheduleTitleCol' valign="center">
-		          <h:outputText style='padding:5px' value="Host Username"/>
+		          <h:outputText style='padding:5px' value="oauthUrl"/>
 		          <h:outputText styleClass="requiredText" value="*"/>
 		        </td>
 		
 		        <td class="certScheduleHelpCol" valign="middle">
-		          <h:graphicImage id="imgHlpHostUsername" styleClass="helpIcon" url="/images/icons/dashboard_help_16.png" 
-		                          alt="Fill in the Spring Security Basic Auth username for the connected app."/>
+		          <h:graphicImage id="appian-oauth-url" styleClass="helpIcon" url="/images/icons/dashboard_help_16.png" 
+		                          alt="Fill in the Oauth URL provided from Appian."/>
 		        </td>
 		        <td valign="center">
-		        	<h:inputText id="hostUsername"
-		              value="#{applicationObject.attributes['exampleHostUsername']}"
+		        	<h:inputText id="oauthUrl"
+		              value="#{applicationObject.attributes['oauthUrl']}"
 		              size="80"
 		              disabled="#{!sp:hasRight(facesContext, 'ManageApplication')}"
 		              readonly="#{!sp:hasRight(facesContext, 'ManageApplication')}" />
 		         </td>
 		      </tr>
-		      <tr>
+
+			  <tr>
 		        <td class='titleColumn certScheduleTitleCol' valign="center">
-		          <h:outputText style='padding:5px' value="Host Password"/>
+		          <h:outputText style='padding:5px' value="clientId"/>
 		          <h:outputText styleClass="requiredText" value="*"/>
 		        </td>
 		
 		        <td class="certScheduleHelpCol" valign="middle">
-		          <h:graphicImage id="imgHlpHostPassword" styleClass="helpIcon" url="/images/icons/dashboard_help_16.png" 
-		                          alt="Fill in the Spring Security Basic Auth password for the connected app."/>
+		          <h:graphicImage id="appian-client-id" styleClass="helpIcon" url="/images/icons/dashboard_help_16.png" 
+		                          alt="Fill in the client ID from Appian."/>
 		        </td>
 		        <td valign="center">
-		        	<sp:inputSecret id="hostPassword"
-		              value="#{applicationObject.attributes['exampleHostPassword']}"
+		        	<h:inputText id="clientId"
+		              value="#{applicationObject.attributes['clientId']}"
+		              size="80"
+		              disabled="#{!sp:hasRight(facesContext, 'ManageApplication')}"
+		              readonly="#{!sp:hasRight(facesContext, 'ManageApplication')}" />
+		         </td>
+		      </tr>
+
+		      <tr>
+		        <td class='titleColumn certScheduleTitleCol' valign="center">
+		          <h:outputText style='padding:5px' value="clientSecret"/>
+		          <h:outputText styleClass="requiredText" value="*"/>
+		        </td>
+		
+		        <td class="certScheduleHelpCol" valign="middle">
+		          <h:graphicImage id="appian-secret" styleClass="helpIcon" url="/images/icons/dashboard_help_16.png" 
+		                          alt="Fill in the client secret provided by Appian."/>
+		        </td>
+		        <td valign="center">
+		        	<sp:inputSecret id="clientSecret"
+		              value="#{applicationObject.attributes['clientSecret']}"
 		              redisplay="true"
 		              size="80"
 		              disabled="#{!sp:hasRight(facesContext, 'ManageApplication')}"

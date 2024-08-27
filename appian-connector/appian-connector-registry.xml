@@ -9,7 +9,8 @@
 					<entry key="applicationTemplates">
 						<value>
 							<List>
-								<Application connector="sailpoint.connector.OpenConnectorAdapter" featuresString="PROVISIONING, SYNC_PROVISIONING, ENABLE, UNLOCK, SEARCH, UNSTRUCTURED_TARGETS, PASSWORD, CURRENT_PASSWORD, ACCOUNT_ONLY_REQUEST" icon="enterpriseIcon" name="Appian Connector" type="Example Connector">
+								<Application connector="sailpoint.connector.OpenConnectorAdapter" featuresString="PROVISIONING, SYNC_PROVISIONING, ENABLE, UNLOCK, SEARCH, UNSTRUCTURED_TARGETS, PASSWORD, CURRENT_PASSWORD, ACCOUNT_ONLY_REQUEST" icon="enterpriseIcon" name="Appian Connector" type="Appian Connector">
+									
 									<Attributes>
 										<Map>
 											<entry key="formPath" value="appian-connector-form.xhtml" />
@@ -17,24 +18,24 @@
 											<entry key="host" value="Unspecified" />
 										</Map>
 									</Attributes>
+									
 									<Schemas>
-										<Schema displayAttribute="username" identityAttribute="username" nativeObjectType="user" objectType="account">
-											<AttributeDefinition name="id" required="true" type="int" remediationModificationType="None">
-												<Description>The integer primary key in the connected system.</Description>
+										<Schema displayAttribute="id" identityAttribute="id" nativeObjectType="user" objectType="account">
+											<AttributeDefinition name="id" required="true" type="string" remediationModificationType="None">
+												<Description>The user's ID and name in the appian system</Description>
 											</AttributeDefinition>
-											<AttributeDefinition name="username" required="true" type="string" remediationModificationType="None">
-												<Description>The user's e-mail address and primary identifying characteristic.</Description>
-											</AttributeDefinition>
-											<AttributeDefinition name="firstname" required="true" type="string" remediationModificationType="None">
-												<Description>The user's first name.</Description>
-											</AttributeDefinition>
-											<AttributeDefinition name="lastname" required="true" type="string" remediationModificationType="None">
-												<Description>The user's last name.</Description>
-											</AttributeDefinition>
-											<AttributeDefinition name="group" required="true" type="string" remediationModificationType="None">
-												<Description>The user's role group on appian.</Description>
+											
+											<AttributeDefinition entitlement="true" managed="true" multi="true" name="entitlement" schemaObjectType="entitlement" type="string">
+												<Description>The user's groups in the connected application.</Description>
 											</AttributeDefinition>
 										</Schema>
+
+										<Schema aggregationType="group" displayAttribute="name" identityAttribute="name" nativeObjectType="entitlement" objectType="entitlement">
+											<AttributeDefinition name="name" required="true" type="string" remediationModificationType="None">
+												<Description>Group's name taken from Appian</Description>
+											</AttributeDefinition>
+										</Schema>
+
 									</Schemas>
 								</Application>
 							</List>
