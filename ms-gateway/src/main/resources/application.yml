@@ -36,11 +36,13 @@ spring:
           uri: lb://plugin-bridge
           predicates:
             - Path=/document/**
+            - Path=/appointment/**
 #          filters:
 #          - name: CircuitBreaker
 #            args:
 #              name: employeeFallbackController
 #              fallbackUri: forward:/fallback/employee
+        
 
 # This section is for what will display one our health checks
 # localhost:9001/actuator is the endpoint
