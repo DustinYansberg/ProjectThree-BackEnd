@@ -119,7 +119,7 @@ public class AccountController {
 			Map<String, Object> map = (Map<String, Object>) sendRestTemplateExchange(null, pluginUrl + "/get/" + id, HttpMethod.GET).getBody();
 			ObjectMapper mapper = new ObjectMapper();
 			Account account = mapper.convertValue(map, Account.class);
-			System.out.println(permission);
+			System.out.println(info);
 			System.out.println(account.toJsonStringWithPermissions(info, permission));
 			return sendRestTemplateExchange(
 					account.toJsonStringWithPermissions(info, permission), 

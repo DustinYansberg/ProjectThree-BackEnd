@@ -3,23 +3,11 @@ package com.skillstorm.models;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.skillstorm.models.Meta;
 import org.springframework.beans.factory.annotation.Value;
 
 public class Account {
 	@Value("${spring.datasource.url}") private static String baseUrl;
-//	  String accountDisplayName;
 
-//	  String accountAlias;
-
-//	  String applicationDisplayName;
-//	  String[] roles;
-//	  String[] permissionSets;
-//	  String communityNickname;
-
-//	  String email;
-//	  Meta meta;
 	@JsonProperty("accountDisplayName")
 	String accountDisplayName;
 	@JsonProperty("accountId")
@@ -146,20 +134,21 @@ public class Account {
 		
 	}
 	public String toJsonStringWithPermissions(Map<String, Object> info, String permission) {
-	        ObjectMapper mapper = new ObjectMapper();
-	        
-	        // Retrieve the PermissionSet from the map
-	        System.out.println(info.get("PermissionSet").getClass());
+		
+		String permissions ="";
+		if (info.get("PermissionSet")==null) {
+			permissions ="["+permission;
+		}else {
 	        String permissionSet1 = (String) info.get("PermissionSet");
 	        System.out.println(permissionSet1);
-	        permissionSet1 = permissionSet1.substring(1, permissionSet1.length()-1);
+	        if (permissionSet1.contains(", ")) {
+	        	permissionSet1 = permissionSet1.substring(1, permissionSet1.length()-1);
+	        }
 	        String[] permissionSet = permissionSet1.split(", ");
 	       
 		boolean contains = false;
-		String permissions ="";
 		for(String item : permissionSet) {
-			System.out.println(item+ " ="+ permission.substring(1, permission.length()-1));
-			if (item.equals(permission.substring(1, permission.length()-1))) {
+			if (item.equals(permission.replace("\"", ""))) {
 				System.out.println("contains");
 				contains = true;
 			}
@@ -168,7 +157,7 @@ public class Account {
 			permissions = "[";
 
 		for(String item : permissionSet) {
-			if (!item.equals(permission.substring(1, permission.length()-1))) {
+			if (!item.equals(permission.replace("\"", ""))) {
 			permissions += item+", ";
 			}
 		}
@@ -180,10 +169,11 @@ public class Account {
 			for(String item : permissionSet) {
 				permissions += item+", ";
 			}
-			permissions += permission;
+			permissions += permission.replace("\"", "");
 			//permissions = permissions.substring(0, permissions.length()-2);
 		}
-		System.out.println(permissions);
+		}
+		
 		String asJson = "{\r\n"
 			+ "  \"identity\": {\r\n"
 			+ "    \"value\": \"" + info.get("identityId") + "\"\r\n"
