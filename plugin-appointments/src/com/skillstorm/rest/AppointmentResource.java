@@ -69,7 +69,7 @@ public class AppointmentResource extends BasePluginResource {
 	@AllowAll
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Appointment> getAppointmentByAttendee(@PathParam("attendeeId") String attendeeId) throws GeneralException {
-		return service().getAppointmentsByOrganizer(attendeeId);
+		return service().getAppointmentsByAttendee(attendeeId);
 	}
 	
 	
