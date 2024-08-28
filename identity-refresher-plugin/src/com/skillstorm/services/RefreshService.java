@@ -46,15 +46,16 @@ public class RefreshService
     {
         if(iterations%5==0) //check if we've iterated enough
         {
-            System.out.println("Since we have " + iterations + " iterations, we need to check our identity count");
+            // System.out.println("Since we have " + iterations + " iterations, we need to check our identity count");
 
-            System.out.println("Identity count is currently " + identityQty);
-            //put get count method here to check number of identities
+            // System.out.println("Identity count is currently " + identityQty);
+            
             setIdentityQuantity();
-            System.out.println("Now it's " + identityQty);
+            
+            // System.out.println("Now it's " + identityQty);
             //reset the count
             iterations = 0;
-            System.out.println("Iterations reset to " + iterations);
+            // System.out.println("Iterations reset to " + iterations);
 
 
         }
@@ -71,13 +72,13 @@ public class RefreshService
 
         try 
         {
-            System.out.println("Method start");
+            // System.out.println("Method start");
             connection = Environment.getEnvironment().getSpringDataSource().getConnection();
-            System.out.println("Hello, world! Connection established!");
+            // System.out.println("Hello, world! Connection established!");
             databaseSelect = PluginBaseHelper.prepareStatement(connection, "USE identityiq;");
-            System.out.println("Prepared the SQL statement to use the correct DB");
+            // System.out.println("Prepared the SQL statement to use the correct DB");
             databaseSelect.execute();
-            System.out.println("selected the database we're using");
+            // System.out.println("selected the database we're using");
 
             updateStatement = PluginBaseHelper.prepareStatement(
 
@@ -87,14 +88,14 @@ public class RefreshService
                 
                 , quantity, position
                 );
-            System.out.println("Prepared the update statement");
+            // System.out.println("Prepared the update statement");
             updateStatement.execute();
-            System.out.println("Query performed!");
+            // System.out.println("Query performed!");
             position += quantity;
-            System.out.println("We are at position " + position);
-            System.out.println("And we are printing " + quantity + " at a time!");
+            // System.out.println("We are at position " + position);
+            // System.out.println("And we are printing " + quantity + " at a time!");
             iterations++;
-            System.out.println("We've performed task markForRefresh() " + iterations + " times since checking the identity count!");
+            // System.out.println("We've performed task markForRefresh() " + iterations + " times since checking the identity count!");
 
         }
         catch(SQLException e)
@@ -121,21 +122,21 @@ public class RefreshService
 
         try
         {
-            System.out.println("Trying to get the number of identities");
+            // System.out.println("Trying to get the number of identities");
             connection = Environment.getEnvironment().getSpringDataSource().getConnection();
-            System.out.println("Connection established");
+            // System.out.println("Connection established");
             databaseSelect = PluginBaseHelper.prepareStatement(connection, "USE identityiq;");
-            System.out.println("Set our use database statement");
+            // System.out.println("Set our use database statement");
             databaseSelect.execute();
-            System.out.println("Executed use database statement");
+            // System.out.println("Executed use database statement");
             countStatement = PluginBaseHelper.prepareStatement(connection, "SELECT COUNT(id) FROM spt_identity;");
-            System.out.println("Prepared out count statement");
+            // System.out.println("Prepared out count statement");
             ResultSet result = countStatement.executeQuery();
-            System.out.println("Executed our query");
+            // System.out.println("Executed our query");
 
             if(result.next())
                 identityQty = result.getInt("COUNT(id)");
-            System.out.println("Got our quantity of identities: " + identityQty);
+            // System.out.println("Got our quantity of identities: " + identityQty);
 
         }
         catch(SQLException e)
