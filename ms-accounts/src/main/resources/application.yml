@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: ms-accounts
+  datasource:
+    url: http://135.237.83.37:8080/identityiq/plugin/rest
+    scimUrl: http://135.237.83.37:8080/identityiq/scim/v2
+    username: spadmin
+    password: admin
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://20.242.136.134:8761/eureka/
+    registerWithEureka: true
+    fetchRegistry: true
+  instance:
+    hostname: ms-accounts.default.svc.cluster.local
+
+server: 
+  port: 8081
+  
