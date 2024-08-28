@@ -16,32 +16,38 @@ import com.skillstorm.services.IdentityService;
 @RestController
 @RequestMapping("/identity")
 public class IdentityController {
-	@Autowired private IdentityService service;
-	
-	//	Test connection method: CustomConnector testConnection() calls this endpoint
-	@GetMapping("/test") public String testConnection() {
-		System.out.println("Connection successful.");
-		return "Connection successful.";
-	}
+    @Autowired
+    private IdentityService service;
 
-	@GetMapping public Iterable<Identity> getAllIdentities() {
-		return service.getAllIdentities();
-	}
-	
-	@GetMapping("/{id}") public Identity getIdentityById(@PathVariable int id) {
-		return service.getIdentityById(id);
-	}
-	
-	@PostMapping public Identity createIdentity(@RequestBody Identity identity) {
-		return service.createIdentity(identity);
-	}
-	
-	@PutMapping("/{id}") public Identity updateIdentity(@PathVariable int id,
-			@RequestBody Identity identity) {
-		return service.updateIdentity(id, identity);
-	}
-	
-	@DeleteMapping("/{id}") public Identity deleteIdentityById(@PathVariable int id) {
-		return service.deleteIdentityById(id);
-	}
+    // Test connection method: CustomConnector testConnection() calls this endpoint
+    @GetMapping("/test")
+    public String testConnection() {
+	System.out.println("Connection successful.");
+	return "Connection successful.";
+    }
+
+    @GetMapping
+    public Iterable<Identity> getAllIdentities() {
+	return service.getAllIdentities();
+    }
+
+    @GetMapping("/{id}")
+    public Identity getIdentityById(@PathVariable int id) {
+	return service.getIdentityById(id);
+    }
+
+    @PostMapping
+    public Identity createIdentity(@RequestBody Identity identity) {
+	return service.createIdentity(identity);
+    }
+
+    @PutMapping("/{id}")
+    public Identity updateIdentity(@PathVariable int id, @RequestBody Identity identity) {
+	return service.updateIdentity(id, identity);
+    }
+
+    @DeleteMapping("/{id}")
+    public Identity deleteIdentityById(@PathVariable int id) {
+	return service.deleteIdentityById(id);
+    }
 }

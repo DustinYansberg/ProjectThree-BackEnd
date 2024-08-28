@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customconnectorapp
+  labels:
+    app: customconnectorapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customconnectorapp
+  template:
+    metadata:
+      labels:
+        app: customconnectorapp
+    spec:
+      containers:
+        - name: customconnectorapp
+          image: dustinyansberg/customconnectorapp:latest
+          ports:
+            - containerPort: 9003
