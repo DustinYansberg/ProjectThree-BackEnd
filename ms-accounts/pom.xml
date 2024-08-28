@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.skillstorm</groupId>
-	<artifactId>accounts-microservice</artifactId>
+	<artifactId>ms-accounts</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>accounts-microservice</name>
+	<name>ms-accounts</name>
 	<description>microservice for accounts plugin</description>
 	<url/>
 	<licenses>
