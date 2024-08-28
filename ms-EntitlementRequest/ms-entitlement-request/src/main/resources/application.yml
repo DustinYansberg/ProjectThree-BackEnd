@@ -1,10 +1,24 @@
-spring.application.name=ms-entitlement-request
+spring:
+  application:
+    name: ms-entitlement-request
 
-server.port=8081
 
-url_iiq=http://135.237.83.37:8080/identityiq/plugin/rest/
 #http://localhost:8080/identityiq/plugin/rest/
 #http://135.237.83.37:8080/identityiq/plugin/rest/
-username_iiq=spadmin
-password_iiq=admin
+
+url_iiq: http://135.237.83.37:8080/identityiq/plugin/rest/
+username_iiq: spadmin
+password_iiq: admin
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://20.242.136.134:8761/eureka/
+    registerWithEureka: true
+    fetchRegistry: true
+  instance:
+    hostname: ms-entitlement-request.default.svc.cluster.local
+
+server:
+  port: 8081
 
