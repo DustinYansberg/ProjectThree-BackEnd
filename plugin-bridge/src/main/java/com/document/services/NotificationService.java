@@ -22,7 +22,6 @@ public class NotificationService {
     public ResponseEntity<String> getNotificationsByIdentity(String identityId) {
         String url = baseUrl + "/notifications/" + identityId;
         
-        System.out.println("HELLO---------------------------------------------");
         RestTemplate template = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setBasicAuth(username, password);
@@ -58,7 +57,7 @@ public class NotificationService {
     }
     
     public ResponseEntity<Integer> readAllNotificationsById(String identityId) {
-    	String url = baseUrl + "/check/notifications/" + identityId ;
+    	String url = baseUrl + "/check/" + identityId ;
 
         RestTemplate template = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
