@@ -39,6 +39,10 @@ spring:
           uri: lb://plugin-bridge
           predicates:
             - Path=/appointment/**
+        - id: plugin-bridge-notification-route
+          uri: lb://plugin-bridge
+          predicates:
+            - Path=/notification/**
         - id: ms-entitlement-request-route
           uri: lb://ms-entitlement-request
           predicates:
