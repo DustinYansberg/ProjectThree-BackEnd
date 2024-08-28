@@ -140,7 +140,6 @@ public class Account {
 			permissions ="["+permission;
 		}else {
 	        String permissionSet1 = (String) info.get("PermissionSet");
-	        System.out.println(permissionSet1);
 	        if (permissionSet1.contains(", ")) {
 	        	permissionSet1 = permissionSet1.substring(1, permissionSet1.length()-1);
 	        }
@@ -149,7 +148,6 @@ public class Account {
 		boolean contains = false;
 		for(String item : permissionSet) {
 			if (item.equals(permission.replace("\"", ""))) {
-				System.out.println("contains");
 				contains = true;
 			}
 		}

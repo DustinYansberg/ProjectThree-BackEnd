@@ -24,7 +24,6 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skillstorm.models.Account;
-import com.skillstorm.models.Meta;
 import com.skillstorm.models.NewAccount;
 
 @RestController
@@ -43,7 +42,6 @@ public class AccountController {
 		return headers;
 	}
 	private ResponseEntity<Object> processError(Exception e) {
-		//	Workaround for Salesforce not sending success upon creating new account
 		if(!e.toString().contains("detail")) {
 			return ResponseEntity.status(201).header("Success", "Account successfully created")
 					.body(null);
@@ -100,8 +98,6 @@ public class AccountController {
 
 		try {
 			Map<String, Object> info =  (Map<String, Object>) sendRestTemplateExchange(null, pluginUrl + "/getUpdate/" + id, HttpMethod.GET).getBody();
-
-			System.out.println(body.toJsonString(info));
 			return sendRestTemplateExchange(
 					body.toJsonString(info), 
 					scimUrl + id, 
@@ -119,7 +115,6 @@ public class AccountController {
 			Map<String, Object> map = (Map<String, Object>) sendRestTemplateExchange(null, pluginUrl + "/get/" + id, HttpMethod.GET).getBody();
 			ObjectMapper mapper = new ObjectMapper();
 			Account account = mapper.convertValue(map, Account.class);
-			System.out.println(info);
 			System.out.println(account.toJsonStringWithPermissions(info, permission));
 			return sendRestTemplateExchange(
 					account.toJsonStringWithPermissions(info, permission), 
@@ -133,6 +128,8 @@ public class AccountController {
 	public ResponseEntity<Object> deleteAccountById(@PathVariable String id) {
 		try {
 			return sendRestTemplateExchange(null, scimUrl  + id, HttpMethod.DELETE);
-		} catch(Exception e) {return processError(e);}
+		} catch(Exception e) {
+			return processError(e);
+		}
 	}
 }
