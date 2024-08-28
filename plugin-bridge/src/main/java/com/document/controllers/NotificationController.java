@@ -38,12 +38,12 @@ public class NotificationController {
 	return notificationService.getNotificationsByIdentity(identityId);
     }
 
-    @PostMapping("create")
+    @PostMapping("notification")
     public ResponseEntity<String> createNotification(@RequestBody Notification notification) {
 	return notificationService.createNotification(notification);
     }
 
-    @PutMapping("/check/{id}")
+    @PutMapping("check/{identityId}")
     public ResponseEntity<Integer> readAllNotificationsById(@PathVariable String identityId) {
 	return notificationService.readAllNotificationsById(identityId);
     }
