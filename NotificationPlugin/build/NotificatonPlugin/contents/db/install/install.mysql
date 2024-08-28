@@ -1,9 +1,0 @@
-CREATE TABLE `identityiqPlugin`.`plugin_notification` (
-  `notificationId` INT NOT NULL AUTO_INCREMENT,
-  `identityId` VARCHAR(45) NOT NULL,
-  `applicationId` VARCHAR(45) NOT NULL,
-  `message` VARCHAR(500) NOT NULL,
-  `checked` BOOLEAN NOT NULL,
-  `createdAt` DATETIME NOT NULL,
-  PRIMARY KEY (`notificationId`)
-) ENGINE=InnoDB;
