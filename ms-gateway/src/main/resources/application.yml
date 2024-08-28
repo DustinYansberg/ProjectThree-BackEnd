@@ -47,6 +47,10 @@ spring:
           uri: lb://ms-entitlement-request
           predicates:
             - Path=/entitlements/**
+        - id: ms-accounts-route
+          uri: lb://ms-accounts
+          predicates:
+            - Path=/account/**
         - id: nothing-route
           uri: lb://nothing
           predicates:
