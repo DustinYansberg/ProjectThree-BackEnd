@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/nate/workspace/000FINAL_PROJECT/openConnector.jar"/>
+	<classpathentry kind="lib" path="C:/SailPoint/apache-tomcat-9.0.91/webapps/identityiq/WEB-INF/lib/jackson-annotations-2.12.3.jar"/>
+	<classpathentry kind="lib" path="C:/SailPoint/apache-tomcat-9.0.91/webapps/identityiq/WEB-INF/lib/jackson-core-2.12.3.jar"/>
+	<classpathentry kind="lib" path="C:/SailPoint/apache-tomcat-9.0.91/webapps/identityiq/WEB-INF/lib/jackson-databind-2.12.3.jar"/>
+	<classpathentry kind="lib" path="C:/SailPoint/apache-tomcat-9.0.91/webapps/identityiq/WEB-INF/lib/jackson-datatype-jsr310-2.12.3.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

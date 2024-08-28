@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE sailpoint PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+
+<sailpoint>
+	<ImportAction name="merge">
+		<Configuration name="ConnectorRegistry">
+			<Attributes>
+				<Map>
+					<entry key="applicationTemplates">
+						<value>
+							<List>
+								<Application connector="sailpoint.connector.OpenConnectorAdapter" featuresString="PROVISIONING, SYNC_PROVISIONING, ENABLE, UNLOCK, SEARCH, UNSTRUCTURED_TARGETS, PASSWORD, CURRENT_PASSWORD, ACCOUNT_ONLY_REQUEST" icon="enterpriseIcon" name="Appian Connector" type="Appian Connector">
+									
+									<Attributes>
+										<Map>
+											<entry key="formPath" value="appian-connector-form.xhtml" />
+											<entry key="connectorClass" value="com.skillstorm.AppianConnector" />
+											<entry key="host" value="Unspecified" />
+										</Map>
+									</Attributes>
+									
+									<Schemas>
+										<Schema displayAttribute="id" identityAttribute="id" nativeObjectType="user" objectType="account">
+											<AttributeDefinition name="id" required="true" type="string" remediationModificationType="None">
+												<Description>The user's ID and name in the appian system</Description>
+											</AttributeDefinition>
+											
+											<AttributeDefinition entitlement="true" managed="true" multi="true" name="entitlement" schemaObjectType="entitlement" type="string">
+												<Description>The user's groups in the connected application.</Description>
+											</AttributeDefinition>
+										</Schema>
+
+										<Schema aggregationType="group" displayAttribute="name" identityAttribute="name" nativeObjectType="entitlement" objectType="entitlement">
+											<AttributeDefinition name="name" required="true" type="string" remediationModificationType="None">
+												<Description>Group's name taken from Appian</Description>
+											</AttributeDefinition>
+										</Schema>
+
+									</Schemas>
+								</Application>
+							</List>
+						</value>
+					</entry>
+				</Map>
+			</Attributes>
+		</Configuration>
+	</ImportAction>
+</sailpoint>
