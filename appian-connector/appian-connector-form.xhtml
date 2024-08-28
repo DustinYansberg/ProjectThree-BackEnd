@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC
+                "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- (c) Copyright 2008 SailPoint Technologies, Inc., All Rights Reserved. -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sp="http://sailpoint.com/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<body>
+	<ui:composition>
+		<f:view>
+			<div id="AppianConnectorTable"> 
+			 <table class="spTable" style="border:0px" cellspacing="0">
+		      <tr>
+		        <td class='titleColumn certScheduleTitleCol' valign="center">
+		          <h:outputText style='padding:5px' value="Host URL"/>
+		          <h:outputText styleClass="requiredText" value="*"/>
+		        </td>
+		
+		        <td class="certScheduleHelpCol" valign="middle">
+		          <h:graphicImage id="appian-host-url" styleClass="helpIcon" url="/images/icons/dashboard_help_16.png" 
+		                          alt="Fill in the host URL for our Appian connector."/>
+		        </td>
+		        <td valign="center">
+		        	<h:inputText id="hostURL"
+		              value="#{applicationObject.attributes['host']}"
+		              size="80"
+		              disabled="#{!sp:hasRight(facesContext, 'ManageApplication')}"
+		              readonly="#{!sp:hasRight(facesContext, 'ManageApplication')}" />
+		         </td>
+		      </tr>
+		      <tr>
+		        <td class='titleColumn certScheduleTitleCol' valign="center">
+		          <h:outputText style='padding:5px' value="oauthUrl"/>
+		          <h:outputText styleClass="requiredText" value="*"/>
+		        </td>
+		
+		        <td class="certScheduleHelpCol" valign="middle">
+		          <h:graphicImage id="appian-oauth-url" styleClass="helpIcon" url="/images/icons/dashboard_help_16.png" 
+		                          alt="Fill in the Oauth URL provided from Appian."/>
+		        </td>
+		        <td valign="center">
+		        	<h:inputText id="oauthUrl"
+		              value="#{applicationObject.attributes['oauthUrl']}"
+		              size="80"
+		              disabled="#{!sp:hasRight(facesContext, 'ManageApplication')}"
+		              readonly="#{!sp:hasRight(facesContext, 'ManageApplication')}" />
+		         </td>
+		      </tr>
+
+			  <tr>
+		        <td class='titleColumn certScheduleTitleCol' valign="center">
+		          <h:outputText style='padding:5px' value="clientId"/>
+		          <h:outputText styleClass="requiredText" value="*"/>
+		        </td>
+		
+		        <td class="certScheduleHelpCol" valign="middle">
+		          <h:graphicImage id="appian-client-id" styleClass="helpIcon" url="/images/icons/dashboard_help_16.png" 
+		                          alt="Fill in the client ID from Appian."/>
+		        </td>
+		        <td valign="center">
+		        	<h:inputText id="clientId"
+		              value="#{applicationObject.attributes['clientId']}"
+		              size="80"
+		              disabled="#{!sp:hasRight(facesContext, 'ManageApplication')}"
+		              readonly="#{!sp:hasRight(facesContext, 'ManageApplication')}" />
+		         </td>
+		      </tr>
+
+		      <tr>
+		        <td class='titleColumn certScheduleTitleCol' valign="center">
+		          <h:outputText style='padding:5px' value="clientSecret"/>
+		          <h:outputText styleClass="requiredText" value="*"/>
+		        </td>
+		
+		        <td class="certScheduleHelpCol" valign="middle">
+		          <h:graphicImage id="appian-secret" styleClass="helpIcon" url="/images/icons/dashboard_help_16.png" 
+		                          alt="Fill in the client secret provided by Appian."/>
+		        </td>
+		        <td valign="center">
+		        	<sp:inputSecret id="clientSecret"
+		              value="#{applicationObject.attributes['clientSecret']}"
+		              redisplay="true"
+		              size="80"
+		              disabled="#{!sp:hasRight(facesContext, 'ManageApplication')}"
+		              readonly="#{!sp:hasRight(facesContext, 'ManageApplication')}" />
+		         </td>
+		      </tr>
+		      </table>
+			 </div>
+		</f:view>
+	</ui:composition>
+</body>
+</html>
