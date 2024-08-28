@@ -3,7 +3,7 @@
 
 <sailpoint>
 
-	<ServiceDefinition name="Automatically Mark Identities for Refresh" executor="com.skillstorm.server.RefreshAutomatedService" interval="6" hosts="global">
+	<ServiceDefinition name="Automatically Mark Identities for Refresh" executor="com.skillstorm.server.RefreshAutomatedService" interval="15" hosts="global">
 
 		<Description>
 			A service that automatically marks identities to be refreshed.

@@ -23,8 +23,8 @@ public class RefreshService
    
     
     private static int position = 0;        //tracks where we are 
-    private static int quantity = 20;       //the number of records we want to refresh in database (20 default)
-    private static int identityQty = 0; //this is set by our count query method
+    private static int quantity = 50;       //the number of records we want to refresh in database (20 default)
+    private static int identityQty = 0;     //this is set by our count query method
     private static int iterations = 0;      //counts the number of times we've executed. Resets every 5 iterations
 
     public RefreshService(PluginContext context)
