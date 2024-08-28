@@ -3,6 +3,7 @@ package com.skillstorm.controllers;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -109,16 +110,16 @@ public class AccountController {
 	
 	@PutMapping("/permission/{id}")
 	public ResponseEntity<Object> updatePermission(@PathVariable String id, @RequestBody String permission) throws JsonProcessingException{
-
+		String accountId = this.getFirstAccountByIdentityId(id);
 		try {
-			Map<String, Object> info =  (Map<String, Object>) sendRestTemplateExchange(null, pluginUrl + "/getUpdate/" + id, HttpMethod.GET).getBody();
-			Map<String, Object> map = (Map<String, Object>) sendRestTemplateExchange(null, pluginUrl + "/get/" + id, HttpMethod.GET).getBody();
+			Map<String, Object> info =  (Map<String, Object>) sendRestTemplateExchange(null, pluginUrl + "/getUpdate/" + accountId, HttpMethod.GET).getBody();
+			Map<String, Object> map = (Map<String, Object>) sendRestTemplateExchange(null, pluginUrl + "/get/" + accountId, HttpMethod.GET).getBody();
 			ObjectMapper mapper = new ObjectMapper();
 			Account account = mapper.convertValue(map, Account.class);
 			System.out.println(account.toJsonStringWithPermissions(info, permission));
 			return sendRestTemplateExchange(
 					account.toJsonStringWithPermissions(info, permission), 
-					scimUrl + id, 
+					scimUrl + accountId, 
 					HttpMethod.PUT);
 		} catch(Exception e) {
 			return processError(e);
@@ -130,6 +131,19 @@ public class AccountController {
 			return sendRestTemplateExchange(null, scimUrl  + id, HttpMethod.DELETE);
 		} catch(Exception e) {
 			return processError(e);
+		}
+	}
+	
+	private String getFirstAccountByIdentityId(String id) {
+		try {
+			System.out.println(sendRestTemplateExchange(null, pluginUrl + "/byIdentity/" + id, HttpMethod.GET).getBody());
+			List<Map<String, Object>> test = (List<Map<String, Object>>) sendRestTemplateExchange(null, pluginUrl + "/byIdentity/" + id, HttpMethod.GET).getBody();
+			System.out.println(test);
+			Object result = test.get(0).get("accountId");
+			System.out.println(result);
+			return result.toString();
+		} catch(Exception e) {
+			return processError(e).toString();
 		}
 	}
 }

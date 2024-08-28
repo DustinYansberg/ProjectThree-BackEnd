@@ -91,7 +91,6 @@ public class Account {
 		}
 		asJson = asJson
 			+ "  \"urn:ietf:params:scim:schemas:sailpoint:1.0:Application:Schema:" + applicationDisplayName + ":account\": {\r\n";
-		//if(accountAppName.equals("Salesforce")) {
 			asJson = asJson
 				+ "    \"ProfileId\": \""+ info.get("ProfileId") +"\",\r\n"
 				+ "    \"ReceivesAdminInfoEmails\": \""+info.get("ReceivesAdminInfoEmails")+"\",\r\n"
@@ -128,7 +127,6 @@ public class Account {
 				+ "    \"UserType\": \""+info.get("UserType")+"\" }\r\n"
 				+ "}"
 				;
-		//}
 		return asJson;
 		
 		
@@ -185,7 +183,6 @@ public class Account {
 		}
 		asJson = asJson
 			+ "  \"urn:ietf:params:scim:schemas:sailpoint:1.0:Application:Schema:" + applicationDisplayName + ":account\": {\r\n";
-		//if(accountAppName.equals("Salesforce")) {
 			asJson = asJson
 				+ "    \"ProfileId\": \""+ info.get("ProfileId") +"\",\r\n"
 				+ "    \"ReceivesAdminInfoEmails\": \""+info.get("ReceivesAdminInfoEmails")+"\",\r\n"
@@ -222,7 +219,6 @@ public class Account {
 				+ "    \"UserType\": \""+info.get("UserType")+"\" }\r\n"
 				+ "}"
 				;
-		//}
 
 		return asJson;
 		
