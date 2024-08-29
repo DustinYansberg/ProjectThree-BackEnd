@@ -16,8 +16,7 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "*" #update to reflect the specific IP addresses
-#              - "http://localhost:4200"
+            allowedOrigins: "*" # update to reflect the specific IP addresses - "http://localhost:4200"
             allowedMethods: "*"
             allowedHeaders: "*"
 #              - GET
@@ -36,7 +35,27 @@ spring:
           uri: lb://plugin-bridge
           predicates:
             - Path=/document/**
+        - id: plugin-bridge-appointment-route
+          uri: lb://plugin-bridge
+          predicates:
             - Path=/appointment/**
+        - id: plugin-bridge-notification-route
+          uri: lb://plugin-bridge
+          predicates:
+            - Path=/notification/**
+        - id: ms-entitlement-request-route
+          uri: lb://ms-entitlement-request
+          predicates:
+            - Path=/entitlements/**
+        - id: ms-accounts-route
+          uri: lb://ms-accounts
+          predicates:
+            - Path=/account/**
+        - id: nothing-route
+          uri: lb://nothing
+          predicates:
+            - Path=/nothing/**
+          
 #          filters:
 #          - name: CircuitBreaker
 #            args:

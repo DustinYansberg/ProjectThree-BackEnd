@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-accounts
+  labels:
+    app: ms-accounts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-accounts
+  template:
+    metadata:
+      labels:
+        app: ms-accounts
+    spec:
+      containers:
+        - name: ms-accounts
+          image: dustinyansberg/ms-accounts:latest
+          ports:
+            - containerPort: 8081

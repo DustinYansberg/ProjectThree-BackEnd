@@ -1,0 +1,24 @@
+<project name="AppianConnector" default="jar" basedir=".">  
+  <property name="tomcat.home" value="C:/SailPoint/apache-tomcat-9.0.91/webapps/identityiq/WEB-INF"/>  
+  <property name="lib.dir" value="${tomcat.home}\lib"/> <property name="src.dir" value="src"/>  
+  <property name="dest.dir" value="build/classes"/>  
+  <property name="jar.dir" value="build/jar"/>      
+  <path id="classpath">  
+     <fileset dir="${lib.dir}" includes="**/*.jar"/>  
+  </path>  
+  <target name="clean">  
+    <delete dir="build"/>  
+  </target>  
+  <target name="compile">  
+    <mkdir dir="${dest.dir}"/>  
+    <javac srcdir="${src.dir}" destdir="${dest.dir}" classpathref="classpath"  
+       includeantruntime="false"/>  
+  </target>  
+  <target name="jar" depends="compile">  
+     <mkdir dir="${jar.dir}"/>  
+     <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="build/classes"/>  
+  </target>  
+  <target name="deploy" depends="jar">  
+     <copy file="${jar.dir}/${ant.project.name}.jar" todir="${lib.dir}"/>  
+  </target>  
+</project>

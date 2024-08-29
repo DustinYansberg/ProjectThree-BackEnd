@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sailpoint PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+
+<sailpoint>
+	<ImportAction name="merge">
+		<Configuration name="ConnectorRegistry">
+			<Attributes>
+				<Map>
+					<entry key="applicationTemplates">
+						<value>
+							<List>
+								<Application connector="sailpoint.connector.OpenConnectorAdapter" featuresString="PROVISIONING, SYNC_PROVISIONING, ENABLE, UNLOCK, SEARCH, UNSTRUCTURED_TARGETS, PASSWORD, CURRENT_PASSWORD, ACCOUNT_ONLY_REQUEST" icon="enterpriseIcon" name="Custom App Connector" type="Custom Connector">
+									<Attributes>
+										<Map>
+											<entry key="formPath" value="custom-connector-form.xhtml" />
+											<entry key="connectorClass" value="com.skillstorm.CustomConnector" />
+										</Map>
+									</Attributes>
+									<Schemas>
+										<Schema displayAttribute="username" identityAttribute="username" nativeObjectType="identity" objectType="account">
+											<AttributeDefinition name="id" required="true" type="int" remediationModificationType="None">
+												<Description>Primary key in system.</Description>
+											</AttributeDefinition>
+											<AttributeDefinition name="username" required="true" type="string" remediationModificationType="None">
+												<Description>Username of identity.</Description>
+											</AttributeDefinition>
+											<AttributeDefinition name="firstname" required="true" type="string" remediationModificationType="None">
+												<Description>First name of associated person.</Description>
+											</AttributeDefinition>
+											<AttributeDefinition name="lastname" required="true" type="string" remediationModificationType="None">
+												<Description>Last name of associated person.</Description>
+											</AttributeDefinition>
+											<AttributeDefinition name="image" required="false" type="string" remediationModificationType="None">
+												<Description>Image associated with the account.</Description>
+											</AttributeDefinition>
+										</Schema>
+									</Schemas>
+								</Application>
+							</List>
+						</value>
+					</entry>
+				</Map>
+			</Attributes>
+		</Configuration>
+	</ImportAction>
+</sailpoint>
