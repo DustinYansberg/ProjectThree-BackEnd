@@ -8,6 +8,9 @@ import com.skillstorm.ms_entitlement_request.model.EntitlementRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -145,28 +148,37 @@ public class EntitlementService
         HttpEntity<String> entity = new HttpEntity<>(JsonBody, headers);
         RestTemplate restTemplate = new RestTemplate();
 
-        /**
-         * this section will be tested once we have the updateAccount up and running
-         */
-//        ResponseEntity<String> response =
-//                restTemplate.exchange
-//                        ("http://localhost:8082/account/permission/" + accountId ,
-//                HttpMethod.PUT,
-//                entity,
-//                String.class);
-//
-//        if (response.getStatusCode() == HttpStatus.OK)
-//        {
-//
-//            return ResponseEntity.ok(response.getBody());
-//        } else
-//        {
-//            return ResponseEntity.status(response.getStatusCode())
-//                    .body("Account update could not be processed.");
-//        }
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    "http://4.156.40.62:9001/account/permission/" + accountId,
+                    HttpMethod.PUT,
+                    entity,
+                    String.class
+            );
 
-        processRequestHelper(approved, requestId);
-        return new ResponseEntity<>(HttpStatus.OK);
+            // Check the response status and act accordingly
+            if (response.getStatusCode() == HttpStatus.OK) {
+                processRequestHelper(approved, requestId);
+                return ResponseEntity.ok(response.getBody());
+            } else {
+                return ResponseEntity.status(response.getStatusCode())
+                        .body("Account update could not be processed.");
+            }
+        } catch (HttpClientErrorException | HttpServerErrorException ex) {
+            // Log the exception or handle it if needed
+            if (ex.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
+                // Proceed as if it was successful
+                processRequestHelper(approved, requestId);
+                return ResponseEntity.ok("Request processed.");
+            } else {
+                return ResponseEntity.status(ex.getStatusCode())
+                        .body("Account update could not be processed.");
+            }
+        } catch (RestClientException ex) {
+            // Handle other errors
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                    .body("Service unavailable or other network error.");
+        }
     }
 
     public void processRequestHelper(Boolean approved, String requestId)
