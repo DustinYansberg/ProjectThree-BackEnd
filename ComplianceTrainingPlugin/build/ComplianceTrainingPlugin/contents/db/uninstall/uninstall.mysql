@@ -1,0 +1,3 @@
+-- this script runs when the plugin is uninstalled, removing any plugin-specific tables
+
+DROP TABLE ep_plugin_document;

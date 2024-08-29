@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC
+  "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+      
+	<head>
+	
+		<link rel="stylesheet" href="css/example-plugin.css"></link>
+	
+	</head>
+	
+	<body>
+	
+		<ui:composition>
+		
+			<h1 class="red">MY EXAMPLE PLUGIN</h1>
+			
+			<p id="myParagraph">Here's my plugin...and I am *so* proud of it.</p>
+			
+			<button class="block" type="button" onclick="changeParagraph()">CHANGE PARAGRAPH</button>
+			
+			<h2>Create A New Office</h2>
+			
+			<form style="margin-bottom: 24px">
+			
+				<label class="block" for="department">Department</label>
+				<input class="block input" type="text" name="department" id="department" style="margin-bottom: 12px; width: 200px; padding: 8px" />
+				
+				<label class="block" for="address">Address</label>
+				<input class="block input" type="text" name="address" id="address" style="margin-bottom: 12px; width: 200px; padding: 8px" />
+				
+				<button class="block" type="button" onclick="createOffice()">CREATE</button>
+			
+			</form>
+			
+			<!-- a table to hold our list of offices -->
+			<table style="font-size: 16px; text-align:left;">
+			
+				<thead>
+					<tr>
+						<th style="width: 50px">ID</th>
+						<th style="width: 200px">Department</th>
+						<th style="width: 200px">Address</th>
+						<th>Delete?</th>
+					</tr>
+				</thead>
+				
+				<tbody id="table-body">
+					<!-- don't need anything in here to start -->
+				</tbody>
+			
+			</table>
+			
+			<!-- to use .js scripts that manipulate the visuals, call the script here and use this prefix -->
+			<script src="#{plugins.requestContextPath}/plugin/ExamplePlugin/ui/js/example-plugin.js"></script>
+		
+		</ui:composition>
+	
+	</body>
+      
+</html>

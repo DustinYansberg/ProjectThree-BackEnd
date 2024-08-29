@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE Plugin PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Plugin certificationLevel="None" displayName="Compliance Training Plugin" minSystemVersion="8.3" name="ComplianceTrainingPlugin" version="1.0">
+  <Attributes>
+    <Map>
+      <entry key="minUpgradableVersion" value="0.1" />
+      <entry key="fullPage">
+        <value>
+          <FullPage title="Compliance Training Plugin" />
+        </value>
+      </entry>
+      <entry key="restResources">
+      	<value>
+      		<List>
+      			<String>com.skillstorm.rest.DocumentResource</String>
+      			<String>com.skillstorm.rest.IdentityResource</String>
+      		</List>
+      	</value>
+      </entry>
+      <entry key="policyExecutors">
+      	<value>
+      		<List>
+      			<String>com.skillstorm.policies.DocumentPolicyExecutor</String>
+      		</List>
+      	</value>
+      </entry>
+      <entry key="settings">
+        <value>
+          <List>
+			<Setting dataType="int" helpText="The number of days after which a document is considered overdue." label="Overdue Threshold (Days)" name="overdueThreshold" defaultValue="30" />
+          </List>
+        </value>
+      </entry>
+    </Map>
+  </Attributes>
+</Plugin>

@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE sailpoint PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+
+<sailpoint>
+	<Policy name="Document Overdue Policy" type="Document" certificationActions="Mitigated,Delegated" configPage="genericpolicy.xhtml" executor="com.skillstorm.policies.DocumentPolicyExecutor" state="Active" violationOwnerType="Manager">
+		<Attributes>
+			<Map>
+				<entry key="pluginName" value="ComplianceTrainingPlugin"/>
+				<entry key="sysDescriptions">
+					<value>
+						<Map>
+							<entry key="en_US" value="This policy checks if any documents assigned to identities are overdue based on a configured threshold."/>
+						</Map>
+					</value>
+				</entry>
+			</Map>
+		</Attributes>
+		<Signature>
+			<Inputs>
+				<Argument name="threshold" type="int" helpKey="The number of days after which a document is considered overdue.">
+					<Prompt>Overdue Threshold (Days)</Prompt>
+				</Argument>
+			</Inputs>
+		</Signature>
+		<Owner>
+			<Reference class="sailpoint.object.Identity" name="spadmin"/>
+		</Owner>
+		<ViolationOwner>
+			<Reference class="sailpoint.object.Identity" name="spadmin"/>
+		</ViolationOwner>
+	</Policy>
+</sailpoint>
