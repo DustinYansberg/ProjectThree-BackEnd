@@ -36,7 +36,7 @@ public class AccountController {
 	@Value("${spring.datasource.url}/account") private String pluginUrl;
 	@Value("${spring.datasource.scimUrl}/Accounts/") private String scimUrl;
 	
-
+	//Method to add basic authorization for requests to the SailPoint SCIM API
 	private HttpHeaders generateAuthHeaders() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes()));
@@ -52,30 +52,17 @@ public class AccountController {
 					.body("An error occurred when sending the request to SCIM:\n" + e);
 		}
 	}
+	
+	//Method to format outgoing calls to endpoints (SCIM API or Accounts plugin)
 	private ResponseEntity<Object> sendRestTemplateExchange(Object body, String url, HttpMethod method) {
 		RestTemplate temp = new RestTemplate();
 		HttpEntity<Object> entity = new HttpEntity<>(body, generateAuthHeaders());
 		return temp.exchange(url, method, entity, Object.class);
 	}
 	
-	@GetMapping
-	public ResponseEntity<Object> test(){
-		try {
-			return sendRestTemplateExchange(null, pluginUrl, HttpMethod.GET);
-		}catch (Exception e) {
-			return processError(e);
-		}
-	}
 	
-	@GetMapping("/identity/{id}")
-	public ResponseEntity<Object> getAccountsByIdentity(@PathVariable String id){
-		try {
-			return sendRestTemplateExchange(null, pluginUrl + "/byIdentity/" + id, HttpMethod.GET);
-		} catch(Exception e) {
-			return processError(e);
-		}
-	}
-	
+	//GET method that takes in an Account ID
+	//returns an Account
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getAccountById(@PathVariable String id) {
 		try {
@@ -85,6 +72,19 @@ public class AccountController {
 		}
 	}
 	
+	//GET method that takes in an Identity ID
+	//returns a list of Accounts
+	@GetMapping("/identity/{id}")
+	public ResponseEntity<Object> getAccountsByIdentity(@PathVariable String id){
+		try {
+			return sendRestTemplateExchange(null, pluginUrl + "/byIdentity/" + id, HttpMethod.GET);
+		} catch(Exception e) {
+			return processError(e);
+		}
+	}
+
+	//POST method that takes a NewAccount object
+	//creates a new Account for an Identity
 	@PostMapping
 	public ResponseEntity<Object> createAccount(@RequestBody NewAccount newAccount){
 		try {
@@ -94,6 +94,8 @@ public class AccountController {
 		}
 	}
 	
+	//Put method that takes in an Account ID and an Account object
+	//updates Account information
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> updateAccount(@PathVariable String id, @RequestBody Account body) throws JsonProcessingException{
 
@@ -108,15 +110,20 @@ public class AccountController {
 		}
 	}
 	
+	//PUT method for updating Permissions for an Account
+	//takes in Permission (to be added or removed) and an Identity ID
 	@PutMapping("/permission/{id}")
 	public ResponseEntity<Object> updatePermission(@PathVariable String id, @RequestBody String permission) throws JsonProcessingException{
-		String accountId = this.getFirstAccountByIdentityId(id);
+		//gets Account ID based on the Identity ID
+		String accountId = this.getAccountByIdentityId(id);
 		try {
+			//get extra fields needed for the update
 			Map<String, Object> info =  (Map<String, Object>) sendRestTemplateExchange(null, pluginUrl + "/getUpdate/" + accountId, HttpMethod.GET).getBody();
+			//get account data for the object needed to create the JSON
 			Map<String, Object> map = (Map<String, Object>) sendRestTemplateExchange(null, pluginUrl + "/get/" + accountId, HttpMethod.GET).getBody();
 			ObjectMapper mapper = new ObjectMapper();
 			Account account = mapper.convertValue(map, Account.class);
-			System.out.println(account.toJsonStringWithPermissions(info, permission));
+	
 			return sendRestTemplateExchange(
 					account.toJsonStringWithPermissions(info, permission), 
 					scimUrl + accountId, 
@@ -125,6 +132,8 @@ public class AccountController {
 			return processError(e);
 		}
 	}
+	
+	//Delete method takes in an Account ID
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteAccountById(@PathVariable String id) {
 		try {
@@ -134,7 +143,8 @@ public class AccountController {
 		}
 	}
 	
-	private String getFirstAccountByIdentityId(String id) {
+	//method for returning an Account ID from an Identity ID
+	private String getAccountByIdentityId(String id) {
 		try {
 			System.out.println(sendRestTemplateExchange(null, pluginUrl + "/byIdentity/" + id, HttpMethod.GET).getBody());
 			List<Map<String, Object>> test = (List<Map<String, Object>>) sendRestTemplateExchange(null, pluginUrl + "/byIdentity/" + id, HttpMethod.GET).getBody();
@@ -144,6 +154,17 @@ public class AccountController {
 			return result.toString();
 		} catch(Exception e) {
 			return processError(e).toString();
+		}
+	}
+	
+	
+	//Test method to test the plugin connection
+	@GetMapping
+	public ResponseEntity<Object> test(){
+		try {
+			return sendRestTemplateExchange(null, pluginUrl, HttpMethod.GET);
+		}catch (Exception e) {
+			return processError(e);
 		}
 	}
 }

@@ -66,12 +66,13 @@ public class Account {
 	}
 
 	/**
-	 * toJsonString()
-	 * Converts this Account object into a string that can be passed as a valid request body
+	 * Converts this Map into a string that can be passed as a valid request body
 	 * for a request to SCIM API.
-	 * @return JSON string containing Account details, formatted for SCIM requests
+	 * returns JSON string containing Account details, formatted for SCIM requests
 	 */
 	public String toJsonString(Map<String, Object> info) {
+		
+		//format permissions as a list
 		String permissions = "[";
 
 		for(String item : this.permissionSets) {
@@ -89,6 +90,7 @@ public class Account {
 		if(info.get("NativeIdentity") != null) {
 			asJson = asJson + "  \"nativeIdentity\": \"" + info.get("NativeIdentity") + "\",\r\n";
 		}
+		//add specific application data needed
 		asJson = asJson
 			+ "  \"urn:ietf:params:scim:schemas:sailpoint:1.0:Application:Schema:" + applicationDisplayName + ":account\": {\r\n";
 			asJson = asJson
@@ -131,45 +133,16 @@ public class Account {
 		
 		
 	}
+	
+	//Converts the info Map into a string to be passed as a JSON body to the SCIM API
+	//with the permission that is to be added or removed
 	public String toJsonStringWithPermissions(Map<String, Object> info, String permission) {
 		
-		String permissions ="";
-		if (info.get("PermissionSet")==null) {
-			permissions ="["+permission;
-		}else {
-	        String permissionSet1 = (String) info.get("PermissionSet");
-	        if (permissionSet1.contains(", ")) {
-	        	permissionSet1 = permissionSet1.substring(1, permissionSet1.length()-1);
-	        }
-	        String[] permissionSet = permissionSet1.split(", ");
-	       
-		boolean contains = false;
-		for(String item : permissionSet) {
-			if (item.equals(permission.replace("\"", ""))) {
-				contains = true;
-			}
-		}
-		if (contains) {
-			permissions = "[";
-
-		for(String item : permissionSet) {
-			if (!item.equals(permission.replace("\"", ""))) {
-			permissions += item+", ";
-			}
-		}
-		permissions = permissions.substring(0, permissions.length()-2);
-		}else {
-			System.out.println("else");
-			permissions = "[";
-
-			for(String item : permissionSet) {
-				permissions += item+", ";
-			}
-			permissions += permission.replace("\"", "");
-			//permissions = permissions.substring(0, permissions.length()-2);
-		}
-		}
+		//converts old list of permissions to new list
+		//removes permission if in set
+		String permissions = this.processPermission(info, permission);
 		
+		//assemble JSON body as string
 		String asJson = "{\r\n"
 			+ "  \"identity\": {\r\n"
 			+ "    \"value\": \"" + info.get("identityId") + "\"\r\n"
@@ -181,6 +154,7 @@ public class Account {
 		if(info.get("NativeIdentity") != null) {
 			asJson = asJson + "  \"nativeIdentity\": \"" + info.get("NativeIdentity") + "\",\r\n";
 		}
+		//add specific application data needed
 		asJson = asJson
 			+ "  \"urn:ietf:params:scim:schemas:sailpoint:1.0:Application:Schema:" + applicationDisplayName + ":account\": {\r\n";
 			asJson = asJson
@@ -223,6 +197,51 @@ public class Account {
 		return asJson;
 		
 		
+	}
+	
+	private String processPermission(Map<String, Object> info, String permission) {
+		String permissions ="";
+		if (info.get("PermissionSet")==null) {
+			permissions ="["+permission;
+		}else {
+	        String permissionSet1 = (String) info.get("PermissionSet");
+	        if (permissionSet1.contains(", ") || (permissionSet1.startsWith("[") && permissionSet1.endsWith("["))) {
+	        	permissionSet1 = permissionSet1.substring(1, permissionSet1.length()-1);
+	        }
+	        String[] permissionSet = permissionSet1.split(", ");
+	    
+	    //Check if permission is already in the permission set
+		boolean contains = false;
+		for(String item : permissionSet) {
+			if (item.equals(permission.replace("\"", ""))) {
+				contains = true;
+			}
+		}
+		
+		//if permission in the set, remove it
+		if (contains) {
+			permissions = "[";
+
+		for(String item : permissionSet) {
+			if (!item.equals(permission.replace("\"", ""))) {
+			permissions += item+", ";
+			}
+		}
+		permissions = permissions.substring(0, permissions.length()-2);
+		
+		//if permission not in set, add it
+		}else {
+			System.out.println("else");
+			permissions = "[";
+
+			for(String item : permissionSet) {
+				permissions += item+", ";
+			}
+			permissions += permission.replace("\"", "");
+		}
+		}
+	
+		return permissions;
 	}
 }
 
