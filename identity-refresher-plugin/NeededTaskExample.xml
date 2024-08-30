@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE TaskDefinition PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+
+<!--THIS IS AN EXAMPLE OF WHAT THE XML SHOULD LOOK LIKE IN SAILPOINT FOR THE RELEVANT TASK-->
+<TaskDefinition executor="com.skillstorm.server.RefreshAutomatedService" created="1724634125280" id="0a050002918c130981918c3453e0002d" modified="1724636033395" name="Refresh marked identities" resultAction="Delete" subType="task_item_type_identity" type="Identity">
+
+<Attributes>
+
+    <Map>
+
+        <entry key="TaskDefinition.runLengthAverage" value="0"/>
+        <entry key="TaskDefinition.runLengthTotal" value="0"/>
+        <entry key="TaskDefinition.runs" value="6"/>
+        <entry key="TaskSchedule.host"/>
+        <entry key="checkHistory" value="false"/>
+        <entry key="checkPolicies" value="true"/>
+        <entry key="correlateEntitlements" value="true"/>
+        <entry key="correlateScope" value="false"/>
+        <entry key="deleteDormantGroups" value="false"/>
+        <entry key="disableIdentityProcessingThreshold" value="false"/>
+        <entry key="disableManagerLookup" value="false"/>
+        <entry key="doManualActions" value="false"/>
+        <entry key="enableManualAccountSelection" value="false"/>
+        <entry key="enablePartitioning" value="false"/>
+        <entry key="excludeInactive" value="false"/>
+        <entry key="filterNeedsRefresh" value="true"/>
+        <entry key="forceWorkflow" value="false"/>
+        <entry key="includeWindowModified" value="false"/>
+        <entry key="keepInactiveViolations" value="false"/>
+        <entry key="markDormantScopes" value="false"/>
+        <entry key="noAutoCreateScopes" value="false"/>
+        <entry key="noMaintenanceWindowRetry" value="false"/>
+        <entry key="noResetNeedsRefresh" value="false"/>
+        <entry key="noRoleDeprovisioning" value="false"/>
+        <entry key="processTriggers" value="false"/>
+        <entry key="promoteAttributes" value="true"/>
+        <entry key="promoteManagedAttributes" value="false"/>
+        <entry key="provision" value="false"/>
+        <entry key="refreshCompositeApplications" value="false"/>
+        <entry key="refreshGroups" value="false"/>
+        <entry key="refreshIdentityEntitlements" value="false"/>
+        <entry key="refreshManagerStatus" value="true"/>
+        <entry key="refreshRoleMetadata" value="false"/>
+        <entry key="refreshScorecard" value="true"/>
+        <entry key="synchronizeAttributes" value="false"/>
+        <entry key="taskCompletionEmailNotify" value="Disabled"/>
+        <entry key="taskCompletionEmailRecipients"/>
+        <entry key="taskCompletionEmailTemplate"/>
+
+    </Map>
+
+</Attributes>
+
+<Description>Refresh identities marked as needs_refresh in the database</Description>
+
+<Owner>
+    <Reference class="sailpoint.object.Identity" id="0a0500029093169281909396d91d00ea" name="spadmin"/>
+</Owner>
+
+
+<Parent>
+    <Reference class="sailpoint.object.TaskDefinition" id="0a0500029093169281909396e6b801a8" name="Identity Refresh"/>
+</Parent>
+
+</TaskDefinition>

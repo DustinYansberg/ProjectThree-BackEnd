@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE sailpoint PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+
+<sailpoint>
+
+	<ServiceDefinition name="Automatically Mark Identities for Refresh" executor="com.skillstorm.server.RefreshAutomatedService" interval="15" hosts="global">
+
+		<Description>
+			A service that automatically marks identities to be refreshed.
+		</Description>
+
+		<Attributes>
+
+			<Map>
+				<entry key="pluginName" value="IdentityRefresherPlugin"/>
+			</Map>
+
+		</Attributes>
+
+	</ServiceDefinition>
+
+</sailpoint>
