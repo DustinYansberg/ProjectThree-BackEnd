@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
  * Contains only the fields that are going to be required by a frontend request.
  */
 public class EmployeeRequest {
+	//	The base URL of our SailPoint Employee database.
 	@Value("${spring.datasource.url}/Users") private static String baseUrl;
 	
 	//	Variables for details of SailPoint identities.
@@ -25,7 +26,21 @@ public class EmployeeRequest {
 	String userType;		//	Required for POST and PUT.
 	String department;
 	
-	//	Constructor function for EmployeeRequest.
+	/**
+	 * Base constructor function for EmployeeRequest.
+	 * @param userName
+	 * @param password
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 * @param managerId
+	 * @param softwareVersion
+	 * @param administratorId
+	 * @param displayName
+	 * @param active
+	 * @param userType
+	 * @param department
+	 */
 	public EmployeeRequest(String userName, String password, String firstName, String lastName, String email,
 			/*String manager,*/ String managerId, String softwareVersion, /*String administrator,*/ String administratorId,
 			String displayName, boolean active, String userType, String department) {
@@ -44,8 +59,11 @@ public class EmployeeRequest {
 		this.department = department; 
 	}
 	
-	//	Converter constructor function for EmployeeRequest given an EmployeeResponse input object.
-	//	Does not include softwareVersion or administratorId.
+	/**
+	 * Converter constructor function for EmployeeRequest given an EmployeeResponse input object.
+	 * Does not include softwareVersion or administratorId.
+	 * @param resp - The EmployeeResponse object to convert to an EmployeeRequest object.
+	 */
 	public EmployeeRequest(EmployeeResponse resp) {
 		super();
 		this.userName = resp.userName;
@@ -83,8 +101,7 @@ public class EmployeeRequest {
 	
 	/**
 	 * toJsonString()
-	 * Converts this object into a string that can be passed as a valid request body
-	 * for a request to SCIM API.
+	 * Converts this object into a string that can be passed as a valid request body for a request to SCIM API.
 	 * @return JSON string containing Employee request details, formatted for SCIM requests
 	 */
 	public String toJsonString() {
