@@ -1,0 +1,6 @@
+CREATE TABLE ep_plugin_task_auto(
+	id int NOT NULL AUTO_INCREMENT,
+    task_name VARCHAR(256) NOT NULL,
+    
+    PRIMARY KEY(id)
+)ENGINE=InnoDB;

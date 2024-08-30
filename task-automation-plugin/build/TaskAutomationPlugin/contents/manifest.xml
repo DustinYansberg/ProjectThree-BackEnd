@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE Plugin PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Plugin certificationLevel="None" displayName="Task Automation Plugin" minSystemVersion="8.3" name="TaskAutomationPlugin" version="1.0">
+  <Attributes>
+    <Map>
+    
+      <entry key="minUpgradableVersion" value="0.1" />
+      <entry key="fullPage">
+        <value>
+          <FullPage title="Task Automation Plugin" />
+        </value>
+      </entry>
+      
+      <entry key="restResources">
+      	<value>
+      		<List>
+      			<String>com.skillstorm.rest.TaskResource</String>
+      		</List>
+      	</value>
+      </entry>
+      
+      <entry key="serviceExecutors">
+      	<value>
+      		<List>
+      			<String>com.skillstorm.server.TaskAutomationService</String>
+      		</List>
+      	</value>
+      </entry>
+     
+      <!--
+      <entry key="taskExecutors">
+      	<value>
+      		<List>
+      			<String>com.skillstorm.tasks.ClearExtraOfficesExecutor</String>
+      		</List>
+      	</value>
+      </entry>
+      <entry key="policyExecutors">
+      	<value>
+      		<List>
+      			<String>com.skillstorm.policies.MaximumOfficePolicyExecutor</String>
+      		</List>
+      	</value>
+      </entry>
+      <entry key="settings">
+        <value>
+          <List>
+          	<Setting dataType="boolean" helpText="If checked, this will automatically add Offices to our database." label="Auto-Add" name="autoAdd" defaultValue="false" />
+			<Setting dataType="int" helpText="How many Offices to add each time the service cycles." label="# To Add" name="numberToAdd" defaultValue="0" />
+			<Setting dataType="string" helpText="Prefix for the department field in created Offices" label="Department Prefix" name="departmentPrefix" defaultValue="Department"/>
+          </List>
+        </value>
+      </entry>
+      -->
+    </Map>
+  </Attributes>
+</Plugin>

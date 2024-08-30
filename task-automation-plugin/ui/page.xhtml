@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC
+  "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+      
+	<head>
+	
+		<!-- <link rel="stylesheet" href="css/task-plugin.css"></link> -->
+	
+	</head>
+	
+	<body>
+	
+		<ui:composition>
+		
+			<h1 class="red">TASK AUTOMATION</h1>
+			
+			
+			
+			<h2>Enter a task to automate</h2>
+			
+			<form style="margin-bottom: 24px">
+			
+				<label class="block" for="task">Task</label>
+				<input class="block input" type="text" name="task" id="task" style="margin-bottom: 12px; width: 200px; padding: 8px" />
+				<!--
+				<label class="block" for="time">Address</label>
+				<input class="block input" type="number" name="time" id="time" style="margin-bottom: 12px; width: 200px; padding: 8px" />
+				-->
+				<button class="block" type="button" onclick="createTask()">ADD</button>
+			
+			</form>
+			
+			<!-- a table to hold our list of offices -->
+			<table style="font-size: 16px; text-align:left;">
+			
+				<thead>
+					<tr>
+						<th style="width: 50px">Task Name</th>
+						<!--<th style="width: 200px">Cycle (minutes)</th>-->
+            <!-- <th>Execute?</th> -->
+						<th>Delete?</th>
+					</tr>
+				</thead>
+				
+				<tbody id="table-body">
+					<!-- don't need anything in here to start -->
+				</tbody>
+			
+			</table>
+			
+			<!-- to use .js scripts that manipulate the visuals, call the script here and use this prefix -->
+			<script src="#{plugins.requestContextPath}/plugin/TaskAutomationPlugin/ui/js/task-plugin.js"></script>
+		
+		</ui:composition>
+	
+	</body>
+      
+</html>

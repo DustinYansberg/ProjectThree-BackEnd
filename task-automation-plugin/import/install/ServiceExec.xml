@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE sailpoint PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+
+<sailpoint>
+
+	<ServiceDefinition name="Automatically execute a list of tasks" executor="com.skillstorm.server.TaskAutomationService" interval="600" hosts="global">
+
+		<Description>
+			A service that automatically executes designated tasks already defined within SailPoint.
+		</Description>
+
+		<Attributes>
+
+			<Map>
+				<entry key="pluginName" value="TaskAutomationPlugin"/>
+			</Map>
+
+		</Attributes>
+
+	</ServiceDefinition>
+
+</sailpoint>
