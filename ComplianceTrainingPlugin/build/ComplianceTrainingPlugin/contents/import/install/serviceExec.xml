@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE sailpoint PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+
+<sailpoint>
+
+	<ServiceDefinition name="Office Add Service" executor="com.skillstorm.server.OfficeAddService" interval="10" hosts="global">
+		<Description>
+			A service that adds Offices every time it cycles.
+		</Description>
+		<Attributes>
+			<Map>
+				<entry key="pluginName" value="ExamplePlugin"/>
+			</Map>
+		</Attributes>
+	</ServiceDefinition>
+
+</sailpoint>

@@ -1,0 +1,30 @@
+/* to make our h1 tag red -- comments work the same here as they do in other CSS files */
+.red {
+	color: red;
+}
+
+h1 {
+	font-size: 24px;
+}
+
+form {
+	margin: 20px 0px;
+}
+
+h2 {
+	font-size: 20px;
+	color: blueviolet;
+}
+
+.block {
+	display: block;
+}
+
+label {
+	font-size: 16px;
+}
+
+.input {
+	width: 300px;
+	margin-bottom: .5em;
+}

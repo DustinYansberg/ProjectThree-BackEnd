@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE sailpoint PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+
+<sailpoint>
+	<TaskDefinition name="Clear Extra Offices" executor="com.skillstorm.tasks.ClearExtraOfficesExecutor" resultAction="Delete" subType="task_item_type_generic" type="Generic">
+		<Description>
+			Clears all Offices beyond the first three.
+		</Description>
+		<Attributes>
+			<Map>
+				<entry key="pluginName" value="ExamplePlugin"/>
+			</Map>
+		</Attributes>
+		<Signature>
+			<Returns>
+				<Argument name="numberOfOfficesDeleted" type="int">
+					<Prompt>Number of Offices Deleted</Prompt>
+				</Argument>
+				<Argument name="officesRemaining" type="string">
+					<Prompt>Offices Remaining</Prompt>
+				</Argument>
+			</Returns>
+		</Signature>
+	</TaskDefinition>
+</sailpoint>

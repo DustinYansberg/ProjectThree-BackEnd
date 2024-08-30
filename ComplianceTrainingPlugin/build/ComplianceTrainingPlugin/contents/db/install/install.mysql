@@ -1,0 +1,9 @@
+CREATE TABLE ep_plugin_document(
+	id int NOT NULL AUTO_INCREMENT,
+	identityId VARCHAR(256) NOT NULL,
+    name VARCHAR(256) NOT NULL,
+    fileData VARCHAR(256) NOT NULL,
+    isCompleted BOOLEAN NOT NULL DEFAULT false,
+    assignedDateTime DATETIME NOT NULL,
+    PRIMARY KEY(id)
+)ENGINE=InnoDB;

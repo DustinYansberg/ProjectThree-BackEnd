@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE sailpoint PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+
+<sailpoint>
+	<Policy name="Maximum Office Policy" type="Office" certificationActions="Mitigated,Delegated" configPage="genericpolicy.xhtml" executor="com.skillstorm.policies.MaximumOfficePolicyExecutor" state="Active" violationOwnerType="Manager">
+		<Attributes>
+			<Map>
+				<entry key="pluginName" value="ExamplePlugin"/>
+				<entry key="maximumNumberOfOffices" value="5"/>
+				<entry key="sysDescriptions">
+					<value>
+						<Map>
+							<entry key="en_US" value="This policy checks if we've exceeded the maximum number of Offices."/>
+						</Map>
+					</value>
+				</entry>
+			</Map>
+		</Attributes>
+		<Signature>
+			<Inputs>
+				<Argument name="maxOffices" type="int" helpKey="The maximum number of Offices allowed under this policy.">
+					<Prompt>Maximum Number Of Offices Allowed</Prompt>
+				</Argument>
+			</Inputs>
+		</Signature>
+		<Owner>
+			<Reference class="sailpoint.object.Identity" name="spadmin"/>
+		</Owner>
+		<ViolationOwner>
+			<Reference class="sailpoint.object.Identity" name="spadmin"/>
+		</ViolationOwner>
+	</Policy>
+
+
+</sailpoint>
