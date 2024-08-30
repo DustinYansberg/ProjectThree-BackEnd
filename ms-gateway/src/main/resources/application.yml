@@ -16,7 +16,10 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "*" # update to reflect the specific IP addresses - "http://localhost:4200"
+            allowedOrigins:  # update to reflect the specific IP addresses 
+              - "http://localhost:4200" # local development
+              - "http://135.237.75.33:8080" # Employee Frontend
+              - "http://172.171.86.22:8080" # Manager Frontend
             allowedMethods: "*"
             allowedHeaders: "*"
 #              - GET
