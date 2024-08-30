@@ -18,14 +18,15 @@ public class TaskService
 {
     
     private PluginContext context;
-    private static int id = 1;  //used to query a specific ID. Since this is on a clock, we'll just use it here
+    private static int crawl = 0;  //crawls sql query forward by this much from last time (increments by 1 each time)
+    
 
     public TaskService(PluginContext context)
     {
         this.context = context;
     }
 
-    
+
     public void createTask(String taskName) throws GeneralException
     {
         Connection connection = null;
@@ -38,7 +39,7 @@ public class TaskService
 			
 			statement.executeUpdate();
 			
-			
+			System.out.println("Updated task " + taskName);
 			
 		} 
         catch(SQLException e) 
@@ -72,6 +73,7 @@ public class TaskService
                 tasks.add(new Task(result.getInt("id"), result.getString("task_name")));
             }
 
+            System.out.println("Got " + tasks.size() + " tasks");
             return tasks;
 						
 		} 
@@ -96,37 +98,47 @@ public class TaskService
         {
 			connection = context.getConnection();
             
-            int total;
+            
             Task task = null;
 
+            
             statement = PluginBaseHelper.prepareStatement(connection, "SELECT COUNT(id) FROM ep_plugin_task_auto");
             ResultSet result = statement.executeQuery();
+
+            if(result.next());
+            {
+                int count = result.getInt("COUNT(id)");
             
+                if (count == 0)
+                {
+                    return task;
+                }
+
+                if (crawl >= count )
+                {
+                    crawl = 0;
+                }   
+                
+            }
+
+
+            statement = PluginBaseHelper.prepareStatement(connection, "SELECT * FROM ep_plugin_task_auto LIMIT 1 OFFSET ?", crawl);
+            
+            result = statement.executeQuery();
+            
+
             if(result.next())
             {
-                total = result.getInt("COUNT(id)");
-                if(total > 0 && id > total)
-                {   
-                    id%=total;
-                }
-            
-
-
-                statement = PluginBaseHelper.prepareStatement(connection, "SELECT * FROM  ep_plugin_task_auto WHERE id = ?", id);
-                
-                result = statement.executeQuery();
-                
-
-                if(result.next())
-                {
-                    task = new Task(result.getInt("id"), result.getString("task_name"));
-
-                }
-
-                id++;
+                task = new Task(result.getInt("id"), result.getString("task_name"));
 
             }
 
+
+        
+            System.out.println("Got task " + task.getTaskName());
+            crawl++;
+
+            
             return task;
 						
 		} 
@@ -152,7 +164,7 @@ public class TaskService
 			statement = PluginBaseHelper.prepareStatement(connection, "DELETE FROM  ep_plugin_task_auto WHERE id = ?", id);
 			
 			statement.executeUpdate();
-			
+			System.out.println("Task deleted");
 						
 		} 
         catch(SQLException e) 

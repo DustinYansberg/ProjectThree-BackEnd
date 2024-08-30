@@ -3,7 +3,7 @@
 
 <sailpoint>
 
-	<ServiceDefinition name="Automatically execute a list of tasks" executor="com.skillstorm.server.TaskAutomationService" interval="600" hosts="global">
+	<ServiceDefinition name="Automatically execute a list of tasks" executor="com.skillstorm.server.TaskAutomationService" interval="180" hosts="global">
 
 		<Description>
 			A service that automatically executes designated tasks already defined within SailPoint.

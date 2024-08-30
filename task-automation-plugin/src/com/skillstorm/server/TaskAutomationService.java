@@ -31,11 +31,27 @@ public class TaskAutomationService extends BasePluginService
     @Override
     public void execute(SailPointContext context) throws GeneralException
     {
+        //needs to have a try/catch here. We want to handle an exception from a non-existent Task
         Task task = service.getTask();
         
-        if(task!=null){
-            TaskManager tm = new TaskManager(context);
-            tm.runSync(task.getTaskName(), new HashMap<>());
+        try
+        {
+            
+            
+            if(task!=null)
+            {
+
+                TaskManager tm = new TaskManager(context);
+                System.out.println("Executing task manager runSync");
+                tm.runSync(task.getTaskName(), new HashMap<>());
+                System.out.println("Executed successfully");
+            }
+        } 
+        catch (GeneralException e)
+        {
+            System.out.println("Couldn't execute that task. Deleting that record.");
+            if(task!=null)
+                service.deleteTask(task.getId());
         }
     }
 
