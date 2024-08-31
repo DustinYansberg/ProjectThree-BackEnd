@@ -1,0 +1,10 @@
+CREATE TABLE ep_plugin_entitlement_request(
+    request_id int NOT NULL AUTO_INCREMENT,
+    owner_id VARCHAR(256) NOT NULL, -- Manager ID
+    requester_id VARCHAR(256) NOT NULL, -- ID of the user who made the request
+    entitlement_id VARCHAR(256) NOT NULL,
+    processed BOOLEAN NOT NULL DEFAULT 0, -- Indicates if the request was processed
+    approved BOOLEAN DEFAULT NULL, -- Indicates if the request was approved
+    description TEXT, -- Description of the request
+    PRIMARY KEY(request_id)
+)ENGINE=InnoDB;

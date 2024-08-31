@@ -7,6 +7,7 @@ spring:
 #http://135.237.83.37:8080/identityiq/plugin/rest/
 
 url_iiq: http://135.237.83.37:8080/identityiq/plugin/rest/
+url_acc: http://4.156.40.62:9001/account/permission/
 username_iiq: spadmin
 password_iiq: admin
 

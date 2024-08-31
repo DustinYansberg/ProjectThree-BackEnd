@@ -1,0 +1,28 @@
+CREATE TABLE ep_plugin_entitlement_request(
+    request_id int NOT NULL AUTO_INCREMENT,
+    owner_id VARCHAR(256) NOT NULL, -- Manager ID
+    requester_id VARCHAR(256) NOT NULL, -- ID of the user who made the request
+    entitlement_id VARCHAR(256) NOT NULL,
+    processed BOOLEAN NOT NULL DEFAULT 0, -- Indicates if the request was processed
+    approved BOOLEAN DEFAULT NULL, -- Indicates if the request was approved
+    description TEXT, -- Description of the request
+    PRIMARY KEY(request_id)
+)ENGINE=InnoDB;
+
+-- Insert records for manager123
+INSERT INTO ep_plugin_entitlement_request (owner_id, requester_id, entitlement_id, processed, approved, description)
+VALUES
+    ('manager123', 'user001', 'entitlement001', FALSE, FALSE, 'Request 1 for manager123'),
+    ('manager123', 'user002', 'entitlement002', TRUE, FALSE, 'Request 2 for manager123'),
+    ('manager123', 'user003', 'entitlement003', TRUE, TRUE, 'Request 3 for manager123'),
+    ('manager123', 'user004', 'entitlement004', FALSE, TRUE, 'Request 4 for manager123'),
+    ('manager123', 'user005', 'entitlement006', FALSE, FALSE, 'Request 5 for manager123');
+
+-- Insert records for other managers
+INSERT INTO ep_plugin_entitlement_request (owner_id, requester_id, entitlement_id, processed, approved, description)
+VALUES
+    ('manager456', 'user006', 'entitlement007', TRUE, TRUE, 'Request 1 for manager456'),
+    ('manager789', 'user007', 'entitlement008', FALSE, TRUE, 'Request 1 for manager789'),
+    ('manager101', 'user008', 'entitlement009', TRUE, FALSE, 'Request 1 for manager101'),
+    ('manager456', 'user009', 'entitlement010', FALSE, FALSE, 'Request 2 for manager456'),
+    ('manager789', 'user010', 'entitlement011', TRUE, TRUE, 'Request 2 for manager789');

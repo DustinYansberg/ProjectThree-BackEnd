@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="AccountsPlugin">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../apache-tomcat-9.0.93/webapps/identityiq/WEB-INF/lib" />
+      <root url="file://$PROJECT_DIR$/../../../apache-tomcat-9.0.93/webapps/identityiq/WEB-INF/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../apache-tomcat-9.0.93/webapps/identityiq/WEB-INF/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../apache-tomcat-9.0.93/webapps/identityiq/WEB-INF/lib" recursive="false" />
+  </library>
+</component>
