@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE TaskDefinition PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<TaskDefinition name="Remove Duplicate Departments" executor="com.skillstorm.tasks.RemoveDuplicatesTask" type="Generic">
+  <Attributes>
+    <Map>
+      <entry key="pluginName" value="DepartmentsPlugin" />
+    </Map>
+  </Attributes>
+  <Description>Searches for duplicate Departments and deletes them, adding their descriptions to the original department.</Description>
+  <Signature>
+    <Returns>
+      <Argument name="duplicates" type="string">
+        <Prompt>IDs of Removed Duplicates</Prompt>
+      </Argument>
+    </Returns>
+  </Signature>
+</TaskDefinition>

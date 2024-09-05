@@ -143,6 +143,7 @@ public class DepartmentService {
 	 * @throws GeneralException
 	 */
 	public Department updateDepartmentByColumn(String col, String value, String name, String description) throws GeneralException {
+//		System.out.println("updateDepartmentByColumn | col = " + col + " | value = " + value + " | name = " + name + " | description = " + description);
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		String changes = "";

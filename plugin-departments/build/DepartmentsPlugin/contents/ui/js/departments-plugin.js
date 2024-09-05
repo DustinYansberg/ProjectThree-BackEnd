@@ -24,6 +24,12 @@ async function getAllDepartments() {
     const departments = await fetch(url, options);
     const departmentsJSON = await departments.json();
 
+    recreateDepartmentsList(departmentsJSON);
+
+    return departments;
+}
+
+function recreateDepartmentsList(departmentsJSON) {
     document.getElementById("departmentsList").innerHTML = "<tr><th>ID</th><th>Name</th><th>Description</th></tr>";
     for(let d of departmentsJSON) {
         let row = document.createElement("tr");
@@ -135,6 +141,12 @@ async function deleteDepartmentById(id) {
     await fetch(url, options).then(data => console.log(data)).catch(err => console.log(err));
     
     await getAllDepartments();
+}
+
+function sortDepartmentsByColumn(column, descending) {
+    //  get all departments
+    //  sort departments using insertion sort according to column
+    //  return new list of departments
 }
 
 getAllDepartments();
