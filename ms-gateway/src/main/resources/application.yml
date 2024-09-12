@@ -29,46 +29,80 @@ spring:
 #              - OPTIONS
       routes:
         - id: ms-employee-service-route
-          uri: lb://ms-employee-service
+          uri: http://localhost:8081
           predicates:
             - Path=/employee/**
+          filters:
+          - name: CircuitBreaker
+            args:
+              name: employeeBreaker
+              fallbackUri: forward:/fallback/employee
 #          filters: # Leaving this here in case it is needed in the future.
 #            - SetRequestHeader=Authorization, ${request.headers.Authorization}
+
         - id: plugin-bridge-route
           uri: lb://plugin-bridge
           predicates:
             - Path=/document/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: documentBreaker
+                fallbackUri: forward:/fallback/document-breaker
         - id: plugin-bridge-appointment-route
           uri: lb://plugin-bridge
           predicates:
             - Path=/appointment/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: appointmentBreaker
+                fallbackUri: forward:/fallback/appointment-breaker
         - id: plugin-bridge-notification-route
           uri: lb://plugin-bridge
           predicates:
             - Path=/notification/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: notificationBreaker
+                fallbackUri: forward:/fallback/notification-breaker
         - id: ms-entitlement-request-route
           uri: lb://ms-entitlement-request
           predicates:
             - Path=/entitlements/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: entitlementBreaker
+                fallbackUri: forward:/fallback/entitlement-breaker
         - id: ms-accounts-route
           uri: lb://ms-accounts
           predicates:
             - Path=/account/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: accountBreaker
+                fallbackUri: forward:/fallback/account-breaker
         - id: nothing-route
           uri: lb://nothing
           predicates:
             - Path=/nothing/**
-          
-#          filters:
-#          - name: CircuitBreaker
-#            args:
-#              name: employeeFallbackController
-#              fallbackUri: forward:/fallback/employee
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: nothingBreaker
+                fallbackUri: forward:/fallback/nothing-breaker
+            
         
 
 # This section is for what will display one our health checks
 # localhost:9001/actuator is the endpoint
 management:
+  endpoint:
+    health:
+      show-details: "ALWAYS"
   endpoints:
     web:
       exposure:
@@ -77,11 +111,8 @@ management:
           - info
           - metrics
           - beans
-  endpoint:
-    health:
-      group:
-        system:
-          show-details: always
+
+management.health.circuitbreakers.enabled: true
 
 # health.show-details allows us to hit the /actuator/health endpoint and get info, otherwise it just shows "UP"
 # since "UP" is likely all Eureka needs, we'll just keep it untouched for now, but we can implement it if needed
@@ -89,20 +120,44 @@ management:
 
 resilience4j:
   circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 10 # Basing failure percentage on the last 10 calls
+        minimum-number-of-calls: 1 # Minimum number of API Calls to decide failure percentage
+        failure-rate-threshold: 10 # Expected percentage of the failure theshold
+        wait-duration-in-open-state: 5s # Timeout period before going to Half Open state from Open
+        permitted-number-of-calls-in-half-open-state: 1 # Number of calls allowed while in Half-Open
+        registerHealthIndicator: true # Displaying information on health page
     instances:
-      productFallbackController:
-        wait-duration-in-open-state: 15000
+      employeeBreaker:
+        baseConfig: default
+      documentBreaker:
+        baseConfig: default
+      appointmentBreaker:
+        baseConfig: default
+      notificationBreaker:
+        baseConfig: default
+      entitlementBreaker:
+        baseConfig: default
+      accountBreaker:
+        baseConfig: default
+      nothingBreaker:
+        baseConfig: default
+  timelimiter:
+    instances:
+      employeeBreaker:
+        timeoutDuration: 3s
 
 # for eureka connection
-eureka:
-  client:
-    service-url:
-      defaultZone: http://20.242.136.134:8761/eureka # Default value for eureka
-  instance:
-    hostname: 4.156.40.62
 #eureka:
 #  client:
 #    service-url:
-#      defaultZone: http://localhost:8761/eureka # Default value for eureka
+#      defaultZone: http://20.242.136.134:8761/eureka # Default value for eureka
 #  instance:
-#    hostname: localhost
+#    hostname: 4.156.40.62
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka # Default value for eureka
+  instance:
+    hostname: localhost

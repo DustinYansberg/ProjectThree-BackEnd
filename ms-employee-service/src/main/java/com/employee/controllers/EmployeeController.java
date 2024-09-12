@@ -30,8 +30,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<? extends Object> getEmployeeById(@PathVariable String id) {
-	return service.getEmployeeById(id);
+    public ResponseEntity<? extends Object> getEmployeeById(@PathVariable String id) throws InterruptedException {
+        Thread.sleep(5000);
+        return service.getEmployeeById(id);
     }
 
     @GetMapping("/email/{email}")

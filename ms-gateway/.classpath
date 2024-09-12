@@ -64,5 +64,14 @@
 			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/jared/.m2/repository/org/springframework/cloud/spring-cloud-circuitbreaker-resilience4j/3.1.2/spring-cloud-circuitbreaker-resilience4j-3.1.2.jar" sourcepath="C:/Users/jared/.m2/repository/org/springframework/cloud/spring-cloud-circuitbreaker-resilience4j/3.1.2/spring-cloud-circuitbreaker-resilience4j-3.1.2-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.springframework.cloud"/>
+			<attribute name="maven.artifactId" value="spring-cloud-circuitbreaker-resilience4j"/>
+			<attribute name="maven.version" value="3.1.2"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
