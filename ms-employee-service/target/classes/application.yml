@@ -10,7 +10,8 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
 
   datasource:
-    url: http://135.237.83.37:8080/identityiq/scim/v2
+    url: http://localhost:8080/identityiq/scim/v2
+#    url: http://135.237.83.37:8080/identityiq/scim/v2
     username: spadmin
     password: admin
     driver-class-name: com.mysql.cj.jdbc.Driver

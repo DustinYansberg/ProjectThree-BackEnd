@@ -1,7 +1,5 @@
 package com.employee.services;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Base64;
 
@@ -18,10 +16,6 @@ import com.employee.models.EmployeeResponse;
 import com.employee.models.SCIMResponseObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
-import sailpoint.plugin.PluginBaseHelper;
-import sailpoint.server.Environment;
-import sailpoint.tools.IOUtil;
 
 @Service
 public class EmployeeService {
@@ -224,34 +218,4 @@ public class EmployeeService {
 		    return processError(e);
 		}
     }
-    
-    private static final boolean checkForOldPassword = false;
-    public ResponseEntity<? extends Object> updatePasswordDirectly(String id, String oldPassword, String newPassword) {
-    	Connection conn = null;
-    	PreparedStatement stmt = null;
-    	try {
-    		//	Step 1: Check if old password is correct if we decide to
-    		if(checkForOldPassword) {
-	    		conn = Environment.getEnvironment().getSpringDataSource().getConnection();
-	    		stmt = PluginBaseHelper.prepareStatement(conn, "SELECT * FROM spt_identity WHERE id = ?", id);
-	    		String oldPwdResult = stmt.executeQuery().getString("password");
-	    		
-	    		if(!oldPassword.equals(oldPwdResult) || !(oldPassword == null && oldPwdResult == null)) {
-	    			throw new IllegalArgumentException("Password is incorrect.");
-	    		}
-
-    		}
-    		// Step 2: Update password
-    		stmt = PluginBaseHelper.prepareStatement(conn, "UPDATE spt_identity SET password = ? WHERE id = ?", newPassword, id);
-    		stmt.executeUpdate();
-    		
-    		return ResponseEntity.status(201).body("Successfully updated password.");
-    	} catch(Exception e) {
-    		return processError(e);
-    	} finally {
-    		IOUtil.closeQuietly(conn);
-    		IOUtil.closeQuietly(stmt);
-    	}
-    }
-
 }

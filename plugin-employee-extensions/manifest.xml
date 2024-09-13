@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE Plugin PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Plugin certificationLevel="None" displayName="Employee Extensions" minSystemVersion="8.3" name="EmployeeExtensionsPlugin" version="1.0">
+  <Attributes>
+    <Map>
+      <entry key="minUpgradableVersion" value="0.1" />
+      <entry key="fullPage">
+        <value>
+          <FullPage title="Employee Extensions" />
+        </value>
+      </entry>
+      <entry key="restResources">
+      	<value>
+      		<List>
+      			<String>com.skillstorm.rest.EmployeeExtensionsResource</String>
+      		</List>
+      	</value>
+      </entry>
+      <!-- <entry key="settings">
+        <value>
+          <List>
+          	<Setting dataType="string" helpText="Your favorite pet's name" label="Favorite Pet" name="favoritePet" defaultValue="Fido"/>
+          	<Setting dataType="string" helpText="Your birthday" label="User Birthday" name="userBirthday" defaultValue="01/01/1970"/>
+          </List>
+        </value>
+      </entry> -->
+    </Map>
+  </Attributes>
+</Plugin>

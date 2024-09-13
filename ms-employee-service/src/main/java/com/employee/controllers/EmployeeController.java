@@ -28,6 +28,11 @@ public class EmployeeController {
     public ResponseEntity<? extends Object> getAllEmployees(@PathVariable int index, @PathVariable int row) {
     	return service.getAllEmployeesWithPagination(index, row);
     }
+    
+    @GetMapping
+    public ResponseEntity<? extends Object> getAllEmployees_Base() {
+    	return service.getAllEmployees();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<? extends Object> getEmployeeById(@PathVariable String id) {
@@ -58,10 +63,5 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<? extends Object> deleteEmployeeById(@PathVariable String id) {
 	return service.deleteEmployeeById(id);
-    }
-    
-    @PutMapping("/pwdUpdate/{id}")
-    public ResponseEntity<? extends Object> updatePasswordDirectly(@PathVariable String id, @RequestBody String oldPwd, @RequestBody String newPwd) {
-    	return service.updatePasswordDirectly(id, oldPwd, newPwd);
     }
 }
