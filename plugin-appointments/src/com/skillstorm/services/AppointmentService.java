@@ -173,7 +173,7 @@ public class AppointmentService {
 	 * @return
 	 * @throws GeneralException
 	 */
-	public Appointment getAppointmentById(String id) throws GeneralException {
+	public Appointment getAppointmentById(int id) throws GeneralException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
@@ -233,7 +233,7 @@ public class AppointmentService {
 	 * @return
 	 * @throws GeneralException
 	 */
-	public Appointment updateAppointmentById(String id, String title, String description, String datetime, String organizerId, String attendeeId) throws GeneralException {
+	public Appointment updateAppointmentById(int id, String title, String description, String datetime, String organizerId, String attendeeId) throws GeneralException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
@@ -254,7 +254,7 @@ public class AppointmentService {
 		}
 	}
 	
-	public Appointment appointmentCheckIn(String id) throws GeneralException {
+	public Appointment appointmentCheckIn(int id) throws GeneralException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
@@ -278,14 +278,14 @@ public class AppointmentService {
 	 * @return
 	 * @throws GeneralException
 	 */
-	public Appointment deleteAppointmentById(String id) throws GeneralException {
+	public Appointment deleteAppointmentById(int id) throws GeneralException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
 			
 			Appointment deleted = getAppointmentById(id);
 			if(deleted == null) {
-				throw new GeneralException("Could not find a Department with id " + id);
+				throw new GeneralException("Could not find a Appointment with id " + id);
 			}
 			else {
 				executeUpdate(conn, stmt, "DELETE FROM " + dbName + " WHERE id = " + id);

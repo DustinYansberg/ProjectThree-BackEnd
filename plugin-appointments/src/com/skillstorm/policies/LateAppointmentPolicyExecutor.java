@@ -1,12 +1,8 @@
 package com.skillstorm.policies;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.chrono.ChronoZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -55,8 +51,12 @@ public class LateAppointmentPolicyExecutor extends BasePluginPolicyExecutor {
 			
 			System.out.println(appointmentTime.toString());
 			System.out.println(zdt);
-			if (appointmentTime.isBefore(zdt) && !appointment.isCheckedIn()) {
+			if (appointmentTime.plusMinutes(lateTime).isBefore(zdt) && !appointment.isCheckedIn()) {
 				violations.add(createViolation(context, policy, identity, appointment.getId(), appointment.getOrganizerId(), appointment.getTitle()));
+			}
+			
+			if (appointmentTime.plusMinutes(deleteTime).isBefore(zdt)) {
+			    service.deleteAppointmentById(appointment.getId());
 			}
 		}
 		

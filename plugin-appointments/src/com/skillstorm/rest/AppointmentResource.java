@@ -52,7 +52,7 @@ public class AppointmentResource extends BasePluginResource {
 	@Path("getBy/{id}")
 	@AllowAll
 	@Produces(MediaType.APPLICATION_JSON)
-	public Appointment getAppointmentByColumn(@PathParam("id") String id) throws GeneralException {
+	public Appointment getAppointmentByColumn(@PathParam("id") int id) throws GeneralException {
 		return service().getAppointmentById(id);
 	}
 	
@@ -99,8 +99,8 @@ public class AppointmentResource extends BasePluginResource {
 	@AllowAll
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Appointment updateAppointmentById(Map<String, String> body, @PathParam("id") String id) throws GeneralException {
-		if(id == null) {
+	public Appointment updateAppointmentById(Map<String, String> body, @PathParam("id") int id) throws GeneralException {
+		if(id < 0) {
 			throw new GeneralException("Invalid ID");
 		}
 		else {
@@ -113,8 +113,8 @@ public class AppointmentResource extends BasePluginResource {
 	@AllowAll
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Appointment appointmentCheckIn(@PathParam("id") String id) throws GeneralException {
-		if(id == null) {
+	public Appointment appointmentCheckIn(@PathParam("id") int id) throws GeneralException {
+		if(id < 0) {
 			throw new GeneralException("Invalid ID");
 		}
 		else {
@@ -133,7 +133,7 @@ public class AppointmentResource extends BasePluginResource {
 	@Path("deleteBy/{id}")
 	@AllowAll
 	@Produces(MediaType.APPLICATION_JSON)
-	public Appointment deleteDepartmentById(@PathParam("id") String id) throws GeneralException {
+	public Appointment deleteDepartmentById(@PathParam("id") int id) throws GeneralException {
 		return service().deleteAppointmentById(id);
 	}
 	
