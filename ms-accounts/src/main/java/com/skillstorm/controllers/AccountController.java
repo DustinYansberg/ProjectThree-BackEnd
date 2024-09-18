@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.skillstorm.Config.RabbitMQConfig;
+import com.skillstorm.models.PermissionUpdateMessage;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -107,24 +110,25 @@ public class AccountController {
 			return processError(e);
 		}
 	}
-	
-	@PutMapping("/permission/{id}")
-	public ResponseEntity<Object> updatePermission(@PathVariable String id, @RequestBody String permission) throws JsonProcessingException{
-		String accountId = this.getFirstAccountByIdentityId(id);
+
+	@RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
+	public void updatePermission(PermissionUpdateMessage message) throws JsonProcessingException{
+		String accountId = this.getFirstAccountByIdentityId(message.getId());
 		try {
 			Map<String, Object> info =  (Map<String, Object>) sendRestTemplateExchange(null, pluginUrl + "/getUpdate/" + accountId, HttpMethod.GET).getBody();
 			Map<String, Object> map = (Map<String, Object>) sendRestTemplateExchange(null, pluginUrl + "/get/" + accountId, HttpMethod.GET).getBody();
 			ObjectMapper mapper = new ObjectMapper();
 			Account account = mapper.convertValue(map, Account.class);
-			System.out.println(account.toJsonStringWithPermissions(info, permission));
-			return sendRestTemplateExchange(
-					account.toJsonStringWithPermissions(info, permission), 
-					scimUrl + accountId, 
+			System.out.println(account.toJsonStringWithPermissions(info, message.getPermission()));
+			 sendRestTemplateExchange(
+					account.toJsonStringWithPermissions(info, message.getPermission()),
+					scimUrl + accountId,
 					HttpMethod.PUT);
 		} catch(Exception e) {
-			return processError(e);
+			System.out.println(processError(e));
 		}
 	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteAccountById(@PathVariable String id) {
 		try {

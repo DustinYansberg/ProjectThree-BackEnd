@@ -1,4 +1,4 @@
-package com.skillstorm.ms_entitlement_request;
+package com.skillstorm;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

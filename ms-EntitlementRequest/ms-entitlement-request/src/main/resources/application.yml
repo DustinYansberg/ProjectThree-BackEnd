@@ -1,4 +1,9 @@
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   application:
     name: ms-entitlement-request
 
@@ -21,5 +26,7 @@ eureka:
     hostname: ms-entitlement-request.default.svc.cluster.local
 
 server:
-  port: 8081
+  port: 8084
+
+
 

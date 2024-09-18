@@ -1,4 +1,4 @@
-package com.skillstorm.ms_entitlement_request.model;
+package com.skillstorm.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

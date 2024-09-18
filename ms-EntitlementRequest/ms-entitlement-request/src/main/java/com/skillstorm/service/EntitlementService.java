@@ -1,16 +1,17 @@
-package com.skillstorm.ms_entitlement_request.service;
+package com.skillstorm.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.skillstorm.ms_entitlement_request.model.Entitlement;
-import com.skillstorm.ms_entitlement_request.model.EntitlementRequest;
+import com.skillstorm.config.RabbitMQConfig;
+import com.skillstorm.models.Entitlement;
+import com.skillstorm.models.EntitlementRequest;
+import com.skillstorm.models.PermissionUpdateMessage;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -30,6 +31,9 @@ public class EntitlementService {
 
     @Value("${password_iiq}")
     private String passwordIiq;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     /**
      * Retrieves a list of entitlements filtered by the application name.
@@ -84,43 +88,20 @@ public class EntitlementService {
      * @param approved  The approval status of the request.
      * @param requestId The ID of the request being processed.
      * @return A response indicating the success or failure of the update.
-     * @throws JsonProcessingException if there is an error processing the JSON response.
      */
-    public ResponseEntity<String> processRequest(String accountId, String entName, Boolean approved, String requestId) throws JsonProcessingException {
-        // Set up HTTP headers and JSON body
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        String jsonBody = new ObjectMapper().writeValueAsString(entName);
-        HttpEntity<String> entity = new HttpEntity<>(jsonBody, headers);
-        RestTemplate restTemplate = new RestTemplate();
-
-        try {
-            ResponseEntity<String> response = restTemplate.exchange(
-                    urlAcc + accountId,
-                    HttpMethod.PUT,
-                    entity,
-                    String.class
-            );
-
-            if (response.getStatusCode() == HttpStatus.OK) {
-                processRequestHelper(approved, requestId);
-                return ResponseEntity.ok(response.getBody());
-            } else {
-                return ResponseEntity.status(response.getStatusCode())
-                        .body("Account update could not be processed.");
-            }
-        } catch (HttpClientErrorException | HttpServerErrorException ex) {
-            if (ex.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
-                processRequestHelper(approved, requestId);
-                return ResponseEntity.ok("Request processed.");
-            } else {
-                return ResponseEntity.status(ex.getStatusCode())
-                        .body("Account update could not be processed.");
-            }
-        } catch (RestClientException ex) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                    .body("Service unavailable or other network error.");
-        }
+    public ResponseEntity<String> processRequest(String accountId, String entName, Boolean approved, String requestId)
+    {
+       try
+       {
+           PermissionUpdateMessage message = new PermissionUpdateMessage(accountId, entName);
+           rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY, message);
+           //processRequestHelper(approved, requestId);
+           System.out.println("Testing Message: " + message + "***************************************************");
+           return ResponseEntity.ok().body(message.toString());
+       }catch (Exception e)
+       {
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+       }
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.skillstorm.ms_entitlement_request;
+package com.skillstorm;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

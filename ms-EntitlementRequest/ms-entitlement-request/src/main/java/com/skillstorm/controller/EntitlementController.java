@@ -1,9 +1,9 @@
-package com.skillstorm.ms_entitlement_request.controller;
+package com.skillstorm.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.skillstorm.ms_entitlement_request.model.Entitlement;
-import com.skillstorm.ms_entitlement_request.model.EntitlementRequest;
-import com.skillstorm.ms_entitlement_request.service.EntitlementService;
+import com.skillstorm.models.Entitlement;
+import com.skillstorm.models.EntitlementRequest;
+import com.skillstorm.service.EntitlementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
