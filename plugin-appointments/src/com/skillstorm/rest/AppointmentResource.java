@@ -69,7 +69,7 @@ public class AppointmentResource extends BasePluginResource {
 	@AllowAll
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Appointment> getAppointmentByAttendee(@PathParam("attendeeId") String attendeeId) throws GeneralException {
-		return service().getAppointmentsByOrganizer(attendeeId);
+		return service().getAppointmentsByAttendee(attendeeId);
 	}
 	
 	
@@ -94,19 +94,6 @@ public class AppointmentResource extends BasePluginResource {
 		}
 	}
 	
-	@PUT
-	@Path("updateBy/{id}")
-	@AllowAll
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Appointment updateAppointmentById(Map<String, String> body, @PathParam("id") int id) throws GeneralException {
-		if(id < 0) {
-			throw new GeneralException("Invalid ID");
-		}
-		else {
-			return service().updateAppointmentById(id, body.get("title"), body.get("description"), body.get("datetime"), body.get("organizerId"), body.get("attendeeId")); 
-		}
-	}
 	
 	@PUT
 	@Path("checkIn/{id}")
