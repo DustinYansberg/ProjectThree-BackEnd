@@ -1,0 +1,12 @@
+.appointment-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    background-color: brown;
+}
+
+.content {
+    margin-left: 20px;
+}
