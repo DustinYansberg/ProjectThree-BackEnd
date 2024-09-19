@@ -3,7 +3,6 @@ package com.skillstorm.services;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -150,7 +149,7 @@ public class AppointmentService {
 	 * @return
 	 * @throws GeneralException
 	 */
-	public Appointment getAppointmentById(String id) throws GeneralException {
+	public Appointment getAppointmentById(int id) throws GeneralException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
@@ -204,7 +203,7 @@ public class AppointmentService {
 		}
 	}
 	
-	public Appointment appointmentCheckIn(String id) throws GeneralException {
+	public Appointment appointmentCheckIn(int id) throws GeneralException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
@@ -229,7 +228,7 @@ public class AppointmentService {
 	 * @return
 	 * @throws GeneralException
 	 */
-	public Appointment deleteAppointmentById(String id) throws GeneralException {
+	public Appointment deleteAppointmentById(int id) throws GeneralException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
