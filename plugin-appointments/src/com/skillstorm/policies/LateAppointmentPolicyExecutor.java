@@ -46,11 +46,8 @@ public class LateAppointmentPolicyExecutor extends BasePluginPolicyExecutor {
         LocalDateTime zdt = LocalDateTime.now(ZoneId.of("America/New_York"));
         
         for (Appointment appointment : attendeeAppointments) {
-            System.out.println(appointment.getDatetime());
             LocalDateTime appointmentTime = LocalDateTime.parse(appointment.getDatetime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            
-            System.out.println(appointmentTime.toString());
-            System.out.println(zdt);
+
             if (appointmentTime.plusMinutes(lateTime).isBefore(zdt) && !appointment.isCheckedIn()) {
                 violations.add(createViolation(context, policy, identity, appointment.getId(), appointment.getOrganizerId(), appointment.getTitle()));
             }

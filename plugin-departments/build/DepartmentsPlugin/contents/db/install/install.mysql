@@ -1,0 +1,18 @@
+DROP TABLE IF EXISTS dept_plugin;
+CREATE TABLE dept_plugin(
+	id int NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(1000) NOT NULL,
+    PRIMARY KEY(id)
+)ENGINE=InnoDB;
+
+INSERT INTO dept_plugin (name, description)
+    VALUES ("General", "General description."),
+    ("Surgery", "Surgical department."),
+    ("Anesthetics", "Anesthesiology-related department."),
+    ("ICU", "Intensive Care Unit department."),
+    ("Surgery", "Extra description for surgery department here."),
+    ("Pharmaceuticals", "Farmacy."),
+    ("ICU", "For intensive care."),
+    ("Research", "Research and testing."),
+    ("General", "We couldn't come up with any more test departments.");

@@ -1,0 +1,20 @@
+.red {
+	color: blueviolet;
+}
+
+form {
+	margin: 20px 0px;
+}
+
+.block {
+	display: block;
+}
+
+label {
+	font-size: 16px;
+}
+
+.input {
+	width: 300px;
+	margin-bottom: .5em;
+}
