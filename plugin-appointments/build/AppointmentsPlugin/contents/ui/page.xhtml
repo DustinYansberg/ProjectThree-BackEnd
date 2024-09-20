@@ -13,7 +13,53 @@
 
   <body>
     <ui:composition>
-      <h1>Test</h1>
+      <h1>Appointments Admin</h1>
+
+      <h2>Create Appointment</h2>
+      <form id="appointmentForm" class="appointment-form" style="font-family: Arial, Helvetica, sans-serif;">
+		<label for="title">Title:</label>
+		<input type="text" id="title" name="title" /><br /><br />
+
+		<label for="description">Description:</label>
+		<input type="text" id="description" name="description" /><br /><br />
+
+		<label for="organizerId">Organizer:</label>
+		<input type="text" id="organizerId" name="organizerId" /><br /><br />
+
+		<label for="attendeeId">Attendee:</label>
+		<input type="text" id="attendeeId" name="attendeeId" /><br /><br />
+
+		<label for="datetime">Datetime:</label>
+		<input type="datetime-local" id="datetime" name="datetime" /><br /><br />
+
+		<input type="submit" value="Create Appointment" />
+	  </form>
+      <h2>Manage Appointments</h2>
+      <div>
+          <label for="categoryFilter">Filter by Category:</label>
+          <select id="categoryFilter" name="categoryFilter">
+              <option value="category1">ID</option>
+              <option value="category2">Title</option>
+              <option value="category3">Datetime</option>
+          </select>
+          <button onclick="filterAppointments()">Filter</button>
+      </div>
+
+      <table id="appointmentList" class="appointment-list" style="font-family: Arial, Helvetica, sans-serif; border-collapse: collapse; width: 100%; border: 1px solid #ddd; padding: 8px; ">
+        <tr>
+          <th style="border: 1px solid #ddd; padding: 8px; padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #04AA6D; color: white;">Appointment ID</th>
+          <th style="border: 1px solid #ddd; padding: 8px; padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #04AA6D; color: white;">Title</th>
+          <th style="border: 1px solid #ddd; padding: 8px; padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #04AA6D; color: white;">Description</th>
+          <th style="border: 1px solid #ddd; padding: 8px; padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #04AA6D; color: white;">Organizer</th>
+          <th style="border: 1px solid #ddd; padding: 8px; padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #04AA6D; color: white;">Attendee</th>
+          <th style="border: 1px solid #ddd; padding: 8px; padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #04AA6D; color: white;">Datetime</th>
+          <th style="border: 1px solid #ddd; padding: 8px; padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #04AA6D; color: white;">Checked-In</th>
+        </tr>
+      </table>
+	  
+	  <script src="#{plugins.requestContextPath}/plugin/AppointmentsPlugin/ui/js/appointment-plugin.js"></script>
+	  
     </ui:composition>
   </body>
 </html>
+
