@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sailpoint PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+
+<sailpoint>
+	<ImportAction name="merge">
+		<Configuration name="ConnectorRegistry">
+			<Attributes>
+				<Map>
+					<entry key="applicationTemplates">
+						<value>
+							<List>
+								<Application connector="sailpoint.connector.OpenConnectorAdapter" featuresString="PROVISIONING, SYNC_PROVISIONING, ENABLE, UNLOCK, SEARCH, UNSTRUCTURED_TARGETS, PASSWORD, CURRENT_PASSWORD, ACCOUNT_ONLY_REQUEST" icon="enterpriseIcon" name="P4 Insurance App" type="P4 Insurance App">
+									<Attributes>
+										<Map>
+											<entry key="formPath" value="p4-connector-form.xhtml" />
+											<entry key="connectorClass" value="com.skillstorm.CustomConnector" />
+										</Map>
+									</Attributes>
+									<Schemas>
+										<Schema displayAttribute="username" identityAttribute="username" nativeObjectType="identity" objectType="account">
+											<AttributeDefinition name="id" required="true" type="int" remediationModificationType="None">
+												<Description>Primary ID in insurance application.</Description>
+											</AttributeDefinition>
+											<AttributeDefinition name="username" required="true" type="string" remediationModificationType="None">
+												<Description>Username of SHS Employee in application].</Description>
+											</AttributeDefinition>
+											<AttributeDefinition name="firstname" required="true" type="string" remediationModificationType="None">
+												<Description>First name of SHS Employee.</Description>
+											</AttributeDefinition>
+											<AttributeDefinition name="lastname" required="true" type="string" remediationModificationType="None">
+												<Description>Last name of SHS Employee.</Description>
+											</AttributeDefinition>
+											<AttributeDefinition name="email" required="false" type="string" remediationModificationType="None">
+												<Description>Email Address of the employee.</Description>
+											</AttributeDefinition>
+																						<AttributeDefinition entitlement="true" managed="true" multi="true" name="permission" schemaObjectType="permission" type="string">
+												<Description>The user's permissions in the connected application.</Description>
+											</AttributeDefinition>
+										</Schema>
+										<Schema aggregationType="group" displayAttribute="name" identityAttribute="name" nativeObjectType="permission" objectType="permission">
+											<AttributeDefinition name="id" required="true" type="int" remediationModificationType="None">
+												<Description>The integer primary key for the permission in the connected system.</Description>
+											</AttributeDefinition>
+											<AttributeDefinition name="name" required="true" type="string" remediationModificationType="None">
+												<Description>The permission name and its primary identifying characteristic.</Description>
+											</AttributeDefinition>
+										</Schema>
+									</Schemas>
+								</Application>
+							</List>
+						</value>
+					</entry>
+				</Map>
+			</Attributes>
+		</Configuration>
+	</ImportAction>
+</sailpoint>
