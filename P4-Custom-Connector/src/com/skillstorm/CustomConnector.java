@@ -36,26 +36,21 @@ public class CustomConnector extends AbstractConnector {
 		this.authString = "Basic " + Base64.getEncoder().encodeToString((hostUsername + ":" + hostPassword).getBytes());
 	}
 
-	private HttpURLConnection createConnection(String rqUrl, String rqMethod) throws IOException {
-		URL url = new URL(hostUrl + rqUrl);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setRequestMethod(rqMethod);
-		conn.setRequestProperty("Authorization", authString);
-		
-		return conn;
-	}
-	
 	@Override
 	public void testConnection() throws ConnectorException{
 		try {
 			configure();
 			
-			//	Connect to the UserController test method.
-			HttpURLConnection conn = createConnection("/employee/test", "GET");
+			//	Create a GET Request to custom app
+			URL url = new URL(hostUrl + "/employee/test");
+	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	        conn.setRequestMethod("GET");
+	        conn.setRequestProperty("Authorization", authString);
 			int responseCode = conn.getResponseCode();
 
+			// Check if response was 200, throw IOException if not
 			if(responseCode != 200) {
-				throw new IOException("Response code was not 200, but was " + responseCode);
+				throw new IOException("Response failed: " + responseCode);
 			}
 		} catch(IOException e) {
 			throw new ConnectorException(e.toString());
@@ -67,33 +62,39 @@ public class CustomConnector extends AbstractConnector {
 		try {
 			configure();
 			
-			HttpURLConnection conn = createConnection("/employee", "GET");
-			int responseCode = conn.getResponseCode();
+			// GET request to custom app
+			URL url = new URL(hostUrl + "/employee");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Authorization", authString);
+            int responseCode = conn.getResponseCode();
+            
+            // Throw IOException if unsuccessful response
 			if(responseCode != 200) {
-				throw new IOException("Response code was not 200, but was " + responseCode + ": " + conn.getContent().toString());
+				throw new IOException(responseCode + ": " + conn.getContent().toString());
 			}
 			else {
-				String response = getConnectionResponse(conn);
+			    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		        StringBuffer sb = new StringBuffer();
+		        String currentLine = br.readLine();
+		        while(currentLine != null) {
+		            sb.append(currentLine);
+		            currentLine = br.readLine();
+		        }
+		        br.close();
+				String response = sb.toString();
 				ObjectMapper mapper = new ObjectMapper();
+				
+				// Map http response to List
 				List<Map<String, Object>> map = mapper.readValue(response, new TypeReference<List<Map<String, Object>>>(){});
+				
+				// Create an iterator for IIQ and return it
 				Iterator<Map<String, Object>> iterator = map.iterator();
 				return iterator;
 			}
 		} catch(IOException e) {
 			throw new ConnectorException(e.toString());
 		}
-	}
-
-	private String getConnectionResponse(HttpURLConnection conn) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		StringBuffer sb = new StringBuffer();
-		String currentLine = br.readLine();
-		while(currentLine != null) {
-			sb.append(currentLine);
-			currentLine = br.readLine();
-		}
-		br.close();
-		return sb.toString();
 	}
 
 	@Override
@@ -121,14 +122,27 @@ public class CustomConnector extends AbstractConnector {
 			configure();
 			byte[] bytes = new ObjectMapper().writeValueAsString(payload).getBytes();
 			
-			HttpURLConnection conn = createConnection("/employee", isPUT ? "PUT" : "POST");
+			URL url = new URL(hostUrl + "/employee");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod(isPUT ? "PUT" : "POST");
+            conn.setRequestProperty("Authorization", authString);
 			conn.setRequestProperty("Content-Type", "application/json");
 			conn.setRequestProperty("Accept", "application/json");
 			conn.setRequestProperty("Content-Length", String.valueOf(bytes.length));
 			conn.setDoOutput(true);
 			conn.getOutputStream().write(bytes);
-			String respStr = getConnectionResponse(conn);
 			
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuffer sb = new StringBuffer();
+            String currentLine = br.readLine();
+            while(currentLine != null) {
+                sb.append(currentLine);
+                currentLine = br.readLine();
+            }
+            br.close();
+            String respStr = sb.toString();
+
 			ObjectMapper mapper = new ObjectMapper();
 			response = mapper.readValue(respStr, new TypeReference<Map<String, Object>>(){});
 		} catch(IOException e) {
@@ -140,7 +154,6 @@ public class CustomConnector extends AbstractConnector {
 		return result;
 	}
 	
-	//	TODO Test these two
 	public Result create(String usernameAsId, List<Item> items) {
 		return handleBodyRequest(usernameAsId, items, false);
 	}

@@ -33,10 +33,10 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the packaged JAR file from the build stage
-COPY --from=build /app/target/CustomConnectorApp-0.0.1-SNAPSHOT.jar CustomConnectorApp.jar
+COPY --from=build /app/target/P4Connector-0.0.1-SNAPSHOT.jar P4Connector.jar
 
 # Expose port 9001 to the outside world
-EXPOSE 9003
+EXPOSE 9004
 
 # Run the JAR file
-ENTRYPOINT ["java", "-jar", "CustomConnectorApp.jar"]
+ENTRYPOINT ["java", "-jar", "P4Connector.jar"]
