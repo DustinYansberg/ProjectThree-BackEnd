@@ -1,6 +1,7 @@
 package com.skillstorm.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,16 +42,19 @@ public class CoverageController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('Admin')")
     public Coverage createCoverage(@RequestBody Coverage coverage) {
 	return service.createCoverage(coverage);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('Admin')")
     public Coverage updateCoverage(@PathVariable int id, @RequestBody Coverage coverage) {
 	return service.updateCoverage(id, coverage);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('Admin')")
     public Coverage deleteCoverageById(@PathVariable int id) {
 	return service.deleteCoverageById(id);
     }
